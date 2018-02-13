@@ -1,0 +1,22 @@
+{
+	"name": "ecsworkshop",
+	"version": "1.0.0",
+	"homepage": "https://github.com/brentley/ecsworkshop#readme",
+	"bugs": {
+		"url": "https://github.com/brentley/ecsworkshop/issues"
+	},
+	"license": "ISC",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/brentley/ecsworkshop.git"
+	},
+	"scripts": {
+		"server": "hugo server -w -v",
+		"build": "hugo -v",
+		"deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete"
+	},
+	"dependencies": {
+		"hugo-lunr": "0.0.4"
+	}
+}

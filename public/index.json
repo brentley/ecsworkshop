@@ -1,0 +1,141 @@
+[
+{
+	"uri": "https://ecsworkshop.com/prerequisites/workspace.html",
+	"title": "Create a Workspace",
+	"tags": [],
+	"description": "",
+	"content": " Create a Workspace  Create a Cloud9 Environment  select Create environment  Name it Workshop, and take all other defaults When it comes up, customize the environment by closing the welcome and immediate tabs, and pulling the terminal tab up to the main work area. After that I close the bottom work area.  "
+},
+{
+	"uri": "https://ecsworkshop.com/introduction.html",
+	"title": "Introduction",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/prerequisites.html",
+	"title": "Prerequisites",
+	"tags": [],
+	"description": "",
+	"content": " Prerequisites for the Workshop  Create a workspace for the Workshop Create a SSH key for the workshop Create a GitHub token for the workshop Install Mu Fork the GitHub repos to your own GitHub account Clone your forked repos via SSH Bring up the acceptance and production environments Bring up the environment pipeline Deploy the frontend service  "
+},
+{
+	"uri": "https://ecsworkshop.com/prerequisites/sshkey.html",
+	"title": "Create a SSH key",
+	"tags": [],
+	"description": "",
+	"content": " Create a ssh key and add it to your GitHub account.\nssh-keygen   Press enter 4 times to take the default choices  copy the public key to your clipboard\ncat ~/.ssh/id_rsa.pub   Go to https://github.com/settings/ssh/new and paste your key in the box marked \u0026ldquo;key\u0026rdquo;  Type Workshop Cloud9 in the title, and select Add SSH key\n You should be prompted to confirm your password   "
+},
+{
+	"uri": "https://ecsworkshop.com/platform.html",
+	"title": "Platform",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/prerequisites/token.html",
+	"title": "Create a GitHub token",
+	"tags": [],
+	"description": "",
+	"content": " Go to https://github.com/settings/tokens/new  Type workshop in the token description Check admin:repo_hook Check repo Select generate token  Copy your token and save it somewhere convenient for later.  You\u0026rsquo;ll occasionally want to copy and paste it again.   "
+},
+{
+	"uri": "https://ecsworkshop.com/frontend.html",
+	"title": "Frontend Rails App",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/backend-1.html",
+	"title": "Backend Node App",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/prerequisites/software.html",
+	"title": "Install and Configure Mu",
+	"tags": [],
+	"description": "",
+	"content": "Run:\ncurl -s https://getmu.io/install.sh | sudo sh  Since Fargate is currently only in us-east-1 we will adjust our environment\u0026rsquo;s default region:\nexport AWS_REGION=us-east-1  "
+},
+{
+	"uri": "https://ecsworkshop.com/backend-2.html",
+	"title": "Backend Crystal App",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/prerequisites/fork.html",
+	"title": "Fork the GitHub Repos",
+	"tags": [],
+	"description": "",
+	"content": "Fork these GitHub repos to your own GitHub account:\n https://github.com/brentley/ecsdemo-platform/fork https://github.com/brentley/ecsdemo-frontend/fork https://github.com/brentley/ecsdemo-nodejs/fork https://github.com/brentley/ecsdemo-crystal/fork  "
+},
+{
+	"uri": "https://ecsworkshop.com/prerequisites/clone.html",
+	"title": "Clone your Repos",
+	"tags": [],
+	"description": "",
+	"content": "Clone your forked repos to your workspace: (replace your_username with your GitHub username)\nexport YOUR_GITHUB_NAME=your_username  cd ~/environment  git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-platform.git   confirm the github key fingerprint  git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-frontend.git git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-nodejs.git git clone git@github.com:$YOUR GITHUB_NAME/ecsdemo-crystal.git  "
+},
+{
+	"uri": "https://ecsworkshop.com/platform/environments.html",
+	"title": "Acceptance and Production",
+	"tags": [],
+	"description": "",
+	"content": "Let\u0026rsquo;s bring up the Acceptance and Production environments\ncd ~/environment/ecsdemo-platform  mu env up acceptance \u0026amp;\u0026amp; mu env up production   This will probably take 15 minutes  mu pipeline up   paste your personal GitHub token This will probably take 10 minutes  "
+},
+{
+	"uri": "https://ecsworkshop.com/frontend/frontend.html",
+	"title": "Deploy the Frontend Pipeline",
+	"tags": [],
+	"description": "",
+	"content": "Deploy the CodePipeline for the Rails Frontend App\ncd ~/environment/ecsdemo-frontend  mu pipeline up   paste your personal GitHub token This will take 5 minutes  When the pipeline is built and running, monitor it\u0026rsquo;s progress with:\nmu pipeline logs acceptance -f  "
+},
+{
+	"uri": "https://ecsworkshop.com/",
+	"title": "Amazon ECS Workshop",
+	"tags": [],
+	"description": "",
+	"content": " Amazon ECS Workshop for Fargate In this workshop, we will configure GitHub, CodePipeline, CodeBuild, VPC, ALB, ECS, Autoscaling, and Log aggregation using a framework called Mu\nWe will launch a frontend, and multiple backend services and will explore how you might adopt this workflow in your environment.\nTo get started, please ensure the prerequisites are met.\nThe Prerequisites take about 15 minutes to set up. Please start now, and we will begin the presentation after.\n "
+},
+{
+	"uri": "https://ecsworkshop.com/categories.html",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/tags/",
+	"title": "Index",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/categories/search.html",
+	"title": "Search",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/search.html",
+	"title": "Search Results",
+	"tags": ["Index"],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "https://ecsworkshop.com/tags.html",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]

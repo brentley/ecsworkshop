@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://ecsworkshop.com/prerequisites/workspace.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/introduction.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/prerequisites.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/prerequisites/sshkey.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/platform.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/prerequisites/token.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/frontend.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/backend-1.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/prerequisites/software.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/backend-2.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/prerequisites/fork.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/prerequisites/clone.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/platform/environments.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/frontend/frontend.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/categories.html</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/categories/search.html</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/search.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://ecsworkshop.com/tags.html</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

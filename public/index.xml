@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Amazon ECS Workshop</title>
+    <link>https://ecsworkshop.com/</link>
+    <description>Recent content on Amazon ECS Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://ecsworkshop.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Search Results</title>
+      <link>https://ecsworkshop.com/search.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/search.html</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

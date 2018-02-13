@@ -1,0 +1,26 @@
+baseURL = "https://ecsworkshop.com"
+languageCode = "en-us"
+defaultContentLanguage = "en"
+title = "Amazon ECS Workshop"
+theme = "learn"
+uglyurls = true
+googleAnalytics = "UA-44634850-2"
+
+[params]
+  # Change default color scheme with a variant one. Can be "red", "blue", "green".
+  themeVariant = "mine"
+  showVisitedLinks = false
+  author = "Brent Langston"
+  description = "Amazon ECS Workshop"
+  disableSearch = false
+  disableAssetsBusting = false
+  disableLanguageSwitchingButton = true
+
+[outputs]
+  home = [ "HTML", "RSS", "JSON"]
+
+  [[menu.shortcuts]]
+  name = "<i class='fa fa-github'></i> Github repo"
+  identifier = "ds"
+  url = "https://github.com/brentley/ecsdemo-workshop"
+  weight = 10
