@@ -1,1 +1,1 @@
-# ecsdemo-workshop
+# ecsworkshop

@@ -19,8 +19,8 @@ googleAnalytics = "UA-44634850-2"
 [outputs]
   home = [ "HTML", "RSS", "JSON"]
 
-  [[menu.shortcuts]]
-  name = "<i class='fa fa-github'></i> Github repo"
-  identifier = "ds"
-  url = "https://github.com/brentley/ecsdemo-workshop"
-  weight = 10
+[[menu.shortcuts]]
+name = "<i class='fa fa-github'></i> Github repo"
+identifier = "ds"
+url = "https://github.com/brentley/ecsworkshop"
+weight = 10
