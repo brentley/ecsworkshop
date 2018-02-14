@@ -6,9 +6,185 @@
     <description>Recent content on Amazon ECS Workshop</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Wed, 14 Feb 2018 10:31:01 -0600</lastBuildDate>
     
 	<atom:link href="https://ecsworkshop.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Build the Platform</title>
+      <link>https://ecsworkshop.com/platform/infrastructure.html</link>
+      <pubDate>Wed, 14 Feb 2018 10:31:01 -0600</pubDate>
+      
+      <guid>https://ecsworkshop.com/platform/infrastructure.html</guid>
+      <description>If breaking down a monolith into microservices is a good idea, then it stands to reason that keeping the code that manages your app platform small and simple also makes sense.
+In this workshop, we manage the infrastructure with this repository, and then each service will be maintained in it&amp;rsquo;s own separate repository.
+This repository will generate CloudFormation Stacks that will build 2 independent environments called Acceptance and Production
+These environments include:</description>
+    </item>
+    
+    <item>
+      <title>Crystal Backend Service</title>
+      <link>https://ecsworkshop.com/crystal/mu.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/crystal/mu.html</guid>
+      <description>For this backend api service, we want to use our backend ALB so that this API is only reachable from inside our VPC. Check out mu.yml and notice how we&amp;rsquo;ve overridden a couple of the default CloudFormation parameters to point to the backend ALB:
+--- service: desiredCount: 3 maxSize: 6 port: 3000 priority: 2 pathPatterns: - /crystal networkMode: awsvpc parameters: &#39;mu-service-ecsdemo-crystal-acceptance&#39;: ElbHttpListenerArn: mu-loadbalancer-acceptance-BackendLBHttpListenerArn &#39;mu-service-ecsdemo-crystal-production&#39;: ElbHttpListenerArn: mu-loadbalancer-production-BackendLBHttpListenerArn  Notice, our pathPatterns for route matching is set specifically to /crystal and we&amp;rsquo;ve set a high priority.</description>
+    </item>
+    
+    <item>
+      <title>Frontend Service</title>
+      <link>https://ecsworkshop.com/frontend/mu.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/frontend/mu.html</guid>
+      <description>Opinionated tooling is designed to guide you down a path that is considered a &amp;ldquo;best practice&amp;rdquo;. Additionally, since &amp;ldquo;best practice&amp;rdquo; is the default, the amount of code we maintain is dramatically reduced. Rather than writing hundreds of lines of CloudFormation ourselves, we can start with a smart set of defaults, and just fill in a few blanks, and customize only the parts that we want changed.
+When a service team wants to build a new service, they can include their own mu.</description>
+    </item>
+    
+    <item>
+      <title>Node.js Backend Service</title>
+      <link>https://ecsworkshop.com/nodejs/mu.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/nodejs/mu.html</guid>
+      <description>For this backend api service, we want to use our backend ALB so that this API is only reachable from inside our VPC. Check out mu.yml and notice how we&amp;rsquo;ve overridden a couple of the default CloudFormation parameters to point to the backend ALB:
+--- service: desiredCount: 3 maxSize: 6 port: 3000 priority: 50 pathPatterns: - /* networkMode: awsvpc parameters: &#39;mu-service-ecsdemo-nodejs-acceptance&#39;: ElbHttpListenerArn: mu-loadbalancer-acceptance-BackendLBHttpListenerArn &#39;mu-service-ecsdemo-nodejs-production&#39;: ElbHttpListenerArn: mu-loadbalancer-production-BackendLBHttpListenerArn  Also, our pathPatterns for route matching is still going to match everything (like in our frontend ALB settings), but we&amp;rsquo;ve set a very low priority.</description>
+    </item>
+    
+    <item>
+      <title>Deploy the Backend Pipeline</title>
+      <link>https://ecsworkshop.com/crystal/backend.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/crystal/backend.html</guid>
+      <description>Let’s bring up the Crystal Backend API!
+Copy/Paste the following commands into your Cloud9 workspace:
+cd ~/environment/ecsdemo-crystal  mu pipeline up   paste your personal GitHub token This will take 5 minutes  After the pipeline is built, monitor it&amp;rsquo;s progress:
+mu pipeline logs acceptance -f  </description>
+    </item>
+    
+    <item>
+      <title>Deploy the Backend Pipeline</title>
+      <link>https://ecsworkshop.com/nodejs/backend.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/nodejs/backend.html</guid>
+      <description>Let’s bring up the Node.js Backend API!
+Copy/Paste the following commands into your Cloud9 workspace:
+cd ~/environment/ecsdemo-nodejs  mu pipeline up   paste your personal GitHub token This will take 5 minutes  After the pipeline is built, monitor it&amp;rsquo;s progress:
+mu pipeline logs acceptance -f  </description>
+    </item>
+    
+    <item>
+      <title>Deploy the Frontend Pipeline</title>
+      <link>https://ecsworkshop.com/frontend/frontend.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/frontend/frontend.html</guid>
+      <description>Let’s bring up the Frontend Rails application!
+Copy/Paste the following commands into your Cloud9 workspace:
+cd ~/environment/ecsdemo-frontend  mu pipeline up   paste your personal GitHub token This will take 5 minutes  After the pipeline is built, monitor it&amp;rsquo;s progress:
+mu pipeline logs acceptance -f  </description>
+    </item>
+    
+    <item>
+      <title>Opinionated Tooling</title>
+      <link>https://ecsworkshop.com/platform/mu.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/platform/mu.html</guid>
+      <description>Opinionated tooling is designed to guide you down a path that is considered a &amp;ldquo;best practice&amp;rdquo;. Additionally, since &amp;ldquo;best practice&amp;rdquo; is the default, the amount of code we maintain is dramatically reduced. Rather than writing hundreds of lines of CloudFormation ourselves, we can start with a smart set of defaults, and just fill in a few blanks, and customize only the parts that we want changed.
+To build both the Acceptance and Production platforms, the only code we maintain ourselves is found in mu.</description>
+    </item>
+    
+    <item>
+      <title>Verify the Acceptance Deploy</title>
+      <link>https://ecsworkshop.com/crystal/acceptance.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/crystal/acceptance.html</guid>
+      <description>Once our Crystal Backend API is deployed to the Acceptance environment, we can verify that it&amp;rsquo;s running and available.
+To find the URL of the acceptance environment, run this command:
+mu env show acceptance  Follow the Base URL link and confirm that your application now uses the Crystal backend api.
+Check the running tasks in the Acceptance ECS Cluster</description>
+    </item>
+    
+    <item>
+      <title>Verify the Acceptance Deploy</title>
+      <link>https://ecsworkshop.com/frontend/acceptance.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/frontend/acceptance.html</guid>
+      <description>Once our Frontend Rails application is deployed to the Acceptance environment, we can verify that it&amp;rsquo;s running and available.
+To find the URL of the acceptance environment, run this command:
+mu env show acceptance  Follow the Base URL link and confirm that your application deployed successfully.
+Check the running tasks in the Acceptance ECS Cluster</description>
+    </item>
+    
+    <item>
+      <title>Verify the Acceptance Deploy</title>
+      <link>https://ecsworkshop.com/nodejs/acceptance.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/nodejs/acceptance.html</guid>
+      <description>Once our Node.js Backend API is deployed to the Acceptance environment, we can verify that it&amp;rsquo;s running and available.
+To find the URL of the acceptance environment, run this command:
+mu env show acceptance  Follow the Base URL link and confirm that your application now uses the Node.js backend api.
+Check the running tasks in the Acceptance ECS Cluster</description>
+    </item>
+    
+    <item>
+      <title>Promote to Production</title>
+      <link>https://ecsworkshop.com/crystal/promote.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/crystal/promote.html</guid>
+      <description>When we&amp;rsquo;re happy that the acceptance environment is running our api, we can release this code to our Production environment.
+Go to CodePipeline and find the pipeline for your service mu-ecsdemo-crystal
+Scroll down to Production and you should see a Manual approval step. Select Review, fill in a reason and select Approve
+The same container that is deployed to Acceptance will now be deployed to Production
+Check the running tasks in the Production ECS Cluster</description>
+    </item>
+    
+    <item>
+      <title>Promote to Production</title>
+      <link>https://ecsworkshop.com/frontend/promote.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/frontend/promote.html</guid>
+      <description>When we&amp;rsquo;re happy that the acceptance environment is running our service, we can release this code to our Production environment.
+Go to CodePipeline and find the pipeline for your service mu-ecsdemo-frontend
+Scroll down to Production and you should see a Manual approval step. Select Review, fill in a reason and select Approve
+The same container that is deployed to Acceptance will now be deployed to Production
+Check the running tasks in the Production ECS Cluster</description>
+    </item>
+    
+    <item>
+      <title>Promote to Production</title>
+      <link>https://ecsworkshop.com/nodejs/promote.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/nodejs/promote.html</guid>
+      <description>When we&amp;rsquo;re happy that the acceptance environment is running our api, we can release this code to our Production environment.
+Go to CodePipeline and find the pipeline for your service mu-ecsdemo-nodejs
+Scroll down to Production and you should see a Manual approval step. Select Review, fill in a reason and select Approve
+The same container that is deployed to Acceptance will now be deployed to Production
+Check the running tasks in the Production ECS Cluster</description>
+    </item>
+    
+    <item>
+      <title>Acceptance and Production</title>
+      <link>https://ecsworkshop.com/platform/environments.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://ecsworkshop.com/platform/environments.html</guid>
+      <description>Let&amp;rsquo;s bring up the Acceptance and Production environments!
+Copy/Paste the following commands into your Cloud9 workspace:
+cd ~/environment/ecsdemo-platform  mu env up acceptance &amp;amp;&amp;amp; mu env up production   Watch what is being built in CloudFormation This will probably take 15 minutes  Now lets bring up the CodePipeline for maintaining our infrastructure:
+mu pipeline up   paste your personal GitHub token This builds the CI/CD CodePipeline that will manage infrastructure code changes This will probably take 10 minutes  </description>
+    </item>
     
     <item>
       <title>Search Results</title>
