@@ -22,5 +22,5 @@ googleAnalytics = "UA-44634850-2"
 [[menu.shortcuts]]
 name = "<i class='fa fa-github'></i> Github repo"
 identifier = "ds"
-url = "https://github.com/brentley/ecsworkshop"
+url = "https://github.com/brentley/ecsdemo-platform"
 weight = 10
