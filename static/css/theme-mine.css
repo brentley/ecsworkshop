@@ -102,6 +102,6 @@ a:hover {
     border-color: var(--MENU-SECTION-HR-color);
 }
 
-#navigation .nav fa-chevron-left, #navigation .nav fa-chevron-right {
+#navigation a.nav-prev, #navigation a.nav-next {
     color: #f19e39 !important;	
 }
