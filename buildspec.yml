@@ -7,6 +7,8 @@ phases:
       - export ACCOUNT=$(echo $CODEBUILD_BUILD_ARN |cut -f5 -d:)
       - echo '***** This is the current env:'
       - printenv
+      - ls -lah
+      - pwd
   build:
     commands:
       - wget https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.deb
