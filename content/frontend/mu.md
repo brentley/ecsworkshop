@@ -4,14 +4,11 @@ chapter = false
 weight = 1
 +++
 
-Opinionated tooling is designed to guide you down a path that is considered a "best practice".
-Additionally, since "best practice" is the default, the amount of code we maintain is
-dramatically reduced. Rather than writing hundreds of lines of CloudFormation ourselves, we
-can start with a smart set of defaults, and just fill in a few blanks, and customize only the parts
-that we want changed.
+Again, we can take advantage of opinionated tooling to deploy our service using best practices.
 
 When a service team wants to build a new service, they can include their own
-[mu.yml](https://github.com/brentley/ecsdemo-frontend/blob/master/mu.yml)
+[mu.yml](https://github.com/brentley/ecsdemo-frontend/blob/master/mu.yml) and inherit the
+best practices for deploying and managing their service.
 
 ```
 ---
