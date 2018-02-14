@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
 
-    <title>Acceptance and Production :: Amazon ECS Workshop</title>
+    <title>Build the Platform :: Amazon ECS Workshop</title>
     
     
     <link href="/css/nucleus.css?1518635258" rel="stylesheet">
@@ -35,7 +35,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/platform/environments.html">
+  <body class="" data-url="/platform/infrastructure.html">
     <nav id="sidebar" class="">
 
 
@@ -278,7 +278,7 @@
  
   
     
-      <li data-nav-id="/platform/infrastructure.html" title="Build the Platform" class="dd-item ">
+      <li data-nav-id="/platform/infrastructure.html" title="Build the Platform" class="dd-item active">
         <a href="/platform/infrastructure.html">
         Build the Platform
         
@@ -316,7 +316,7 @@
  
   
     
-      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item active">
+      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item ">
         <a href="/platform/environments.html">
         Acceptance and Production
         
@@ -771,7 +771,7 @@
             
           
           
-            <a href='/'>Amazon ECS Workshop</a> > <a href='/platform.html'>Platform</a> > Acceptance and Production
+            <a href='/'>Amazon ECS Workshop</a> > <a href='/platform.html'>Platform</a> > Build the Platform
           
          
           
@@ -795,36 +795,54 @@
         
         <div id="body-inner">
           
-            <h1>Acceptance and Production</h1>
+            <h1>Build the Platform</h1>
           
 
         
 
 
-<p>Let&rsquo;s bring up the Acceptance and Production environments!</p>
+<p>If breaking down a monolith into microservices is a good idea, then it stands to reason that
+keeping the code that manages your app platform small and simple also makes sense.</p>
 
-<p>Copy/Paste the following commands into your Cloud9 workspace:</p>
+<p>In this workshop, we manage the infrastructure with this repository, and then each service
+will be maintained in it&rsquo;s own separate repository.</p>
 
-<pre><code>cd ~/environment/ecsdemo-platform
-</code></pre>
+<p>This repository will generate CloudFormation Stacks that will build 2 independent environments
+called <strong>Acceptance</strong> and <strong>Production</strong></p>
 
-<pre><code>mu env up acceptance &amp;&amp; mu env up production
-</code></pre>
-
-<ul>
-<li>Watch what is being built in <a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks">CloudFormation</a></li>
-<li>This will probably take 15 minutes</li>
-</ul>
-
-<p>Now lets bring up the CodePipeline for maintaining our infrastructure:</p>
-
-<pre><code>mu pipeline up
-</code></pre>
+<p>These environments include:</p>
 
 <ul>
-<li>paste your personal GitHub token</li>
-<li>This builds the CI/CD CodePipeline that will manage infrastructure code changes</li>
-<li>This will probably take 10 minutes</li>
+<li>VPC
+
+<ul>
+<li>3 public subnets</li>
+<li>3 private subnets</li>
+<li>routing tables</li>
+<li>nat gateway</li>
+</ul></li>
+<li>ALB
+
+<ul>
+<li>Public ALB for external traffic</li>
+<li>Private ALB for backend traffic</li>
+<li>Security groups for each ALB</li>
+<li>Custom Route53 DNS zone &ldquo;internal.service&rdquo;</li>
+<li>Custom Route53 DNS record &ldquo;api.internal.service&rdquo; aliased to the backend ALB</li>
+<li>Custom Route53 DNS record &ldquo;api.internal.service&rdquo; aliased to the backend ALB</li>
+</ul></li>
+<li>ECS Cluster
+
+<ul>
+<li>Instance security group</li>
+<li>Host to host ingress/egress rules</li>
+<li>IAM Role for autoscaling</li>
+</ul></li>
+<li>CodePipeline to manage infrastructure code changes
+
+<ul>
+<li>CI/CD for infrastructure changes</li>
+</ul></li>
 </ul>
 
 
@@ -994,21 +1012,6 @@
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -1026,73 +1029,8 @@
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                         
                         
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
                     
                 
                 
@@ -1297,6 +1235,86 @@
                     
 
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
             
         
                     
@@ -1323,10 +1341,10 @@
 
 
         
-            <a class="nav nav-prev" href="/platform/mu.html" title="Opinionated Tooling"> <i class="fa fa-chevron-left"></i></a>
+            <a class="nav nav-prev" href="/platform.html" title="Platform"> <i class="fa fa-chevron-left"></i></a>
         
         
-            <a class="nav nav-next" href="/frontend.html" title="Frontend Rails App" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+            <a class="nav nav-next" href="/platform/mu.html" title="Opinionated Tooling" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
         
     </div>
 

@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
 
-    <title>Acceptance and Production :: Amazon ECS Workshop</title>
+    <title>Frontend Service :: Amazon ECS Workshop</title>
     
     
     <link href="/css/nucleus.css?1518635258" rel="stylesheet">
@@ -35,7 +35,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/platform/environments.html">
+  <body class="" data-url="/frontend/mu.html">
     <nav id="sidebar" class="">
 
 
@@ -254,7 +254,7 @@
   
     
     <li data-nav-id="/platform.html" title="Platform" class="dd-item 
-        parent
+        
         
         
         ">
@@ -316,7 +316,7 @@
  
   
     
-      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item active">
+      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item ">
         <a href="/platform/environments.html">
         Acceptance and Production
         
@@ -343,7 +343,7 @@
   
     
     <li data-nav-id="/frontend.html" title="Frontend Rails App" class="dd-item 
-        
+        parent
         
         
         ">
@@ -367,7 +367,7 @@
  
   
     
-      <li data-nav-id="/frontend/mu.html" title="Frontend Service" class="dd-item ">
+      <li data-nav-id="/frontend/mu.html" title="Frontend Service" class="dd-item active">
         <a href="/frontend/mu.html">
         Frontend Service
         
@@ -771,7 +771,7 @@
             
           
           
-            <a href='/'>Amazon ECS Workshop</a> > <a href='/platform.html'>Platform</a> > Acceptance and Production
+            <a href='/'>Amazon ECS Workshop</a> > <a href='/frontend.html'>Frontend Rails App</a> > Frontend Service
           
          
           
@@ -795,37 +795,46 @@
         
         <div id="body-inner">
           
-            <h1>Acceptance and Production</h1>
+            <h1>Frontend Service</h1>
           
 
         
 
 
-<p>Let&rsquo;s bring up the Acceptance and Production environments!</p>
+<p>Opinionated tooling is designed to guide you down a path that is considered a &ldquo;best practice&rdquo;.
+Additionally, since &ldquo;best practice&rdquo; is the default, the amount of code we maintain is
+dramatically reduced. Rather than writing hundreds of lines of CloudFormation ourselves, we
+can start with a smart set of defaults, and just fill in a few blanks, and customize only the parts
+that we want changed.</p>
 
-<p>Copy/Paste the following commands into your Cloud9 workspace:</p>
+<p>When a service team wants to build a new service, they can include their own
+<a href="https://github.com/brentley/ecsdemo-frontend/blob/master/mu.yml">mu.yml</a></p>
 
-<pre><code>cd ~/environment/ecsdemo-platform
+<pre><code>---
+service:
+  desiredCount: 3
+  maxSize: 6
+  port: 3000
+  pathPatterns:
+  - /*
+  networkMode: awsvpc
+  environment:
+    BACKEND_API: &quot;http://api.internal.service:80&quot;
 </code></pre>
 
-<pre><code>mu env up acceptance &amp;&amp; mu env up production
-</code></pre>
+<p>In this file, we define the service and how it should run. We want a minimum of 3 containers
+of our service running, for redundancy.  These will automatically be spread across our 3
+availability zones.</p>
 
-<ul>
-<li>Watch what is being built in <a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks">CloudFormation</a></li>
-<li>This will probably take 15 minutes</li>
-</ul>
+<p>Autoscaling will be configured with a maximum of 6 containers.</p>
 
-<p>Now lets bring up the CodePipeline for maintaining our infrastructure:</p>
+<p>The containers listen on port 3000, and ALB should be configured to route all paths to
+these containers.</p>
 
-<pre><code>mu pipeline up
-</code></pre>
+<p>We&rsquo;re using <em>awsvpc</em> networking mode, so each container will get it&rsquo;s own ENI.</p>
 
-<ul>
-<li>paste your personal GitHub token</li>
-<li>This builds the CI/CD CodePipeline that will manage infrastructure code changes</li>
-<li>This will probably take 10 minutes</li>
-</ul>
+<p>When each container is launched, it will have a custom environment variable set
+so the application knows the URL of the backend api.</p>
 
 
 <footer class=" footline" >
@@ -1026,90 +1035,6 @@
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                 
                 
 
@@ -1142,6 +1067,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -1157,6 +1083,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -1297,6 +1226,86 @@
                     
 
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
             
         
                     
@@ -1323,10 +1332,10 @@
 
 
         
-            <a class="nav nav-prev" href="/platform/mu.html" title="Opinionated Tooling"> <i class="fa fa-chevron-left"></i></a>
+            <a class="nav nav-prev" href="/frontend.html" title="Frontend Rails App"> <i class="fa fa-chevron-left"></i></a>
         
         
-            <a class="nav nav-next" href="/frontend.html" title="Frontend Rails App" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+            <a class="nav nav-next" href="/frontend/frontend.html" title="Deploy the Frontend Pipeline" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
         
     </div>
 

@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
 
-    <title>Acceptance and Production :: Amazon ECS Workshop</title>
+    <title>Verify the Acceptance Deploy :: Amazon ECS Workshop</title>
     
     
     <link href="/css/nucleus.css?1518635258" rel="stylesheet">
@@ -35,7 +35,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/platform/environments.html">
+  <body class="" data-url="/frontend/acceptance.html">
     <nav id="sidebar" class="">
 
 
@@ -254,7 +254,7 @@
   
     
     <li data-nav-id="/platform.html" title="Platform" class="dd-item 
-        parent
+        
         
         
         ">
@@ -316,7 +316,7 @@
  
   
     
-      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item active">
+      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item ">
         <a href="/platform/environments.html">
         Acceptance and Production
         
@@ -343,7 +343,7 @@
   
     
     <li data-nav-id="/frontend.html" title="Frontend Rails App" class="dd-item 
-        
+        parent
         
         
         ">
@@ -405,7 +405,7 @@
  
   
     
-      <li data-nav-id="/frontend/acceptance.html" title="Verify the Acceptance Deploy" class="dd-item ">
+      <li data-nav-id="/frontend/acceptance.html" title="Verify the Acceptance Deploy" class="dd-item active">
         <a href="/frontend/acceptance.html">
         Verify the Acceptance Deploy
         
@@ -771,7 +771,7 @@
             
           
           
-            <a href='/'>Amazon ECS Workshop</a> > <a href='/platform.html'>Platform</a> > Acceptance and Production
+            <a href='/'>Amazon ECS Workshop</a> > <a href='/frontend.html'>Frontend Rails App</a> > Verify the Acceptance Deploy
           
          
           
@@ -795,37 +795,24 @@
         
         <div id="body-inner">
           
-            <h1>Acceptance and Production</h1>
+            <h1>Verify the Acceptance Deploy</h1>
           
 
         
 
 
-<p>Let&rsquo;s bring up the Acceptance and Production environments!</p>
+<p>Once our Frontend Rails application is deployed to the Acceptance
+environment, we can verify that it&rsquo;s running and available.</p>
 
-<p>Copy/Paste the following commands into your Cloud9 workspace:</p>
+<p>To find the URL of the acceptance environment, run this command:</p>
 
-<pre><code>cd ~/environment/ecsdemo-platform
+<pre><code>mu env show acceptance
 </code></pre>
 
-<pre><code>mu env up acceptance &amp;&amp; mu env up production
-</code></pre>
+<p>Follow the <strong>Base URL</strong> link and confirm that your application
+deployed successfully.</p>
 
-<ul>
-<li>Watch what is being built in <a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks">CloudFormation</a></li>
-<li>This will probably take 15 minutes</li>
-</ul>
-
-<p>Now lets bring up the CodePipeline for maintaining our infrastructure:</p>
-
-<pre><code>mu pipeline up
-</code></pre>
-
-<ul>
-<li>paste your personal GitHub token</li>
-<li>This builds the CI/CD CodePipeline that will manage infrastructure code changes</li>
-<li>This will probably take 10 minutes</li>
-</ul>
+<p>Check the running tasks in the <a href="https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/mu-environment-acceptance/tasks">Acceptance ECS Cluster</a></p>
 
 
 <footer class=" footline" >
@@ -1026,90 +1013,6 @@
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                 
                 
 
@@ -1174,6 +1077,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -1189,6 +1093,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -1297,6 +1204,86 @@
                     
 
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
             
         
                     
@@ -1323,10 +1310,10 @@
 
 
         
-            <a class="nav nav-prev" href="/platform/mu.html" title="Opinionated Tooling"> <i class="fa fa-chevron-left"></i></a>
+            <a class="nav nav-prev" href="/frontend/frontend.html" title="Deploy the Frontend Pipeline"> <i class="fa fa-chevron-left"></i></a>
         
         
-            <a class="nav nav-next" href="/frontend.html" title="Frontend Rails App" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+            <a class="nav nav-next" href="/frontend/promote.html" title="Promote to Production" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
         
     </div>
 

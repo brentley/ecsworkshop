@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
 
-    <title>Acceptance and Production :: Amazon ECS Workshop</title>
+    <title>Node.js Backend Service :: Amazon ECS Workshop</title>
     
     
     <link href="/css/nucleus.css?1518635258" rel="stylesheet">
@@ -35,7 +35,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/platform/environments.html">
+  <body class="" data-url="/nodejs/mu.html">
     <nav id="sidebar" class="">
 
 
@@ -254,7 +254,7 @@
   
     
     <li data-nav-id="/platform.html" title="Platform" class="dd-item 
-        parent
+        
         
         
         ">
@@ -316,7 +316,7 @@
  
   
     
-      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item active">
+      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item ">
         <a href="/platform/environments.html">
         Acceptance and Production
         
@@ -451,7 +451,7 @@
   
     
     <li data-nav-id="/nodejs.html" title="Node.js Backend API" class="dd-item 
-        
+        parent
         
         
         ">
@@ -475,7 +475,7 @@
  
   
     
-      <li data-nav-id="/nodejs/mu.html" title="Node.js Backend Service" class="dd-item ">
+      <li data-nav-id="/nodejs/mu.html" title="Node.js Backend Service" class="dd-item active">
         <a href="/nodejs/mu.html">
         Node.js Backend Service
         
@@ -771,7 +771,7 @@
             
           
           
-            <a href='/'>Amazon ECS Workshop</a> > <a href='/platform.html'>Platform</a> > Acceptance and Production
+            <a href='/'>Amazon ECS Workshop</a> > <a href='/nodejs.html'>Node.js Backend API</a> > Node.js Backend Service
           
          
           
@@ -795,37 +795,40 @@
         
         <div id="body-inner">
           
-            <h1>Acceptance and Production</h1>
+            <h1>Node.js Backend Service</h1>
           
 
         
 
 
-<p>Let&rsquo;s bring up the Acceptance and Production environments!</p>
+<p>For this backend api service, we want to use our backend ALB so that this API
+is only reachable from inside our VPC. Check out
+<a href="https://github.com/brentley/ecsdemo-nodejs/blob/master/mu.yml">mu.yml</a> and notice
+how we&rsquo;ve overridden a couple of the default CloudFormation parameters to point to
+the backend ALB:</p>
 
-<p>Copy/Paste the following commands into your Cloud9 workspace:</p>
-
-<pre><code>cd ~/environment/ecsdemo-platform
+<pre><code>---
+service:
+  desiredCount: 3
+  maxSize: 6
+  port: 3000
+  priority: 50
+  pathPatterns:
+  - /*
+  networkMode: awsvpc
+parameters:
+  'mu-service-ecsdemo-nodejs-acceptance':
+    ElbHttpListenerArn:
+        mu-loadbalancer-acceptance-BackendLBHttpListenerArn
+  'mu-service-ecsdemo-nodejs-production':
+    ElbHttpListenerArn:
+        mu-loadbalancer-production-BackendLBHttpListenerArn
 </code></pre>
 
-<pre><code>mu env up acceptance &amp;&amp; mu env up production
-</code></pre>
-
-<ul>
-<li>Watch what is being built in <a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks">CloudFormation</a></li>
-<li>This will probably take 15 minutes</li>
-</ul>
-
-<p>Now lets bring up the CodePipeline for maintaining our infrastructure:</p>
-
-<pre><code>mu pipeline up
-</code></pre>
-
-<ul>
-<li>paste your personal GitHub token</li>
-<li>This builds the CI/CD CodePipeline that will manage infrastructure code changes</li>
-<li>This will probably take 10 minutes</li>
-</ul>
+<p>Also, our pathPatterns for route matching is still going to match everything
+(like in our frontend ALB settings), but we&rsquo;ve set a very low priority.  This allows us
+to continue adding higher priority backend APIs, carving off specific routes. This API will
+be our default <em>catch-all</em> api.</p>
 
 
 <footer class=" footline" >
@@ -1026,90 +1029,6 @@
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                 
                 
 
@@ -1222,6 +1141,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -1232,6 +1152,73 @@
                     
             
         
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
                     
                         
             
@@ -1281,6 +1268,22 @@
             
         
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -1323,10 +1326,10 @@
 
 
         
-            <a class="nav nav-prev" href="/platform/mu.html" title="Opinionated Tooling"> <i class="fa fa-chevron-left"></i></a>
+            <a class="nav nav-prev" href="/nodejs.html" title="Node.js Backend API"> <i class="fa fa-chevron-left"></i></a>
         
         
-            <a class="nav nav-next" href="/frontend.html" title="Frontend Rails App" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+            <a class="nav nav-next" href="/nodejs/backend.html" title="Deploy the Backend Pipeline" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
         
     </div>
 

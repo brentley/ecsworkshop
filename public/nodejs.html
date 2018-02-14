@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon" />
 <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
 
-    <title>Acceptance and Production :: Amazon ECS Workshop</title>
+    <title>Node.js Backend API :: Amazon ECS Workshop</title>
     
     
     <link href="/css/nucleus.css?1518635258" rel="stylesheet">
@@ -35,7 +35,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/platform/environments.html">
+  <body class="" data-url="/nodejs.html">
     <nav id="sidebar" class="">
 
 
@@ -254,7 +254,7 @@
   
     
     <li data-nav-id="/platform.html" title="Platform" class="dd-item 
-        parent
+        
         
         
         ">
@@ -316,7 +316,7 @@
  
   
     
-      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item active">
+      <li data-nav-id="/platform/environments.html" title="Acceptance and Production" class="dd-item ">
         <a href="/platform/environments.html">
         Acceptance and Production
         
@@ -451,8 +451,8 @@
   
     
     <li data-nav-id="/nodejs.html" title="Node.js Backend API" class="dd-item 
-        
-        
+        parent
+        active
         
         ">
       <a href="/nodejs.html">
@@ -757,8 +757,6 @@
                         </a>
                     </span>
                   
-                  <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
-                  
                   <span class="links">
                     
           
@@ -767,13 +765,7 @@
             
           
           
-            
-            
-          
-          
-            <a href='/'>Amazon ECS Workshop</a> > <a href='/platform.html'>Platform</a> > Acceptance and Production
-          
-         
+            <a href='/'>Amazon ECS Workshop</a> > Node.js Backend API
           
          
           
@@ -781,58 +773,32 @@
                   </span>
                 </div>
                 
-                    <div class="progress">
-    <div class="wrapper">
-
-    </div>
-</div>
-
-                
               </div>
             </div>
             
 
         
+          <div id="chapter">
+        
         <div id="body-inner">
-          
-            <h1>Acceptance and Production</h1>
           
 
         
 
 
-<p>Let&rsquo;s bring up the Acceptance and Production environments!</p>
 
-<p>Copy/Paste the following commands into your Cloud9 workspace:</p>
 
-<pre><code>cd ~/environment/ecsdemo-platform
-</code></pre>
+<h1 id="node-js-backend-api">Node.js Backend API</h1>
 
-<pre><code>mu env up acceptance &amp;&amp; mu env up production
-</code></pre>
-
-<ul>
-<li>Watch what is being built in <a href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks">CloudFormation</a></li>
-<li>This will probably take 15 minutes</li>
-</ul>
-
-<p>Now lets bring up the CodePipeline for maintaining our infrastructure:</p>
-
-<pre><code>mu pipeline up
-</code></pre>
-
-<ul>
-<li>paste your personal GitHub token</li>
-<li>This builds the CI/CD CodePipeline that will manage infrastructure code changes</li>
-<li>This will probably take 10 minutes</li>
-</ul>
+<p><img src="/images/nodejs.svg" alt="Empty Environment" /></p>
 
 
 <footer class=" footline" >
 	
 </footer>
 
-
+        
+            </div> 
         
         </div> 
         
@@ -1026,90 +992,6 @@
             
                 
                     
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
                 
                 
 
@@ -1209,6 +1091,90 @@
             
                 
                     
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                 
                 
 
@@ -1323,10 +1289,10 @@
 
 
         
-            <a class="nav nav-prev" href="/platform/mu.html" title="Opinionated Tooling"> <i class="fa fa-chevron-left"></i></a>
+            <a class="nav nav-prev" href="/frontend/promote.html" title="Promote to Production"> <i class="fa fa-chevron-left"></i></a>
         
         
-            <a class="nav nav-next" href="/frontend.html" title="Frontend Rails App" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+            <a class="nav nav-next" href="/nodejs/mu.html" title="Node.js Backend Service" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
         
     </div>
 
@@ -1367,4 +1333,3 @@ ga('send', 'pageview');
 
   </body>
 </html>
-
