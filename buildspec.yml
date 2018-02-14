@@ -22,3 +22,4 @@ phases:
       - npm run build
       - npm run deploycontent
       - npm run deployothers
+      - find . -ls
