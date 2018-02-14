@@ -9,15 +9,14 @@ phases:
       - printenv
       - ls -lah
       - pwd
+      
   build:
     commands:
       - wget https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.deb
       - dpkg -i hugo*.deb
       - hugo version
-      - mkdir workspace; cd workspace
-      - git clone https://github.com/brentley/ecsworkshop.git
-      - cd ecsworkshop/
-      - git submodule update --init --recursive
+      - mkdir -p themes/learn
+      - git clone https://github.com/matcornic/hugo-theme-learn.git themes/learn
       - npm install
       - npm run build
       - npm run deploy
