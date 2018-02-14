@@ -9,7 +9,7 @@ phases:
       - printenv
       - ls -lah
       - pwd
-      
+
   build:
     commands:
       - wget https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.deb
@@ -19,4 +19,5 @@ phases:
       - git clone https://github.com/matcornic/hugo-theme-learn.git themes/learn
       - npm install
       - npm run build
-      - npm run deploy
+      - npm run deploycontent
+      - npm run deployothers

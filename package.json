@@ -14,7 +14,9 @@
 	"scripts": {
 		"server": "hugo server -w -v",
 		"build": "hugo -v",
-		"deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete"
+		"deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete",
+		"deploycontent": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete --cache-control \"max-age=3600, public\" --exclude \"*\" --include \"*.html\" --include \"*.xml\"",
+		"deployothers": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete --cache-control \"max-age=86400, public\" --exclude \"*.html\" --exclude \"*.xml\""
 	},
 	"dependencies": {
 		"hugo-lunr": "0.0.4"
