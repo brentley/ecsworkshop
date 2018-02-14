@@ -18,5 +18,5 @@ cat ~/.ssh/id_rsa.pub
 ```
 1. Go to https://github.com/settings/ssh/new and paste your key in the box marked **key**
 
-1. Type `Workshop Cloud9` in the title, and select **Add SSH key**
+1. Type **workshop** in the title, and select **Add SSH key**
   - You should be prompted to confirm your password
