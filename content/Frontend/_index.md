@@ -1,7 +1,7 @@
 +++
 title = "Frontend Rails App"
 chapter = true
-weight = 3
+weight = 30
 +++
 
 # Frontend Rails App

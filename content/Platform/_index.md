@@ -1,7 +1,7 @@
 +++
 title = "Platform"
 chapter = true
-weight = 2
+weight = 20
 +++
 
 # Build the Platform

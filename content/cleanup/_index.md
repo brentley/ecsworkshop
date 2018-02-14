@@ -1,7 +1,8 @@
 +++
 title = "Cleanup"
 chapter = true
-weight = 6
+weight = 70
 +++
 
 # Cleanup
+![Cleaned Environment](/images/cleanup.svg)

@@ -8,13 +8,15 @@ weight = 2
 ```
 ssh-keygen
 ```
-  - Press `enter` 4 times to take the default choices
+{{% notice tip %}}
+Press `enter` 4 times to take the default choices
+{{% /notice %}}
 
-1. copy the public key to your clipboard
+1. Copy the public key to your clipboard
 ```
 cat ~/.ssh/id_rsa.pub
 ```
-  - Go to https://github.com/settings/ssh/new and paste your key in the box marked "key"
+1. Go to https://github.com/settings/ssh/new and paste your key in the box marked **key**
 
 1. Type `Workshop Cloud9` in the title, and select **Add SSH key**
   - You should be prompted to confirm your password

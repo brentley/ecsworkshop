@@ -29,7 +29,9 @@ parameters:
         mu-loadbalancer-production-BackendLBHttpListenerArn
 ```
 
-Also, our pathPatterns for route matching is still going to match everything
+{{% notice note %}}
+Our pathPatterns for route matching is going to match everything
 (like in our frontend ALB settings), but we've set a very low priority.  This allows us
 to continue adding higher priority backend APIs, carving off specific routes. This API will
 be our default _catch-all_ api.
+{{% /notice %}}

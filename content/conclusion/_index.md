@@ -1,7 +1,7 @@
 +++
 title = "Conclusion"
 chapter = true
-weight = 5
+weight = 60
 +++
 
 # Conclusion

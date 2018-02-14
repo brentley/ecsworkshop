@@ -1,5 +1,7 @@
 ---
 title: "Amazon ECS Workshop"
+chapter = true
+weight = 1
 ---
 
 # Amazon ECS Workshop for Fargate
@@ -12,5 +14,6 @@ We will launch a frontend, and multiple backend services and will explore how yo
 To get started, please ensure the [prerequisites](/prerequisites.html) are met.
 
 
-{{% notice info %}}The Prerequisites take about 15 minutes to set up. Please start now, and we will begin the presentation after.
+{{% notice info %}}
+The Prerequisites take about 15 minutes to set up. Please start now, and we will begin the presentation after.
 {{% /notice %}}

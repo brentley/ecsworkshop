@@ -7,7 +7,7 @@ weight = 1
 For this backend api service, we want to use our backend ALB so that this API
 is only reachable from inside our VPC. Check out
 [mu.yml](https://github.com/brentley/ecsdemo-crystal/blob/master/mu.yml) and notice
-how we've overridden a couple of the default CloudFormation parameters to point to
+how we've overridden two of the default CloudFormation parameters to point to
 the backend ALB:
 
 ```
@@ -29,7 +29,9 @@ parameters:
         mu-loadbalancer-production-BackendLBHttpListenerArn
 ```
 
-Notice, our pathPatterns for route matching is set specifically to **/crystal**
+{{% notice note %}}
+Our pathPatterns for route matching is set specifically to **/crystal**
 and we've set a high priority.  This will carve off any traffic to this ALB
 that starts with **/crystal/** and route that traffic to this service, rather than
 the default Node.js service.
+{{% /notice %}}
