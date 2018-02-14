@@ -1,7 +1,7 @@
 ---
 title: "Amazon ECS Workshop"
-chapter = true
-weight = 1
+chapter: true
+weight: 1
 ---
 
 # Amazon ECS Workshop for Fargate
