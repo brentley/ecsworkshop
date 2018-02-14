@@ -9,7 +9,7 @@ In this workshop, we will configure GitHub, CodePipeline, CodeBuild, VPC, ALB, E
 
 We will launch a frontend, and multiple backend services and will explore how you might adopt this workflow in your environment.
 
-To get started, please ensure the [prerequisites]({{%relref prerequisites %}}) are met.
+To get started, please ensure the [prerequisites](/prerequisites.html) are met.
 
 
 {{% notice info %}}The Prerequisites take about 15 minutes to set up. Please start now, and we will begin the presentation after.
