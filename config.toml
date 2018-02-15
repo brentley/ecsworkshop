@@ -15,18 +15,19 @@ googleAnalytics = "UA-44634850-2"
   disableSearch = false
   disableAssetsBusting = false
   disableLanguageSwitchingButton = true
-
-[outputs]
-  home = [ "HTML", "RSS", "JSON"]
-
-[[menu.shortcuts]]
-name = "<i class='fa fa-github'></i> Github Repo"
-identifier = "ds"
-url = "https://github.com/brentley/ecsdemo-platform"
-weight = 10
+  disableShortcutsTitle=true
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-twitter'></i> Follow Me"
 identifier = "tw"
 url = "https://twitter.com/intent/user?screen_name=brentContained"
 weight = 1
+
+#[[menu.shortcuts]]
+#name = "<i class='fa fa-github'></i> Github Repo"
+#identifier = "ds"
+#url = "https://github.com/brentley/ecsdemo-platform"
+#weight = 10
+
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
