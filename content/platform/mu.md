@@ -1,38 +1,25 @@
 +++
-title = "Opinionated Tooling"
+title = "Mu"
 chapter = false
-weight = 2
+weight = 3
 +++
 
-Opinionated tooling is designed to guide you down a path that is considered a "best practice".
-Additionally, since "best practice" is the default, the amount of code we maintain is
-dramatically reduced. Rather than writing hundreds of lines of CloudFormation ourselves, we
-can start with a smart set of defaults, and just fill in a few blanks, and customize only the parts
-that we want changed.
+We will use [Mu](https://getmu.io) for this workshop. Why Mu?
 
-To build both the **Acceptance** and **Production** platforms, the only code we maintain ourselves
-is found in [mu.yml](https://github.com/brentley/ecsdemo-platform/blob/master/mu.yml)
+<i class="fa fa-cloud text-primary"></i> It's Cloud Native<br>
+Mu knows when to stay out of the way.  Mu only uses AWS resources for deploying your microservices.
 
-```
----
-environments:
-  - name: acceptance
-    provider: ecs-fargate
-  - name: production
-    provider: ecs-fargate
-service:
-    acceptance:
-      disabled: true
-    production:
-      disabled: true
-extensions:
-  - url: backend-service
-  ```
-In this file, we define that we want two environments, each using **ECS Fargate**.
-We disable any service deploys, since this repo is only used to build and maintain infrastructure.
+<i class="fa fa-rocket text-primary"></i> Continuous Delivery<br>
+Mu uses CodePipeline and CodeBuild to continuously test and delivery your microservice to production.
 
-We also include the extension **backend-service**.  This is custom CloudFormation used to build
-a private DNS zone **internal.service** and private ALB for handling our backend api traffic.
+<i class="fa fa-gear text-primary"></i> Polyglot<br>
+Mu doesn't have a favorite language.  If you can get your microservice running with a Dockerfile, then mu can help!</p>
 
-Because we're using Mu and it's built-in best practice defaults, the amount of code we have to maintain
-remains simple.
+<i class="fa fa-codepen text-primary"></i> Stateless<br>
+Mu knows you might not need it anymore.  Mu doesn't have any servers or databases running anywhere.  Mu leverages CloudFormation to manage state for all AWS resources.</p>
+
+<i class="fa fa-code text-primary"></i> Declarative<br>
+Mu makes sure you get what you want.  You declare your configuration in a YAML file and commit with your source code.  Mu takes care of setting up your AWS resources to meet your needs.</p>
+
+<i class="fa fa-github text-primary"></i> Open Source<br>
+Mu is MIT licensed, so you can use it commercially.  Mu is always looking to improve, so please consider contributing!</p>
