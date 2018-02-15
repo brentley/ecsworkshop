@@ -16,5 +16,5 @@ might adopt this workflow in your environment.
 To get started, please ensure the [prerequisites](/prerequisites.html) are met.
 
 {{% notice info %}}
-The Prerequisites take about 15 minutes to set up. Please start now, and we will begin the presentation after.
+The Prerequisites take about 10 minutes to set up. Please start now, and we will begin the presentation after.
 {{% /notice %}}

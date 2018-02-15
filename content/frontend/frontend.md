@@ -15,10 +15,12 @@ mu pipeline up
 Paste your personal GitHub token
 
 {{% notice tip %}}
-This will take 5 minutes
+This will take 10 minutes
 {{% /notice %}}
 
-After the pipeline is built, monitor it's progress:
+After the CodePipeline is built, [watch it run](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/mu-ecsdemo-frontend)
+
+You can also follow the logs:
 ```
-mu pipeline logs acceptance -f
+mu pipeline logs -f
 ```
