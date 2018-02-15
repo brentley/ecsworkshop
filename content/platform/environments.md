@@ -22,6 +22,6 @@ Now lets bring up the CodePipeline for maintaining our infrastructure:
 ```
 mu pipeline up
 ```
-  - paste your personal GitHub token
+  - Paste your personal GitHub token
   - This builds the CI/CD CodePipeline that will manage infrastructure code changes
   - This will probably take 10 minutes

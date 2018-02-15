@@ -19,8 +19,8 @@ These environments include:
 - VPC
   - 3 public subnets
   - 3 private subnets
-  - routing tables
-  - nat gateway
+  - Routing tables
+  - NAT gateway
 - ALB
   - Public ALB for external traffic
   - Private ALB for backend traffic
