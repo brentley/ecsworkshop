@@ -14,3 +14,4 @@ We have:
 - Centralized logs for each microservice to CloudWatchLogs
 - Configured our infrastructure as code using CloudFormation
 - Used Mu for it's opinionated best practices approach for managing microservices
+- NOT deployed a single server to configure, manage, patch, or reboot!
