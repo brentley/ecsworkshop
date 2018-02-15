@@ -7,27 +7,21 @@ uglyurls = true
 googleAnalytics = "UA-44634850-2"
 
 [params]
-  # Change default color scheme with a variant one. Can be "red", "blue", "green".
-  themeVariant = "mine"
-  showVisitedLinks = false
-  author = "Brent Langston"
-  description = "Amazon ECS Workshop"
-  disableSearch = false
-  disableAssetsBusting = false
-  disableLanguageSwitchingButton = true
-  disableShortcutsTitle=true
+themeVariant = "mine"
+showVisitedLinks = false
+author = "Brent Langston"
+description = "Amazon ECS Workshop"
+disableSearch = false
+disableAssetsBusting = false
+disableLanguageSwitchingButton = true
+disableShortcutsTitle=true
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-twitter'></i> Follow Me"
+name = "<i class='fa fa-twitter fa-lg'></i> @brentContained"
 identifier = "tw"
 url = "https://twitter.com/intent/user?screen_name=brentContained"
 weight = 1
 
-#[[menu.shortcuts]]
-#name = "<i class='fa fa-github'></i> Github Repo"
-#identifier = "ds"
-#url = "https://github.com/brentley/ecsdemo-platform"
-#weight = 10
-
 [outputs]
 home = [ "HTML", "AMP", "RSS", "JSON"]
+page = [ "HTML", "AMP"]
