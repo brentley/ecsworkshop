@@ -10,13 +10,12 @@ Copy/Paste the following commands into your Cloud9 workspace:
 
 ```
 cd ~/environment/ecsdemo-crystal
-```
-
-```
 mu pipeline up
 ```
   - paste your personal GitHub token
-  - This will take 5 minutes
+{{% notice tip %}}
+This will take 5 minutes
+{{% /notice %}}
 
 After the pipeline is built, monitor it's progress:
 ```

@@ -16,7 +16,8 @@ cd ~/environment/ecsdemo-frontend
 mu pipeline up
 ```
   - paste your personal GitHub token
-  - This will take 5 minutes
+{{% notice tip %}}
+This will take 5 minutes
 
 After the pipeline is built, monitor it's progress:
 ```
