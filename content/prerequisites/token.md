@@ -1,7 +1,7 @@
 +++
 title = "Create a GitHub token"
 chapter = false
-weight = 3
+weight = 4
 +++
 
 - Go to https://github.com/settings/tokens/new
