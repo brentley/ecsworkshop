@@ -4,7 +4,4 @@ chapter = false
 weight = 3
 +++
 
-We should delete our GitHub token since we have no pipelines.
-
-- Go to https://github.com/settings/tokens
-- Delete the token labeled **workshop**
+Go to https://github.com/settings/tokens and delete the token labeled **workshop**
