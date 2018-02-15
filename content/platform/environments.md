@@ -15,7 +15,7 @@ cd ~/environment/ecsdemo-platform
 ```
 mu env up acceptance && mu env up production
 ```
-  - Watch what is being built in [CloudFormation](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks)
+Watch what is being built in [CloudFormation](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks)
 {{% notice tip %}}
 This will probably take 15 minutes
 {{% /notice %}}
@@ -24,8 +24,8 @@ Now lets bring up the CodePipeline for maintaining our infrastructure:
 ```
 mu pipeline up
 ```
-  - Paste your personal GitHub token
-  - This builds the CI/CD CodePipeline that will manage infrastructure code changes
+Paste your personal GitHub token
+This builds the CI/CD CodePipeline that will manage infrastructure code changes
 
 {{% notice tip %}}
 This will probably take 10 minutes
