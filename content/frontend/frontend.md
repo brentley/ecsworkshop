@@ -12,7 +12,8 @@ Copy/Paste the following commands into your Cloud9 workspace:
 cd ~/environment/ecsdemo-frontend
 mu pipeline up
 ```
-  - paste your personal GitHub token
+Paste your personal GitHub token
+
 {{% notice tip %}}
 This will take 5 minutes
 {{% /notice %}}
