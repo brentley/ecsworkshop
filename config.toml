@@ -30,4 +30,4 @@ weight = 1
 #weight = 10
 
 [outputs]
-home = [ "HTML", "RSS", "JSON"]
+home = [ "HTML", "AMP", "RSS", "JSON"]
