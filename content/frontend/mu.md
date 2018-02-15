@@ -7,8 +7,8 @@ weight = 1
 Again, we can take advantage of opinionated tooling to deploy our service using best practices.
 
 When a service team wants to build a new service, they can include their own
-[mu.yml](https://github.com/brentley/ecsdemo-frontend/blob/master/mu.yml) and inherit the
-best practices for deploying and managing their service.
+[mu.yml](https://github.com/brentley/ecsdemo-frontend/blob/master/mu.yml) and inherit
+best practices such as blue/green deploys, healthchecks, and autoscaling for their service.
 
 ```
 ---
