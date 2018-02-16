@@ -12,7 +12,7 @@ In this workshop, we manage the infrastructure with this repository, and then ea
 will be maintained in it's own separate repository.
 
 This repository will generate CloudFormation Stacks that will build 2 independent environments
-called **Acceptance** and **Production**
+called **Acceptance** and **Production**.
 
 These environments include:
 
