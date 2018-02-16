@@ -9,7 +9,7 @@ weight = 3
 ssh-keygen
 ```
 {{% notice tip %}}
-Press `enter` 4 times to take the default choices
+Press `enter` 3 times to take the default choices
 {{% /notice %}}
 
 1. Copy the public key to your clipboard

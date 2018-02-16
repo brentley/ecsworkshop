@@ -15,9 +15,6 @@ export YOUR_GITHUB_NAME=your_username
 
 ```
 cd ~/environment
-```
-
-```
 git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-platform.git
 ```
   - confirm the github key fingerprint
