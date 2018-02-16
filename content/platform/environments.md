@@ -14,7 +14,7 @@ mu env up acceptance && mu env up production
 ```
 Watch what is being built in [CloudFormation](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks)
 {{% notice tip %}}
-This will probably take 20 minutes
+This will take 20 minutes
 {{% /notice %}}
 
 Now lets bring up the CodePipeline for maintaining our infrastructure:
@@ -25,5 +25,5 @@ Paste your personal GitHub token
 This builds the CI/CD CodePipeline that will manage infrastructure code changes
 
 {{% notice tip %}}
-This will probably take 10 minutes
+This will take 10 minutes
 {{% /notice %}}
