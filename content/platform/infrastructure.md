@@ -14,23 +14,4 @@ will be maintained in it's own separate repository.
 This repository will generate CloudFormation Stacks that will build 2 independent environments
 called **Acceptance** and **Production**.
 
-These environments include:
-
-- VPC
-  - 3 public subnets
-  - 3 private subnets
-  - Routing tables
-  - NAT gateway
-- ALB
-  - Public ALB for external traffic
-  - Private ALB for backend traffic
-  - Security groups for each ALB
-  - Custom Route53 DNS zone "internal.service"
-  - Custom Route53 DNS record "api.internal.service" aliased to the backend ALB
-  - Custom Route53 DNS record "api.internal.service" aliased to the backend ALB
-- ECS Cluster
-  - Instance security group
-  - Host to host ingress/egress rules
-  - IAM Role for autoscaling
-- CodePipeline to manage infrastructure code changes
-  - CI/CD for infrastructure changes
+![mu-environment](/images/mu-topology-vpc.png)
