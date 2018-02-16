@@ -22,7 +22,7 @@ service:
 extensions:
   - url: backend-service
   ```
-In this file, we define that we want two environments, each using **ECS Fargate**.
+In this file, we define that we want two environments, each using **Amazon ECS** and **AWS Fargate for ECS**.
 We disable any service deploys, since this repo is only used to build and maintain infrastructure.
 
 We also include the extension **backend-service**.  This is custom CloudFormation used to build
