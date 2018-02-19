@@ -78,6 +78,12 @@ a:hover {
   letter-spacing: .15px;
 }
 
+#sidebar #footer h5.copyright {
+  font-size: 10px;
+  letter-spacing: .15px;
+  line-height: 150% !important;
+}
+
 #body a.highlight:after {
     display: block;
     content: "";
