@@ -15,6 +15,6 @@ might adopt this workflow in your environment.
 
 To get started, please ensure the [prerequisites](/prerequisites.html) are met.
 
-{{% notice info %}}
-The Prerequisites take 10 minutes to set up. 
+{{% notice tip %}}
+The Prerequisites take 10 minutes to set up.
 {{% /notice %}}

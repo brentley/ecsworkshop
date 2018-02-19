@@ -15,8 +15,8 @@ mu pipeline up
 Paste your personal GitHub token
 
 {{% notice warning %}}
-If using Cloud9 paste using ctrl-v, not the mouse right-click.
-Pasting with mouse-clicks is a known issue with Cloud9
+If using Cloud9, paste using ctrl-v, not the mouse right-click.
+Pasting with mouse-clicks is a known issue with Cloud9.
 {{% /notice %}}
 
 {{% notice tip %}}
