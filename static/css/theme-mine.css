@@ -78,7 +78,7 @@ a:hover {
   letter-spacing: .15px;
 }
 
-#sidebar #footer h5.copyright {
+#sidebar #footer h5.copyright, #sidebar #footer p.build-number {
   font-size: 10px;
   letter-spacing: .15px;
   line-height: 150% !important;
