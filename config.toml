@@ -6,6 +6,9 @@ theme = "learn"
 uglyurls = true
 googleAnalytics = "UA-44634850-2"
 
+[blackfriday] 
+hrefTargetBlank = true
+
 [params]
 themeVariant = "mine"
 showVisitedLinks = false
