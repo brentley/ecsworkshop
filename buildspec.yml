@@ -17,7 +17,7 @@ phases:
       - hugo version
       - mkdir -p themes/learn
       - git clone https://github.com/matcornic/hugo-theme-learn.git themes/learn
-      - echo "<p>${IMAGE_TAG}</p>" >> layouts/partials/menu-footer.html
+      - echo "<p class="build-number">${IMAGE_TAG}</p>" >> layouts/partials/menu-footer.html
       - npm install
       - npm run build
       - npm run deploycontent
