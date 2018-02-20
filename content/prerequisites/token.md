@@ -9,8 +9,6 @@ weight = 4
   - Check **repo**
   - Check **admin:repo_hook**
   - Select **generate token**
-- **Copy** your token and **save** it somewhere convenient for later.
-  - You'll occasionally want to copy and paste it again.
 
   Let's add your GitHub token to the environment:
   {{% notice tip %}}
