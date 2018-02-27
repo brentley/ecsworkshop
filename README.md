@@ -29,6 +29,13 @@ From wherever you checkout repos:
 #### View Hugo locally:
 Visit http://localhost:1313/ to see the site.
 
+#### Making Edits:
 As you save edits to a page, the site will live-reload to show your changes.
+
+#### Auto Deploy:
+Any commits to master will auto build and deploy in a couple of minutes. You can see the currently
+deployed hash at the bottom of the menu panel.
+
+note: shift-reload may be necessary in your browser to reflect the latest changes.
 
 Check out the commands in `buildspec.yml` to see the build/deploy process
