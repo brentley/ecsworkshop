@@ -20,6 +20,9 @@ From wherever you checkout repos:
 
 `git submodule update --checkout --recursive`
 
+#### Install node packages:
+`npm install`
+
 #### Run Hugo locally:
 `npm run server`
 
@@ -27,3 +30,5 @@ From wherever you checkout repos:
 Visit http://localhost:1313/ to see the site.
 
 As you save edits to a page, the site will live-reload to show your changes.
+
+Check out the commands in `buildspec.yml` to see the build/deploy process
