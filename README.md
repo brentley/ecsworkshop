@@ -4,6 +4,7 @@
 
 #### Install Hugo:
 On a mac:
+
 `brew install hugo`
 
 On Linux:

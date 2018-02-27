@@ -12,7 +12,7 @@ phases:
 
   build:
     commands:
-      - wget https://github.com/gohugoio/hugo/releases/download/v0.36/hugo_0.36_Linux-64bit.deb
+      - wget https://github.com/gohugoio/hugo/releases/download/v0.37/hugo_0.37_Linux-64bit.deb
       - dpkg -i hugo*.deb
       - hugo version
       - mkdir -p themes/learn
