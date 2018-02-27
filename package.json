@@ -12,7 +12,8 @@
 		"url": "git+https://github.com/brentley/ecsworkshop.git"
 	},
 	"scripts": {
-		"server": "hugo server -w -v -DF --uglyURLs --enableGitInfo --bind=0.0.0.0",
+		"test": "hugo server -w -v -DF --uglyURLs --enableGitInfo --bind=0.0.0.0",
+		"server": "hugo server -w -v --uglyURLs --enableGitInfo --bind=0.0.0.0",
 		"build": "hugo -v",
 		"deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete",
 		"deploycontent": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete --cache-control \"max-age=3600, public\" --exclude \"*\" --include \"*.html\" --include \"*.xml\"",
