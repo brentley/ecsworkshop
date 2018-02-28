@@ -1,6 +1,7 @@
 +++
 title = "Acceptance and Production"
 chapter = false
+pre = "<i class='fa fa-hand-o-right'></i> "
 weight = 7
 +++
 

@@ -2,6 +2,7 @@
 title: "Build the Platform"
 date: 2018-02-14T10:31:01-06:00
 draft: false
+pre: "<i class='fa fa-info-circle' aria-hidden='true'></i> "
 weight: 1
 ---
 

@@ -1,6 +1,7 @@
 +++
 title = "Deploy the Backend Pipeline"
 chapter = false
+pre = "<i class='fa fa-hand-o-right'></i> "
 weight = 2
 +++
 
