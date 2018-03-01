@@ -16,7 +16,7 @@ this workshop in the same AWS account.
 We will pick a random string up to 7 characters and save it to our environment:
 
 ```
-export MU_NAMESPACE=$(uuidgen -r | cut -c1-5)
+export MU_NAMESPACE="mu-$(uuidgen -r | cut -c1-2)"
 echo "export MU_NAMESPACE=$MU_NAMESPACE" >> ~/.bashrc
 echo "My namespace is $MU_NAMESPACE"
 ```
