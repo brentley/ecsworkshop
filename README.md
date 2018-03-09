@@ -25,6 +25,8 @@ From wherever you checkout repos:
 
 #### Run Hugo locally:
 `npm run server`
+or
+`npm run test` to see stubbed in draft pages.
 
 #### View Hugo locally:
 Visit http://localhost:1313/ to see the site.
