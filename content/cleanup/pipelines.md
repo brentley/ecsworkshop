@@ -21,5 +21,5 @@ mu pipeline term
 ```
 
 {{% notice note %}}
-This only terminates the CI/CD process for code changes. The services are still running.
+This _only_ terminates the CI/CD process for code changes. The services are still running.
 {{% /notice %}}
