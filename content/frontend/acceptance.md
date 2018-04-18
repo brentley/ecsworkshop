@@ -16,4 +16,4 @@ mu env show acceptance
 Follow the **Base URL** link and confirm that your application
 deployed successfully.
 
-Check the running tasks in the [Acceptance ECS Cluster](https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/mu-environment-acceptance/tasks)
+Check the running tasks in the [Acceptance ECS Cluster](https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters)

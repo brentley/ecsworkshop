@@ -22,8 +22,8 @@ since we aren't building the environment with this pipeline.
 This will take 10 minutes.
 {{% /notice %}}
 
-After the CodePipeline is built, [watch it run.](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/mu-ecsdemo-frontend)
-Once it runs, [check for deployed tasks in your ECS cluster.](https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/mu-environment-acceptance/tasks)
+After the CodePipeline is built, [watch it run.](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/dashboard)
+Once it runs, [check for deployed tasks in your ECS cluster.](https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters)
 
 You can watch the pipeline steps in the terminal:
 ```

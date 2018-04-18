@@ -9,14 +9,14 @@ we can release this code to our Production environment.
 
 Go to [CodePipeline](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/dashboard)
 and find the pipeline for your service
-[mu-ecsdemo-frontend](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/mu-ecsdemo-frontend)
+[ecsdemo-frontend](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/dashboard)
 
 Scroll down to **Production** and you should see a *Manual approval step*.
 Select **Review**, fill in a _reason_ and select **Approve**
 
 The same container that is deployed to **Acceptance** will now be deployed to **Production**
 
-Check the running tasks in the [Production ECS Cluster](https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters/mu-environment-production/tasks)
+Check the running tasks in the [Production ECS Cluster](https://console.aws.amazon.com/ecs/home?region=us-east-1#/clusters)
 
 To see the **Production** URL, run this command:
 ```
