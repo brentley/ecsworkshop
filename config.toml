@@ -5,8 +5,10 @@ title = "Amazon ECS Workshop"
 theme = "learn"
 uglyurls = true
 googleAnalytics = "UA-44634850-2"
+sectionPagesMenu = "main"
 
-[blackfriday] 
+
+[blackfriday]
 hrefTargetBlank = true
 
 [params]
@@ -18,6 +20,15 @@ disableSearch = false
 disableAssetsBusting = false
 disableLanguageSwitchingButton = true
 disableShortcutsTitle=true
+#
+
+[menu]
+  [[menu.main]]
+    identifier = "Prerequisites"
+    name = "This is the Mu track"
+    title = "Workshop using Mu"
+    url = "/mu/"
+    weight = -110
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-twitter fa-lg'></i> @brentContained"
