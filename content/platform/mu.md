@@ -24,7 +24,7 @@ Mu uses CodePipeline and CodeBuild to continuously test and delivery your micros
 Mu doesn't have a favorite language.  If you can get your microservice running with a Dockerfile, then mu can help!</p>
 
 #### <i class="fab fa-codepen fa-lg"></i> Stateless<br>
-Mu knows you might not need it anymore.  Mu doesn't have any servers or databases running anywhere.  Mu leverages CloudFormation to manage state for all AWS resources.</p>
+You are not locked in to using Mu.  Mu doesn't have any servers or databases running anywhere.  Mu leverages CloudFormation to manage state for all AWS resources.</p>
 
 #### <i class="fa fa-code fa-lg"></i> Declarative<br>
 Mu makes sure you get what you want.  You declare your configuration in a YAML file and commit with your source code.  Mu takes care of setting up your AWS resources to meet your needs.</p>
