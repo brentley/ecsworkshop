@@ -8,7 +8,7 @@ weight = 3
 
 #### <i class="fa fa-gavel fa-lg"></i> It's Opinionated<br>
 Mu takes all of the best practices learned from operating in many organizations and generates
-sensible _boilerplate_ code to support running your infrastructure and microservices.
+sensible _boilerplate_ CloudFormation to support running your infrastructure and microservices.
 
 #### <i class="fas fa-smile fa-lg"></i> It focuses on the developer experience<br>
 Mu keeps the developer experience simple, giving tools to get your microservice running as quickly
