@@ -23,6 +23,6 @@ on the user to understand when it makes sense to deviate from those defaults.
 Instead of writing CloudFormation from scratch to build and orchestrate ECS, ECR,
 EC2, ELB, VPC, and IAM resources ourselves, we can start with a smart set of defaults, and just
 fill in a few blanks, customizing only the parts that we want changed, and let our opinionated tool generate
-the _boilerplate_.
+the _boilerplate_ CloudFormation.
 
 ![opinionated](/images/opinionated.gif)
