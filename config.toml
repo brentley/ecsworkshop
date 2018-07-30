@@ -31,7 +31,7 @@ disableShortcutsTitle=true
     weight = -110
 
 [[menu.shortcuts]]
-name = "<i class='fa fa-twitter fa-lg'></i> @brentContained"
+name = "<i class='fab fa-twitter fa-lg'></i> @brentContained"
 identifier = "tw"
 url = "https://twitter.com/intent/user?screen_name=brentContained"
 weight = 1
