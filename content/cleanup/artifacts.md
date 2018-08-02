@@ -17,8 +17,11 @@ aws ecr delete-repository --repository-nam ${MU_NAMESPACE}-ecsdemo-crystal --for
 
 And now we can clean up the s3 buckets:
 ```
-aws s3 rm --recursive s3://${MU_NAMESPACE}-codedeploy-us-east-1-${ACCOUNT_ID}
-aws s3 rm --recursive s3://${MU_NAMESPACE}-codepipeline-us-east-1-${ACCOUNT_ID}
+export REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/'
+)
+export ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+aws s3 rm --recursive s3://${MU_NAMESPACE}-codedeploy-${REGION}-${ACCOUNT_ID}
+aws s3 rm --recursive s3://${MU_NAMESPACE}-codepipeline-${REGION}-${ACCOUNT_ID}
 ```
 
 Finally, we can clean up the CloudFormation stacks that remain:
