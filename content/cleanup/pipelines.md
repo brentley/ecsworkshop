@@ -15,9 +15,6 @@ mu pipeline term
 
 cd ~/environment/ecsdemo-frontend
 mu pipeline term
-
-cd ~/environment/ecsdemo-platform
-mu pipeline term
 ```
 
 {{% notice note %}}
