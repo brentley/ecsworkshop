@@ -31,3 +31,8 @@ Mu makes sure you get what you want.  You declare your configuration in a YAML f
 
 #### <i class="fab fa-github fa-lg"></i> Open Source<br>
 Mu is MIT licensed, so you can use it commercially.  Mu is always looking to improve, so please consider contributing!</p>
+
+{{% notice note %}}
+Mu **only writes** CloudFormation. To enhance developer experience, Mu also **reads** from the apis of CloudWatch,
+ECS, ECR and CloudTrail, using the local developer's credentials.
+{{% /notice %}}
