@@ -6,6 +6,9 @@ theme = "learn"
 uglyurls = true
 googleAnalytics = "UA-44634850-2"
 sectionPagesMenu = "main"
+#pygmentsCodeFences = true
+#pygmentsCodeFencesGuessSyntax = true
+#pygmentsStyle = "monokai"
 
 
 [blackfriday]
