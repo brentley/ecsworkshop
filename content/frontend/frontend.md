@@ -1,7 +1,7 @@
 +++
 title = "Deploy the Frontend Pipeline"
 chapter = false
-weight = 2
+weight = 3
 +++
 
 Let’s bring up the Frontend Rails application!
