@@ -1,7 +1,7 @@
 +++
 title = "Clone your Repos"
 chapter = false
-weight = 6
+weight = 60
 +++
 
 Clone your forked repos to your workspace:

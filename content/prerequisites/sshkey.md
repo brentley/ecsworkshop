@@ -1,7 +1,7 @@
 +++
 title = "Create a SSH key"
 chapter = false
-weight = 3
+weight = 30
 +++
 
 1. Create a ssh key and add it to your GitHub account.

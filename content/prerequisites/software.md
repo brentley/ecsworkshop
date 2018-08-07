@@ -1,7 +1,7 @@
 +++
 title = "Install and Configure Mu"
 chapter = false
-weight = 2
+weight = 20
 +++
 
 In the Cloud9 workspace, run the following commands:
