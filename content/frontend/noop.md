@@ -16,12 +16,12 @@ ls -la /tmp/mu-cloudformation
 
 There should now be more stacks and parameter configs. Let's look at the parameters for building the CodePipeline:
 ```
-less /tmp/mu-cloudformation/config-mu-pipeline-ecsdemo-frontend.json
+less /tmp/mu-cloudformation/config-${MU_NAMESPACE}-pipeline-ecsdemo-frontend.json
 ```
 
 Let's look at how the pipeline for our service will be built:
 ```
-less /tmp/mu-cloudformation/template-mu-pipeline-ecsdemo-frontend.yml
+less /tmp/mu-cloudformation/template-${MU_NAMESPACE}-pipeline-ecsdemo-frontend.yml
 ```
 
 {{% notice tip %}}

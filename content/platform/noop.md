@@ -19,7 +19,7 @@ for the parameters that will be templated.
 
 To see how the VPC will be constructed, for example, take a look at the **template-mu-vpc-acceptance.yml** file:
 ```
-less /tmp/mu-cloudformation/template-mu-vpc-acceptance.yml
+less /tmp/mu-cloudformation/template-${MU_NAMESPACE}-vpc-acceptance.yml
 ```
 
 {{% notice tip %}}
