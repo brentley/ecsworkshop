@@ -1,13 +1,18 @@
 <!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
 <html lang="{{ .Page.Language | default "en" }}" class="js csstransforms3d">
   <head>
     <meta charset="utf-8">
+    <meta property="og:title" content="ECSworkshop.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ecsworkshop.com" />
+    <meta property="og:image" content="https://ecsworkshop.com/images/3-service-animated.gif" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     {{ .Hugo.Generator }}
     {{ partial "meta.html" . }}
     {{ partial "favicon.html" . }}
     <title>{{ .Title }} :: {{ .Site.Title }}</title>
-    
+
     {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
     <link href="{{"css/nucleus.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
@@ -22,9 +27,9 @@
     {{end}}
 
     <script src="{{"js/jquery-2.x.min.js"| relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}"></script>
-    
+
     <style type="text/css">
-      :root #header + #content > #left > #rlblock_left{ 
+      :root #header + #content > #left > #rlblock_left{
           display:none !important;
       }
       {{ if .Site.Params.disableInlineCopyToClipBoard }}
@@ -66,7 +71,7 @@
                   <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
                   {{ end }}
                   <span class="links">
-                    {{ template "breadcrumb" dict "page" . "value" .Title }}   
+                    {{ template "breadcrumb" dict "page" . "value" .Title }}
                   </span>
                 </div>
                 {{ if $toc }}
@@ -88,7 +93,7 @@
           {{$parent := .page.Parent }}
           {{ if $parent }}
             {{ $value := (printf "<a href='%s'>%s</a> > %s" $parent.URL $parent.Title .value) }}
-            {{ template "breadcrumb" dict "page" $parent "value" $value }} 
+            {{ template "breadcrumb" dict "page" $parent "value" $value }}
           {{else}}
             {{.value|safeHTML}}
           {{end}}
