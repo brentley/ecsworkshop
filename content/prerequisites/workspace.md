@@ -15,7 +15,7 @@ Ad blockers, javascript disablers, and tracking blockers should be disabled for
 the cloud9 domain, or connecting to the workspace might be impacted.
 {{% /notice %}}
 
-- Create a [Cloud9 Environment](https://us-west-2.console.aws.amazon.com/cloud9/home?region=us-west-2)
+- Create a [Cloud9 Environment](https://us-east-1.console.aws.amazon.com/cloud9/home?region=us-east-1)
   - select **Create environment**
 - Name it **workshop**, and take all other defaults
 - When it comes up, customize the environment by closing the **welcome tab**
