@@ -4,11 +4,18 @@ chapter = false
 weight = 10
 +++
 
-{{% notice tip %}}
-The Cloud9 workspace should be built by an IAM user with Administrator privileges, not the root account user.
+{{% notice warning %}}
+The Cloud9 workspace should be built by an IAM user with Administrator privileges,
+not the root account user. Please ensure you are logged in as an IAM user, not the root
+account user.
 {{% /notice %}}
 
-- Create a [Cloud9 Environment](https://us-east-1.console.aws.amazon.com/cloud9/home?region=us-east-1)
+{{% notice info %}}
+Ad blockers, javascript disablers, and tracking blockers should be disabled for
+the cloud9 domain, or connecting to the workspace might be impacted.
+{{% /notice %}}
+
+- Create a [Cloud9 Environment](https://us-west-2.console.aws.amazon.com/cloud9/home?region=us-west-2)
   - select **Create environment**
 - Name it **workshop**, and take all other defaults
 - When it comes up, customize the environment by closing the **welcome tab**

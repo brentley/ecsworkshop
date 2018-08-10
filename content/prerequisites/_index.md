@@ -6,6 +6,7 @@ weight = 10
 
 # Prerequisites for the Workshop
 
+1. [Create an AWS Account and IAM user if needed](./prerequisites/account.html)
 1. [Create a workspace for the Workshop](./prerequisites/workspace.html)
 1. [Install Mu](./prerequisites/software.html)
 1. [Create a SSH key for the workshop](./prerequisites/sshkey.html)
