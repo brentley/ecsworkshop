@@ -8,8 +8,6 @@ Let's clean up the environments:
 
 ```
 cd ~/environment/ecsdemo-platform
-mu -I env term acceptance
-mu -I env term production
 mu env term acceptance
 mu env term production
 
