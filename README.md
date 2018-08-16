@@ -18,6 +18,7 @@ From wherever you checkout repos:
 #### Clone the theme submodule:
 `cd ecsworkshop`
 
+`git submodule init`
 `git submodule update --checkout --recursive`
 
 #### Install node packages:
