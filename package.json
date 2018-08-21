@@ -20,6 +20,10 @@
 		"deployothers": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete --cache-control \"max-age=86400, public\" --exclude \"*.html\" --exclude \"*.xml\""
 	},
 	"dependencies": {
-		"hugo-lunr": "0.0.4"
+		"hugo-cli": "^0.7.0",
+		"hugo-lunr": "0.0.4",
+		"discharge": "^0.7.1",
+		"hugo": "0.0.3",
+		"qs": "^6.5.2"
 	}
 }
