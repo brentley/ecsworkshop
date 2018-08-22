@@ -19,3 +19,4 @@ phases:
       - npm run build
       - npm run deploycontent
       - npm run deployothers
+      - aws cloudfront create-invalidation --distribution-id E2IBD45FRYMOA5 --paths /\*
