@@ -17,4 +17,5 @@ phases:
       - echo "<p class="build-number">${IMAGE_TAG}</p>" >> layouts/partials/menu-footer.html
       - npm install
       - npm run build
-      - npm run deploy
+      - npm run deploycontent
+      - npm run deployothers
