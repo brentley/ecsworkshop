@@ -12,14 +12,9 @@ phases:
 
   build:
     commands:
-      - wget https://github.com/gohugoio/hugo/releases/download/v0.37/hugo_0.37_Linux-64bit.deb
-      - dpkg -i hugo*.deb
-      - hugo version
       - mkdir -p themes/learn
       - git clone https://github.com/matcornic/hugo-theme-learn.git themes/learn
       - echo "<p class="build-number">${IMAGE_TAG}</p>" >> layouts/partials/menu-footer.html
       - npm install
       - npm run build
-      - npm run deploycontent
-      - npm run deployothers
-      - find . -ls
+      - npm run deploy
