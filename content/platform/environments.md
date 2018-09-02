@@ -8,7 +8,7 @@ Let's bring up the Acceptance and Production environments!
 
 Copy/Paste the following commands into your Cloud9 workspace:
 
-```
+```zsh
 cd ~/environment/ecsdemo-platform
 mu env up acceptance && mu env up production
 ```

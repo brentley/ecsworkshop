@@ -1,7 +1,7 @@
 +++
 title = "Artifacts and Stacks"
 chapter = false
-weight = 3
+weight = 30
 +++
 
 {{% notice info %}}
@@ -41,10 +41,5 @@ aws cloudformation delete-stack --stack-name ${MU_NAMESPACE}-bucket-codedeploy
 aws cloudformation delete-stack --stack-name ${MU_NAMESPACE}-bucket-codepipeline
 ```
 {{% notice warning %}}
-Wait for all "mu" stacks to delete before deleting the stack with the name "iam-common"
+Wait for all "mu" stacks, except "iam-common" to delete before continuing.
 {{% /notice %}}
-
-Lastly, we can delete the IAM role that CloudFormation used to build and manage the other CloudFormation stacks:
-```bash
-aws cloudformation delete-stack --stack-name ${MU_NAMESPACE}-iam-common
-```

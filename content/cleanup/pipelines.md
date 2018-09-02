@@ -1,7 +1,7 @@
 +++
 title = "Pipelines"
 chapter = false
-weight = 1
+weight = 10
 +++
 
 Let's clean up the pipelines in reverse order:

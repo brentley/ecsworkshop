@@ -1,7 +1,7 @@
 +++
 title = "Cleanup GitHub"
 chapter = false
-weight = 4
+weight = 40
 +++
 
 Go to https://github.com/settings/tokens and delete the token labeled **workshop**

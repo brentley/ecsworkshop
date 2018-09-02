@@ -1,7 +1,7 @@
 +++
 title = "Cleanup the Workspace"
 chapter = false
-weight = 5
+weight = 50
 +++
 
 Finally, let's delete our Cloud9 EC2 Instance

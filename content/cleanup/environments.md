@@ -1,7 +1,7 @@
 +++
 title = "Environments"
 chapter = false
-weight = 2
+weight = 20
 +++
 
 Let's clean up the environments:
