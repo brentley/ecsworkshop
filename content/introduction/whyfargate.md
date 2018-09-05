@@ -1,5 +1,5 @@
 +++
-menuTitle = "Why Fargate?"
+title = "Why Fargate?"
 chapter = false
 weight = 60
 +++

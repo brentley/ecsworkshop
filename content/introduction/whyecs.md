@@ -1,5 +1,5 @@
 +++
-menuTitle = "Why ECS?"
+title = "Why ECS?"
 chapter = false
 weight = 50
 +++
