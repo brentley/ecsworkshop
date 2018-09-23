@@ -3,7 +3,7 @@ languageCode = "en-us"
 defaultContentLanguage = "en"
 title = "Amazon ECS Workshop"
 theme = "learn"
-uglyurls = true
+uglyurls = false
 googleAnalytics = "UA-44634850-2"
 sectionPagesMenu = "main"
 #pygmentsCodeFences = true
@@ -23,6 +23,8 @@ disableSearch = false
 disableAssetsBusting = false
 disableLanguageSwitchingButton = true
 disableShortcutsTitle=true
+disableInlineCopyToClipBoard = true
+
 #
 
 [menu]
@@ -40,5 +42,5 @@ url = "https://twitter.com/intent/user?screen_name=brentContained"
 weight = 1
 
 [outputs]
-home = [ "HTML", "AMP", "RSS", "JSON"]
-page = [ "HTML", "AMP"]
+home = [ "HTML", "JSON"]
+page = [ "HTML" ]
