@@ -6,7 +6,7 @@ weight: 1
 
 ## Amazon ECS Workshop for AWS Fargate
 
-![3-service-animated](/images/3-service-animated.gif)
+![3-service-animated](images/3-service-animated.gif)
 
 In this workshop, we will configure GitHub, CodePipeline, CodeBuild, VPC, ALB, ECS,
 Autoscaling, and log aggregation using a framework called [Mu](https://getmu.io) to

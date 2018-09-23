@@ -5,4 +5,4 @@ weight = 40
 +++
 
 # Node.js Backend API
-![Empty Environment](/images/nodejs.svg)
+![Empty Environment](images/nodejs.svg)

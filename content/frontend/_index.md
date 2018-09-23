@@ -5,4 +5,4 @@ weight = 30
 +++
 
 # Frontend Rails App
-![Empty Environment](/images/frontend.svg)
+![Empty Environment](images/frontend.svg)

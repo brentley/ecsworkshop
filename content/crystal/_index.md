@@ -5,4 +5,4 @@ weight = 50
 +++
 
 # Crystal Backend API
-![Empty Environment](/images/crystal.svg)
+![Empty Environment](images/crystal.svg)

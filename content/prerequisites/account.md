@@ -20,13 +20,13 @@ as an **IAM user** with administrator access to the AWS account:
 [Create a new IAM user to use for the workshop](https://console.aws.amazon.com/iam/home?region=us-east-1#/users$new)
 
 1. Enter the user details:
-![Create User](/images/iam-1-create-user.png)
+![Create User](images/iam-1-create-user.png)
 
 1. Attach the AdministratorAccess IAM Policy:
-![Attach Policy](/images/iam-2-attach-policy.png)
+![Attach Policy](images/iam-2-attach-policy.png)
 
 1. Click to create the new user:
-![Confirm User](/images/iam-3-create-user.png)
+![Confirm User](images/iam-3-create-user.png)
 
 1. Take note of the login URL and save:
-![Login URL](/images/iam-4-save-url.png)
+![Login URL](images/iam-4-save-url.png)

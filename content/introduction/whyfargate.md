@@ -4,7 +4,7 @@ chapter = false
 weight = 60
 +++
 
-![fargate](/images/fargate.png)
+![fargate](images/fargate.png)
 
 [AWS Fargate](https://aws.amazon.com/fargate/) is a technology for Amazon ECS that allows
 you to run containers without having to manage servers or clusters. With AWS Fargate, you
