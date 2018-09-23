@@ -12,7 +12,8 @@
 		"url": "git+https://github.com/brentley/ecsworkshop.git"
 	},
 	"scripts": {
-		"test": "hugo server -w -v -DF --disableFastRender --enableGitInfo --bind=0.0.0.0",
+		"drafts": "hugo server -w -v -DF --disableFastRender --enableGitInfo --bind=0.0.0.0",
+		"test": "docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal",
 		"server": "hugo server -w -v --enableGitInfo --bind=0.0.0.0",
 		"build": "hugo -v",
                 "deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete",
