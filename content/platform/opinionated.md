@@ -7,7 +7,7 @@ weight = 2
 Several universities make the claim that, when deciding where to put sidewalks, they first let students
 wear paths through the grass. This told them where to pave and ensured the best use of their walkways.
 
-![paths](images/osu.jpg)
+![paths](/images/osu.jpg)
 
 You can think of these _well worn paths_ in cloud architecture as a procedure, or design, that gets repeated
 over and over again, to the point that it should just become _boilerplate_. Rather than everyone composing
@@ -25,4 +25,4 @@ EC2, ELB, VPC, and IAM resources ourselves, we can start with a smart set of def
 fill in a few blanks, customizing only the parts that we want changed, and let our opinionated tool generate
 the _boilerplate_ CloudFormation.
 
-![opinionated](images/opinionated.gif)
+![opinionated](/images/opinionated.gif)

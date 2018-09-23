@@ -14,4 +14,4 @@ will be maintained in it's own separate repository.
 This repository will generate CloudFormation Stacks that will build 2 independent environments
 called **Acceptance** and **Production**.
 
-![mu-environment](images/mu-topology-vpc.png)
+![mu-environment](/images/mu-topology-vpc.png)
