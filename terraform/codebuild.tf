@@ -12,6 +12,7 @@ resource "aws_codebuild_project" "codebuild" {
     compute_type = "BUILD_GENERAL1_MEDIUM"
     image        = "aws/codebuild/nodejs:10.1.0"
     type         = "LINUX_CONTAINER"
+    privileged_mode = "true"
 
   environment_variable {
   "name"  = "CLOUDFRONT"
