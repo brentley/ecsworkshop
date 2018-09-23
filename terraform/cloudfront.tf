@@ -13,7 +13,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases             = ["${var.dnsdomain}"]
+#  aliases             = ["${var.dnsdomain}"]
 
   default_cache_behavior {
     allowed_methods  = ["HEAD", "GET"]

@@ -15,3 +15,11 @@ If you need to revert back to local terraform state:
 1. comment out the backend module
 1. run *terraform init*
 1. answer *yes* to copying state from s3
+
+Notes:
+ACM validation is still manual, so terraform will fail with a message similar to:
+```
+* aws_cloudfront_distribution.distribution: error creating CloudFront Distribution: InvalidViewerCertificate: The specified SSL certificate doesn't exist, isn't in us-east-1 region, isn't valid, or doesn't include a valid certificate chain.
+```
+
+Until the certificate is validated, and reaches "issued" state, you'll have to wait to continue running terraform.
