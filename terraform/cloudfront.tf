@@ -13,13 +13,18 @@ resource "aws_cloudfront_distribution" "distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-#  aliases             = ["${var.dnsdomain}"]
+  aliases             = ["${var.dnsdomain}"]
 
   default_cache_behavior {
     allowed_methods  = ["HEAD", "GET"]
     cached_methods   = ["HEAD", "GET"]
     target_origin_id = "S3-bucket-origin"
     compress         = true
+    lambda_function_association {
+      event_type   = "origin-request"
+      lambda_arn   = "arn:aws:lambda:us-east-1:476172414658:function:aws-serverless-repository-StandardRedirectsForClou-1BMMU64YVWOD:1" # TODO: build this
+      include_body = false
+    }
 
     forwarded_values {
       query_string = false
