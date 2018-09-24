@@ -69,7 +69,7 @@ phases:
         fi
       - cut -c1-50 layouts/partials/logo.html
       - if [ "${CODEBUILD_GIT_CLEAN_BRANCH}" != "master" ] ; then
-          sed -i "s@baseURL =.*@baseURL = \"https://eksworkshop.com/$CODEBUILD_GIT_CLEAN_BRANCH\"@" config.toml;
+          sed -i "s@baseURL =.*@baseURL = \"https://ecsworkshop.com/$CODEBUILD_GIT_CLEAN_BRANCH\"@" config.toml;
         fi
       - head config.toml
       - npm install
