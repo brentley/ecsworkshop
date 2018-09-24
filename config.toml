@@ -10,8 +10,7 @@ sectionPagesMenu = "main"
 #pygmentsCodeFencesGuessSyntax = true
 #pygmentsStyle = "monokai"
 relativeURLs = "false"
-relativeURLs = "false"
-canonifyURLs = "false"
+canonifyURLs = "true"
 
 
 [blackfriday]
