@@ -75,8 +75,8 @@ phases:
       - npm install
       - npm run build
       - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "master" ] ; then
-          docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal;
-        else
+          docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
+        else 
           docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-swap "/$CODEBUILD_GIT_CLEAN_BRANCH:" --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
         fi
 
