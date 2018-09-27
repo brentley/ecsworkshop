@@ -16,15 +16,16 @@
 		"test": "docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal",
 		"server": "hugo server -w -v --enableGitInfo --bind=0.0.0.0",
 		"build": "hugo -v",
-                "deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete",
+		"deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete",
 		"deploycontent": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete --cache-control \"max-age=3600, public\" --exclude \"*\" --include \"*.html\" --include \"*.xml\"",
 		"deployothers": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete --cache-control \"max-age=86400, public\" --exclude \"*.html\" --exclude \"*.xml\""
 	},
 	"dependencies": {
-		"hugo-cli": "^0.7.0",
-		"hugo-lunr": "0.0.4",
+		"@fortawesome/fontawesome-free": "^5.3.1",
 		"discharge": "^0.7.1",
 		"hugo": "0.0.3",
+		"hugo-cli": "^0.7.0",
+		"hugo-lunr": "0.0.4",
 		"qs": "^6.5.2"
 	}
 }
