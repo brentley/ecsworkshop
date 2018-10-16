@@ -2,6 +2,7 @@
 title = "Delete IAM Common"
 chapter = false
 weight = 35
+draft = true
 +++
 
 {{% notice warning %}}

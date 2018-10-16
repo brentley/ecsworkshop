@@ -10,9 +10,9 @@ Copy/Paste the following commands into your Cloud9 workspace:
 
 ```zsh
 cd ~/environment/ecsdemo-platform
-mu env up acceptance && mu env up production
+mu env up -A
 ```
 Watch what is being built in [CloudFormation](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks)
 {{% notice tip %}}
-This will take 20 minutes
+This will take 10 minutes
 {{% /notice %}}

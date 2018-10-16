@@ -19,7 +19,7 @@ since we aren't building the environment with this pipeline.
 {{% /notice %}}
 
 {{% notice tip %}}
-This will take 10 minutes.
+This will take 5 minutes to create the pipeline.
 {{% /notice %}}
 
 After the CodePipeline is built, [watch it run.](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/dashboard)
@@ -39,3 +39,7 @@ And follow the task logs:
 ```
 mu svc logs -f acceptance
 ```
+
+{{% notice tip %}}
+This will take 10 minutes for the pipeline to build and deploy the application.
+{{% /notice %}}

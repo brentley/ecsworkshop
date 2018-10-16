@@ -2,6 +2,7 @@
 title = "Set Termination Protection"
 chapter = false
 weight = 80
+draft = true
 +++
 
 CloudFormation is executing most changes using an assumed role created by Mu.

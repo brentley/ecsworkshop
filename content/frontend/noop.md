@@ -11,17 +11,17 @@ Copy/Paste the following commands into your Cloud9 workspace:
 ```
 cd ~/environment/ecsdemo-frontend
 mu -d pipeline up -t $GITHUB_TOKEN
-ls -la /tmp/mu-cloudformation
+ls -la /tmp/mu-dryrun
 ```
 
 There should now be more stacks and parameter configs. Let's look at the parameters for building the CodePipeline:
 ```
-less /tmp/mu-cloudformation/config-${MU_NAMESPACE}-pipeline-ecsdemo-frontend.json
+less /tmp/mu-dryrun/config-${MU_NAMESPACE}-pipeline-ecsdemo-frontend.json
 ```
 
 Let's look at how the pipeline for our service will be built:
 ```
-less /tmp/mu-cloudformation/template-${MU_NAMESPACE}-pipeline-ecsdemo-frontend.yml
+less /tmp/mu-dryrun/template-${MU_NAMESPACE}-pipeline-ecsdemo-frontend.yml
 ```
 
 {{% notice tip %}}
