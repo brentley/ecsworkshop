@@ -19,7 +19,7 @@ since we aren't building the environment with this pipeline.
 {{% /notice %}}
 
 {{% notice tip %}}
-This will take 5 minutes
+This will take 5 minutes to create the pipeline.
 {{% /notice %}}
 
 After the CodePipeline is built, [watch it run.](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/)
