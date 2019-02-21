@@ -1,8 +1,8 @@
-+++
-title = "Dry Run"
-chapter = false
-weight = 6
-+++
+---
+title: "Dry Run"
+disableToc: true
+hidden: true
+---
 
 Let's do a dry run and see what CloudFormation is generated!
 
@@ -24,4 +24,17 @@ less /tmp/mu-dryrun/template-${MU_NAMESPACE}-vpc-acceptance.yml
 
 {{% notice tip %}}
 This will dry-run Mu and generate CloudFormation so you can examine what will be built before actually building it.
+{{% /notice %}}
+
+Let's bring up the Acceptance and Production environments!
+
+Copy/Paste the following commands into your Cloud9 workspace:
+
+```zsh
+cd ~/environment/ecsdemo-platform
+mu env up -A
+```
+Watch what is being built in [CloudFormation](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks)
+{{% notice tip %}}
+This will take 10 minutes
 {{% /notice %}}
