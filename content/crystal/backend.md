@@ -1,5 +1,5 @@
 +++
-title = "Deploy the Backend Pipeline"
+title = "Deploy the Crystal Service"
 chapter = false
 weight = 2
 +++
