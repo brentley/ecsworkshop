@@ -21,7 +21,7 @@ automate deploys.
 
 ## Configure `ecs-cli` to talk to your cluster:
 ```
-ecs-cli configure --region $AWS_DEFAULT_REGION --cluster $clustername --default-launch-type FARGATE --config-name fargate-demo
+ecs-cli configure --region $AWS_REGION --cluster $clustername --default-launch-type FARGATE --config-name fargate-demo
 ```
 We set a default region so we can reference the region when we run our commands.
 
