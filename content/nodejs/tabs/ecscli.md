@@ -13,8 +13,6 @@ ecs-cli compose --project-name ecsdemo-nodejs service up \
     --create-log-groups \
     --private-dns-namespace service \
     --enable-service-discovery \
-    --container-name ecsdemo-nodejs \
-    --container-port 3000 \
     --cluster-config fargate-demo \
     --vpc $vpc
     
