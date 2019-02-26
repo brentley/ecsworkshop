@@ -1,6 +1,7 @@
 +++
 title = "Verify the Acceptance Deploy"
 chapter = false
+draft = true
 weight = 3
 +++
 
