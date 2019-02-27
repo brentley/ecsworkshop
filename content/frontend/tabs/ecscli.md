@@ -39,6 +39,7 @@ cd ~/environment/ecsdemo-frontend
 envsubst < ecs-params.yml.template >ecs-params.yml
 
 ecs-cli compose --project-name ecsdemo-frontend service up \
+    --create-log-groups \
     --target-group-arn $target_group_arn \
     --private-dns-namespace service \
     --enable-service-discovery \
