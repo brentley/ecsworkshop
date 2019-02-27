@@ -1,22 +1,14 @@
 +++
-title = "Install and Configure Mu"
+title = "Install and Configure Tools"
 chapter = false
 weight = 20
 +++
 
 In the Cloud9 workspace, run the following commands:
 
-```
-curl -s https://getmu.io/install.sh | sudo sh
-```
+{{< tabs name="install software" >}}
+{{< tab name="ecscli" include="tabs/ecscli.md" />}}
+{{< tab name="mu" include="tabs/mu.md" />}}
+{{< /tabs >}}
 
-We should set a namespace so that multiple IAM users can run
-this workshop in the same AWS account.
 
-We will pick a random two character string and save it to our environment:
-
-```
-export MU_NAMESPACE="mu-$(uuidgen -r | cut -c1-2)"
-echo "export MU_NAMESPACE=$MU_NAMESPACE" >> ~/.bashrc
-echo "My namespace is $MU_NAMESPACE"
-```

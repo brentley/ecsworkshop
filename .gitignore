@@ -1,7 +1,8 @@
 public/
-npm-debug.log
-node_modules
 public
+node_modules/
+node_modules
+npm-debug.log
 terraform/.terraform
 terraform.tfstate
 terraform.tfstate.backup
