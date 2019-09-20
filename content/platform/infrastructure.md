@@ -11,7 +11,8 @@ keeping the code that manages your app platform small and simple also makes sens
 In this workshop, we manage the infrastructure with this repository, and then each service
 will be maintained in it's own separate repository.
 
-This repository will generate CloudFormation Stacks that will build 2 independent environments
-called **Acceptance** and **Production**.
+This repository will use 2 CloudFormation Stacks that will build our cluster environment and ALB.
+
+We will then use ecs-cli to deploy our applications into this cluster.
 
 ![mu-environment](/images/mu-topology-vpc.png)
