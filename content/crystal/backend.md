@@ -27,10 +27,12 @@ of Fargate)
 Note: ecs-cli will take care of building our private dns namespace for service discovery,
 and log group in cloudwatch logs.
 
-## View running container:
+## View running container, and store the output of the task id as an env variable for later use:
 ```
 ecs-cli compose --project-name ecsdemo-crystal service ps \
     --cluster-config container-demo
+
+task_id=$(ecs-cli compose --project-name ecsdemo-crystal service ps --cluster-config container-demo | awk -F \/ 'FNR == 2 {print $1}')
 ```
 We should have one task registered.
 
@@ -44,8 +46,8 @@ be able to click to open, or copy-paste into your browser.
 
 ## View logs:
 ```
-#substitute your task id from the ps command 
-ecs-cli logs --task-id a06a6642-12c5-4006-b1d1-033994580605 \
+# Referencing task id from above ps command
+ecs-cli logs --task-id $task_id \
     --follow --cluster-config container-demo
 ```
 To view logs, find the task id from the earlier `ps` command, and use it in this
