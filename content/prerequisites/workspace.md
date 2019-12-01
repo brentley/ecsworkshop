@@ -33,7 +33,9 @@ Cloud9 requires third-party-cookies. You can whitelist the [specific domains]( h
 {{< /tabs >}}
 
 - Select **Create environment**
-- Name it **eksworkshop**, and take all other defaults
+- Name it **ecsworkshop**, and select **Next Step**
+- Stick with the default settings, and select **Next Step** 
+- Lastly, select **Create Environment**
 - When it comes up, customize the environment by closing the **welcome tab**
 and **lower work area**, and opening a new **terminal** tab in the main work area:
 ![c9before](/images/c9before.png)
