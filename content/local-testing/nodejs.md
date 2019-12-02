@@ -1,13 +1,15 @@
 ---
-title: "Node.js"
-disableToc: true
-hidden: true
+title: "Node.js Backend API"
+hidden: false
+weight: 3
 ---
 
 ## Generate local docker compose file
 
 ```
 cd ~/environment/ecsdemo-nodejs/
+```
+```
 ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("ecsdemo-nodejs"))')
 ```
 

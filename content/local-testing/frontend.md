@@ -1,13 +1,15 @@
 ---
-title: "Frontend"
-disableToc: true
-hidden: true
+title: "Frontend Rails App"
+hidden: false
+weight: 2
 ---
 
 ## Generate local docker compose file
 
 ```
 cd ~/environment/ecsdemo-frontend/
+```
+```
 ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("ecsdemo-frontend"))')
 ```
 
@@ -35,4 +37,3 @@ ecs-cli local ps --all
 ```
 curl localhost:8080/health
 ```
-
