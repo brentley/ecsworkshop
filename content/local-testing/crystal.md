@@ -1,11 +1,14 @@
 ---
-title: "Crystal Backend"
-disableToc: true
-hidden: true
+title: "Crystal Backend API"
+hidden: false
+weight: 4
 ---
 
 ## Generate local docker compose file
 
+```
+cd ~/environment/ecsdemo-crystal/
+```
 ```
 ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("ecsdemo-crystal"))')
 ```
