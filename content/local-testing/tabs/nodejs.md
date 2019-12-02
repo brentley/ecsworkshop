@@ -7,6 +7,7 @@ hidden: true
 ## Generate local docker compose file
 
 ```
+cd ~/environment/ecsdemo-nodejs/
 ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("ecsdemo-nodejs"))')
 ```
 
