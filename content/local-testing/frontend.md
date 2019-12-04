@@ -20,8 +20,7 @@ sed -i 's/published: 3000/published: 8080/g' docker-compose.ecs-local.yml
 sed -i 's/ecsdemo-nodejs.service:3000/ecsdemo-nodejs.service:4000/g' docker-compose.ecs-local.yml
 ```
 
-## To follow our service discovery namespace for consistency, let's change the name of the service to use the .
-service domain as we do in ecs itself
+## To follow our service discovery namespace for consistency, let's change the name of the service to use the service domain as we do in ecs
 
 ```
 sed -i 's/ecsdemo-frontend:/ecsdemo-frontend.service:/g' docker-compose.ecs-local.*
