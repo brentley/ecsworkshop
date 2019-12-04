@@ -19,6 +19,13 @@ ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '
 sed -i 's/published: 3000/published: 4000/g' docker-compose.ecs-local.yml
 ```
 
+## To follow our service discovery namespace for consistency, let's change the name of the service to use the .
+service domain as we do in ecs itself
+
+```
+sed -i 's/ecsdemo-nodejs:/ecsdemo-nodejs.service:/g' docker-compose.ecs-local.*
+```
+
 ## Run the service locally
 
 ```
