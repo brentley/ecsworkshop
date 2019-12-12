@@ -1,7 +1,7 @@
 +++
 title = "Introduction"
 chapter = true
-weight = 5
+weight = 1
 +++
 
 # Welcome!
@@ -10,5 +10,3 @@ This workshop is designed to educate engineers that might not be familiar with F
 and possibly even Docker container workflow.
 
 {{% children showhidden="false" %}}
-
-
