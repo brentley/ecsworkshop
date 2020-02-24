@@ -8,9 +8,7 @@ weight: 1
 
 ![3-service-animated](/images/3-service-animated.gif)
 
-In this workshop, we will configure GitHub, CodePipeline, CodeBuild, VPC, ALB, ECS,
-Autoscaling, and log aggregation using a framework called [Mu](https://getmu.io) to
-launch microservices on AWS Elastic Container Service.
 
-We will launch a frontend, and multiple backend services and will explore how you
-might adopt this workflow in your environment.
+In this workshop, we will launch a frontend and multpile backend services on AWS Elastic Container Service, 
+and explore how you might adopt this workflow into your environment. 
+

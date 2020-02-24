@@ -9,7 +9,7 @@ hidden: true
 ```
 cd ~/environment/container-demo
 
-aws cloudformation deploy --stack-name container-demo --template-file cluster-fargate-private-vpc.yml --capabilities CAPABILITY_IAM
+aws cloudformation deploy --stack-name container-demo --template-file cluster-ec2-private-vpc.yml --capabilities CAPABILITY_IAM
 
 aws cloudformation deploy --stack-name container-demo-alb --template-file alb-external.yml
 ```

@@ -1,26 +1,14 @@
 +++
-title = "Clone your Repos"
+title = "Clone the Service Repos"
 chapter = false
 weight = 60
 +++
 
-Clone your forked repos to your workspace:
-{{% notice tip %}}
-replace **your_username** with your GitHub username
-{{% /notice%}}
-
-```
-export YOUR_GITHUB_NAME=your_username
-```
+Clone the service repos to your workspace:
 
 ```
 cd ~/environment
-git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-platform.git
-```
-  - confirm the github key fingerprint
-
-```
-git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-frontend.git
-git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-nodejs.git
-git clone git@github.com:$YOUR_GITHUB_NAME/ecsdemo-crystal.git
+git clone https://github.com/brentley/ecsdemo-frontend
+git clone https://github.com/brentley/ecsdemo-nodejs
+git clone https://github.com/brentley/ecsdemo-crystal
 ```
