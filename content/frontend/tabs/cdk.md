@@ -10,15 +10,13 @@ hidden: true
 cd ~/environment/ecsdemo-frontend
 ```
 
-Prior to deploying, we will check the following:
-
- - Confirm that the cdk can synthesize the assembly CloudFormation templates 
+#### Confirm that the cdk can synthesize the assembly CloudFormation templates 
 
 ```bash
 cdk synth
 ```
 
- - Review what the cdk is proposing to build and/or change in the environment 
+#### Review what the cdk is proposing to build and/or change in the environment 
 
 ```bash
 cdk diff
@@ -26,7 +24,6 @@ cdk diff
 
 ## Deploy the frontend web service
 ```bash
-# Create the assembly CloudFormation code and deploy it
 cdk deploy
 ```
 
@@ -131,5 +128,55 @@ awslogs get -G -S --timestamp --start 1m --watch $log_group
 
 - Next, we can review our service logs in near real time. You can go back in time as far as one week, or drill down to the past 30 seconds. In the example below, we select 30 seconds.
 ![ConsoleServiceLogs](/images/ecs-console-logs.gif)
+
+{{% /expand %}}
+
+## Scale the service
+
+#### Manually scaling
+{{%expand "Expand here to see the solution" %}}
+
+- To manually scale the service up, we simply will modify the code in `app.py` and change the desired count from 1 to 3
+
+```python
+self.fargate_load_balanced_service = aws_ecs_patterns.ApplicationLoadBalancedFargateService(
+    self, "FrontendFargateLBService",
+    cluster=self.base_platform.ecs_cluster,
+    cpu=256,
+    memory_limit_mib=512,
+    desired_count=3,
+    #desired_count=1,
+    public_load_balancer=True,
+    cloud_map_options=self.base_platform.sd_namespace,
+    task_image_options=self.fargate_task_image
+)
+```
+
+- Once you have updated the code, let's validate that the changes will take effect.
+
+```bash
+cdk diff
+```
+
+- The output should look like this:
+
+![diff-service-count](/images/cdk-service-count-diff.png)
+
+- Now that we've confirmed the changes look good, let's deploy them.
+
+```bash
+cdk deploy
+```
+
+- The output should look something like this:
+
+![update-service-count](/images/cdk-deploy-service-count.png)
+
+{{% /expand %}}
+
+#### Autoscaling
+{{%expand "Expand here to see the solution" %}}
+
+- Coming soon!
 
 {{% /expand %}}
