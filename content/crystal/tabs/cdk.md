@@ -7,7 +7,7 @@ hidden: true
 ## Validate deployment configuration
 
 ```bash
-cd ~/environment/ecsdemo-nodejs/cdk
+cd ~/environment/ecsdemo-crystal/cdk
 ```
 
 #### Confirm that the cdk can synthesize the assembly CloudFormation templates 
@@ -76,7 +76,7 @@ class BasePlatform(core.Construct):
 For the backend service, we simply want to run a container from a docker image, but still need to figure out how to deploy it and get it behind a scheduler. To do this on our own, we would need to build a task definition, ECS service, and figure out how to get it behind CloudMap for service discovery. To build these components on our own would equate to hundreds of lines of CloudFormation, whereas with the higher level constructs that the cdk provides, we are able to build everything with 30 lines of code.
 
 ```python
-class NodejsService(core.Stack):
+class CrystalService(core.Stack):
     
     def __init__(self, scope: core.Stack, id: str, **kwargs):
         super().__init__(scope, id, **kwargs)
@@ -94,8 +94,8 @@ class NodejsService(core.Stack):
         
         # The container definition defines the container(s) to be run when the task is instantiated
         self.container = self.fargate_task_def.add_container(
-            "NodeServiceContainerDef",
-            image=aws_ecs.ContainerImage.from_registry("brentley/ecsdemo-nodejs"),
+            "CrystalServiceContainerDef",
+            image=aws_ecs.ContainerImage.from_registry("brentley/ecsdemo-crystal"),
             memory_reservation_mib=512,
             logging=aws_ecs.LogDriver.aws_logs(
                 stream_prefix='ecsworkshop-nodejs'
@@ -111,14 +111,14 @@ class NodejsService(core.Stack):
 
         # Build the service definition to schedule the container in the shared cluster
         self.fargate_service = aws_ecs.FargateService(
-            self, "NodejsFargateService",
+            self, "CrystalFargateService",
             task_definition=self.fargate_task_def,
             cluster=self.base_platform.ecs_cluster,
             security_group=self.base_platform.services_sec_grp,
             desired_count=1,
             cloud_map_options=aws_ecs.CloudMapOptions(
                 cloud_map_namespace=self.base_platform.sd_namespace,
-                name='ecsdemo-nodejs'
+                name='ecsdemo-crystal'
             )
         )
 ```
@@ -132,7 +132,7 @@ class NodejsService(core.Stack):
 - First, because the cdk created a log group on our behalf, we need to get the name of the service. Next, using an open source tool awslogs, we will 
 
 ```bash
-log_group=$(awslogs groups -p ecsworkshop-nodejs)
+log_group=$(awslogs groups -p ecsworkshop-crystal)
 awslogs get -G -S --timestamp --start 1m --watch $log_group
 ```
 
@@ -163,7 +163,7 @@ awslogs get -G -S --timestamp --start 1m --watch $log_group
 
 ```python
 self.fargate_service = aws_ecs.FargateService(
-    self, "NodejsFargateService",
+    self, "CrystalFargateService",
     task_definition=self.fargate_task_def,
     cluster=self.base_platform.ecs_cluster,
     security_group=self.base_platform.services_sec_grp,
@@ -171,7 +171,7 @@ self.fargate_service = aws_ecs.FargateService(
     #desired_count=1,
     cloud_map_options=aws_ecs.CloudMapOptions(
         cloud_map_namespace=self.base_platform.sd_namespace,
-        name='ecsdemo-nodejs'
+        name='ecsdemo-crystal'
     )
 )
 ```
