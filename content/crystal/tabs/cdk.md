@@ -24,7 +24,7 @@ cdk diff
 
 ## Deploy the Nodejs backend service
 ```bash
-cdk deploy
+cdk deploy --require-approval never
 ```
 
 ## Code Review
@@ -71,7 +71,7 @@ class BasePlatform(core.Construct):
         )
 ```
 
-#### Nodejs backend service deployment code
+#### Crystal backend service deployment code
 
 For the backend service, we simply want to run a container from a docker image, but still need to figure out how to deploy it and get it behind a scheduler. To do this on our own, we would need to build a task definition, ECS service, and figure out how to get it behind CloudMap for service discovery. To build these components on our own would equate to hundreds of lines of CloudFormation, whereas with the higher level constructs that the cdk provides, we are able to build everything with 30 lines of code.
 

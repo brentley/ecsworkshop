@@ -7,7 +7,7 @@ hidden: true
 ## Validate deployment configuration
 
 ```bash
-cd ~/environment/ecsdemo-frontend
+cd ~/environment/ecsdemo-frontend/cdk
 ```
 
 #### Confirm that the cdk can synthesize the assembly CloudFormation templates 
@@ -24,7 +24,7 @@ cdk diff
 
 ## Deploy the frontend web service
 ```bash
-cdk deploy
+cdk deploy --require-approval never
 ```
 
 ## Code Review
