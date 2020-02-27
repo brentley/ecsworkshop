@@ -24,7 +24,7 @@ cdk diff
 
 ## Deploy the Nodejs backend service
 ```bash
-cdk deploy
+cdk deploy --require-approval never
 ```
 
 ## Code Review

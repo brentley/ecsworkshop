@@ -27,6 +27,10 @@ cdk diff
 cdk deploy --require-approval never
 ```
 
+- Once the deployment is complete, there will be two outputs. Look for the frontend url output, and open that link in a new tab. At this point you should see the frontend website up and running. Below is an example output:
+
+![feoutput](/images/frontend-output.png)
+
 ## Code Review
 
 As we mentioned in the platform build, we are defining our deployment configuration via code. Let's look through the code to better understand how cdk is deploying.

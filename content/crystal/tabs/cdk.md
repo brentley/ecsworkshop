@@ -98,7 +98,7 @@ class CrystalService(core.Stack):
             image=aws_ecs.ContainerImage.from_registry("brentley/ecsdemo-crystal"),
             memory_reservation_mib=512,
             logging=aws_ecs.LogDriver.aws_logs(
-                stream_prefix='ecsworkshop-nodejs'
+                stream_prefix='ecsworkshop-crystal'
             )
         )
         
