@@ -39,7 +39,7 @@ cdk diff
 cdk deploy --require-approval never
 ```
 
-Let's take a look at what's being built. You may notice that everything defined in the stack is 100% written as python code. We also benefit from the opinionated nature of cdk by letting it build out components based on well architected practices. This also means that we don't have to think about all of the underlying components to create and connect resources (ie, subnets, nat gateways, etc). Once we deploy the cdk code, the cdk will generate the underlying Cloudformation templates and deploy it to the environment via Cloudformation.
+Let's take a look at what's being built. You may notice that everything defined in the stack is 100% written as python code. We also benefit from the opinionated nature of cdk by letting it build out components based on well architected practices. This also means that we don't have to think about all of the underlying components to create and connect resources (ie, subnets, nat gateways, etc). Once we deploy the cdk code, the cdk will generate the underlying Cloudformation templates and deploy it.
 
 ```python
 # This resource alone will create a private/public subnet in each AZ as well as nat/internet gateway(s)
@@ -76,6 +76,15 @@ self.sec_grp_ingress_self_3000 = aws_ec2.CfnSecurityGroupIngress(
     to_port=3000,
     group_id=self.services_3000_sec_group.security_group_id
 )
+
+# All Outputs required for other stacks to build in the same environment
+core.CfnOutput(self, "NSArn", value=self.namespace_outputs['ARN'], export_name="NSARN")
+core.CfnOutput(self, "NSName", value=self.namespace_outputs['NAME'], export_name="NSNAME")
+core.CfnOutput(self, "NSId", value=self.namespace_outputs['ID'], export_name="NSID")
+core.CfnOutput(self, "FE2BESecGrp", value=self.services_3000_sec_group.security_group_id, export_name="SecGrpId")
+core.CfnOutput(self, "ECSClusterName", value=self.cluster_outputs['NAME'], export_name="ECSClusterName")
+core.CfnOutput(self, "ECSClusterSecGrp", value=self.cluster_outputs['SECGRPS'], export_name="ECSSecGrpList")
+core.CfnOutput(self, "ServicesSecGrp", value=self.services_3000_sec_group.security_group_id, export_name="ServicesSecGrp")
 ```
 
 When the stack is done building, it will print out all of the outputs for the underlying CloudFormation stack. These outputs are what we use to reference the base platform when deploying the microservices. Below is an example of what the outputs look like:
