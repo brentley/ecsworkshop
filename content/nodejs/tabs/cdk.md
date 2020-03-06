@@ -129,7 +129,7 @@ class NodejsService(core.Stack):
 
 {{%expand "Expand here to see the solution" %}}
 
-- First, because the cdk created a log group on our behalf, we need to get the name of the service. Next, using an open source tool awslogs, we will 
+- First, because the cdk created a log group on our behalf, we need to get the name of the log-group based on the name of the service. Next, we will tail the active logs from CloudWatch in the terminal. We achieve this by using an open source tool called [awslogs](https://github.com/jorgebastida/awslogs).
 
 ```bash
 log_group=$(awslogs groups -p ecsworkshop-nodejs)
