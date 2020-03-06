@@ -21,6 +21,7 @@ disableAssetsBusting = false
 disableLanguageSwitchingButton = true
 disableShortcutsTitle=false
 disableInlineCopyToClipBoard = true
+editURL = "https://github.com/brentley/ecsworkshop/edit/master/content/"
 
 #
 
