@@ -9,10 +9,11 @@ In this section we will setup Container insights for the sample application in t
 
 #### Get the cluster name
 
-Execute the following command. This will list the ECS clusters that are in your account and region
+Execute the following commands. This will list the ECS clusters that are in your account and region, and then get the name of the cluster which is needed to enable Container Insights.
 
 ```
-aws ecs list-clusters
+cluster_arn=$(aws ecs list-clusters | jq -r '.clusterArns[] | select(contains("container-demo"))')
+clustername=$(aws ecs describe-clusters --clusters $cluster_arn | jq -r .clusters[].clusterName)
 ```
 
 #### Enable Container Insights 
