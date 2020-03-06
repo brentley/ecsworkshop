@@ -6,10 +6,16 @@ weight: 35
 
 #### Run Siege to Load Test the application 
 
+Let's grab the load balancer url to begin the load testing.
+
+```
+alb_url=$(aws cloudformation describe-stacks --stack-name container-demo-alb --query 'Stacks[0].Outputs[?OutputKey==`ExternalUrl`].OutputValue' --output text)
+```
+
 From your terminal window in the Siege directory, run the following command. 
 
 ```
-siege -c 200 -i {YOURLOADBALANCER URL}
+siege -c 200 -i $alb_url
 ```
 
 This command tells Siege to run 200 concurrent connections to the ECS application at varying URLS. You should see an output like the below. At first it will show connections to the root of your site, and then you should start to see it jump around to various URLS of your site.
