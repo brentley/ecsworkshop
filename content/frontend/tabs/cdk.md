@@ -193,6 +193,14 @@ cdk deploy
 #### Autoscaling
 {{%expand "Expand here to see the solution" %}}
 
+#### Why autoscale?
+
+- Well, to put it simply - it's either a human scales the service, or the orchestrator. 
+    - If we choose to do it manually, this means that as load increases, we need to stop what we are doing to scale the service to meet the load (and not to mention that we have to eventually scale back down once the load clears). This can be tedious and painful, hence why autoscaling exists.
+    - If we let the orchestrator handle the scaling in and out for the service, we can focus on continuous improvement, and less on operational heavy lifting. In order to get autoscaling setup, one first needs to know what metric to use as the decision to autoscale. Some example metrics for scaling are CPU utilization, memory utilization, and queue depth.
+
+#### Setup Autoscaling in the code
+
 - Using the editor of your choice, open app.py in the cdk directory.
 
 - Search for `Enable Service Autoscaling` to find the code that will enable autoscaling for the service.
@@ -237,6 +245,8 @@ self.autoscale.scale_on_cpu_utilization(
 )
 ```
 
+#### Deploy Autoscaling
+
 - Now that you have the autoscaling code in place, let's deploy it!
 
 - Let's see a diff of our present state, vs the proposed changes to our environment. Run the following:
@@ -254,6 +264,8 @@ cdk diff
 ```bash
 cdk deploy --require-approval never
 ```
+
+#### Load test
 
 - Next, let's generate some load on the frontend. 
 
