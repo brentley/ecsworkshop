@@ -16,6 +16,15 @@ export AWS_CDK_VERSION="1.25.0"
 # Install aws-cdk
 npm install -g --no-bin-links aws-cdk@$AWS_CDK_VERSION
 
+# For container insights and service autoscaling load generation
+curl -C - -O http://download.joedog.org/siege/siege-latest.tar.gz
+tar -xvf siege-latest.tar.gz
+pushd siege-*
+./configure
+make all
+sudo make install 
+popd
+
 # For the workshop, we will be using Python as our language for the aws-cdk
 cd ~/environment
 virtualenv .env
