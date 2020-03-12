@@ -193,6 +193,110 @@ cdk deploy
 #### Autoscaling
 {{%expand "Expand here to see the solution" %}}
 
+#### Why autoscale?
+
+- Well, to put it simply - it's either a human scales the service, or the orchestrator. 
+    - If we choose to do it manually, this means that as load increases, we need to stop what we are doing to scale the service to meet the load (and not to mention that we have to eventually scale back down once the load clears). This can be tedious and painful, hence why autoscaling exists.
+    - If we let the orchestrator handle the scaling in and out for the service, we can focus on continuous improvement, and less on operational heavy lifting. In order to get autoscaling setup, one first needs to know what metric to use as the decision to autoscale. Some example metrics for scaling are CPU utilization, memory utilization, and queue depth.
+
+#### Setup Autoscaling in the code
+
+- Using the editor of your choice, open app.py in the cdk directory.
+
+- Search for `Enable Service Autoscaling` to find the code that will enable autoscaling for the service.
+
+- Remove the comments (#) from the code for self.autoscale and below, once you remove them, it should look like the following:
+
+```python
+# Enable Service Autoscaling
+self.autoscale = self.fargate_load_balanced_service.service.auto_scale_task_count(
+    min_capacity=1,
+    max_capacity=10
+)
+
+self.autoscale.scale_on_cpu_utilization(
+    "CPUAutoscaling",
+    target_utilization_percent=50,
+    scale_in_cooldown=core.Duration.seconds(30),
+    scale_out_cooldown=core.Duration.seconds(30)
+)
+```
+
+#### Code Review
+
+- To start modeling our autoscaling logic, we first set what our upper and lower bounds are. This ensures that we will always be at a minimum of 1 task, and a maximum of 10 tasks.
+
+```python
+# Enable Service Autoscaling
+self.autoscale = self.fargate_load_balanced_service.service.auto_scale_task_count(
+    min_capacity=1,
+    max_capacity=10
+)
+```
+
+- When the ECS service is deployed, Cloudwatch metrics such as CPU utilization are enabled by default. We are going to take advantage of that metric and use it as our scaling target. In this method, we are setting what our target cpu utilization percent is, and how long in between scale activities we want to wait before it adds/removes another task.
+
+```python
+self.autoscale.scale_on_cpu_utilization(
+    "CPUAutoscaling",
+    target_utilization_percent=50,
+    scale_in_cooldown=core.Duration.seconds(30),
+    scale_out_cooldown=core.Duration.seconds(30)
+)
+```
+
+#### Deploy Autoscaling
+
+- Now that you have the autoscaling code in place, let's deploy it!
+
+- Let's see a diff of our present state, vs the proposed changes to our environment. Run the following:
+
+```bash
+cdk diff
+```
+
+- You should see the additon of two resources (image below). ECS is utilizing the Application Autoscaling service to manage the scaling of ECS tasks. In short, this will create a [target tracking policy](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-autoscaling-targettracking.html), which will set the desired target for scaling in and out (in this case, CPU utilization), and attach it to the ECS service.
+
+![task-as](/images/task-autoscaling-example.png)
+
+- Deploy time!
+
+```bash
+cdk deploy --require-approval never
+```
+
+#### Load test
+
+- Next, let's generate some load on the frontend. 
+
+```bash
+alb_url=$(aws cloudformation describe-stacks --stack-name ecsworkshop-frontend --query "Stacks" --output json | jq -r '.[].Outputs[] | select(.OutputKey |contains("LoadBalancer")) | .OutputValue')
+siege -c 20 -i $alb_url&
+```
+
+- While siege is running in the background, either navigate to the console or monitor the autoscaling from the command line.
+
+{{%expand "Command Line" %}}
+
+- Compare the tasks running vs tasks desired. As the load increases on the frontend service, we should see these counts eventually increase up to 10. This is autoscaling happening in real time. Please note that this step will take a few minutes. Feel free to run this in one terminal, and move on to the next steps in another terminal.
+
+```bash
+while true; do sleep 3; aws ecs describe-services --cluster container-demo --services ecsdemo-frontend | jq '.services[] | "Tasks Desired: \(.desiredCount) vs Tasks Running: \(.runningCount)"'; done 
+```
+
+- Now that we've seen the service autoscale out, let's stop the running while loop. Simply press `control + c` to cancel.
+
+- Time to cancel the load test. By prepending our command with `&`, we instructed it to run in the background. Bring it back to the foreground, and stop it. To stop it, type the following:
+
+    - `fg`
+    - `control + c`
+
+- NOTE: To ensure application availability, the service scales out proportionally to the metric as fast as it can, but scales in more gradually. For more information, see the [documentation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-autoscaling-targettracking.html)
+
+{{% /expand %}}
+
+{{%expand "Console" %}}
 - Coming soon!
+{{% /expand %}}
 
 {{% /expand %}}
