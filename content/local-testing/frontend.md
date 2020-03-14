@@ -55,9 +55,9 @@ curl localhost:8080/health
 
 - Using Cloud9, select `Preview` --> `Preview Running Application` at the top
 
-- A new tab will open, prepend `:8080` to the url in the Cloud9 browser and hit enter.
+- A new tab will open, remove the '/' at the end and prepend `:8080` to the url in the Cloud9 browser and hit enter.
 
-- Finally, select the box next to browser that will open the url in another tab in your browser. It looks like this:
+- Finally, select the box next in the Cloud9 browser that will open the url in another tab in your local browser. It looks like this:
 
 ![c9-browser](/images/c9-local-2.png)
 
