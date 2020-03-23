@@ -24,7 +24,9 @@ ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '
 sed -i 's/published: 3000/published: 4000/g' docker-compose.ecs-local.yml
 ```
 
-#### To follow our service discovery namespace for consistency, let's change the name of the service to use the service domain as we do in ecs
+#### Service Discovery
+
+- To follow our service discovery namespace for consistency, let's change the name of the service to use the service domain as we do in ecs
 
 ```
 sed -i 's/ecsdemo-nodejs:/ecsdemo-nodejs.service:/g' docker-compose.ecs-local.*
@@ -45,8 +47,8 @@ ecs-cli local ps --all
 #### You should see your container running on the expected port. Now go ahead and give it a curl!
 
 ```
-curl localhost:3000
-curl localhost:3000/health
+curl localhost:4000
+curl localhost:4000/health
 ```
 
 #### View in the UI
