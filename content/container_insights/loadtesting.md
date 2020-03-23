@@ -13,17 +13,17 @@ We now have monitoring enabled for the ECS environment. Let's go ahead and induc
 Download Siege by running the below command in your Cloud9 terminal.
 
 ```
-curl -C - -O http://download.joedog.org/siege/siege-latest.tar.gz
+curl -C - -O http://download.joedog.org/siege/siege-4.0.5.tar.gz
 ```
 Once downloaded we’ll extract this file and change to the extracted directory. The version may change but you can see the directory name created via the output of the tar command.
 
 ```
-tar -xvf siege-latest.tar.gz
+tar -xvf siege-4.0.5.tar.gz
 ```
 Go to the directory where Seige is downloaded (change for version installed)
 
 ```
-cd siege-4.0.4
+cd siege-4.0.5
 ```
 
 ```
