@@ -10,6 +10,10 @@ hidden: true
 # Install prerequisite packages
 sudo yum -y install jq nodejs python36
 
+# Install ecs cli for local testing
+sudo curl -so /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
+sudo chmod +x /usr/local/bin/ecs-cli
+
 # Setting CDK Version
 export AWS_CDK_VERSION="1.25.0"
 
