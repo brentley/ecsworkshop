@@ -17,8 +17,8 @@ export AWS_CDK_VERSION="1.25.0"
 npm install -g --no-bin-links aws-cdk@$AWS_CDK_VERSION
 
 # For container insights and service autoscaling load generation
-curl -C - -O http://download.joedog.org/siege/siege-latest.tar.gz
-tar -xvf siege-latest.tar.gz
+curl -C - -O http://download.joedog.org/siege/siege-4.0.5.tar.gz
+tar -xvf siege-4.0.5.tar.gz
 pushd siege-*
 ./configure
 make all
