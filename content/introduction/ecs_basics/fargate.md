@@ -1,5 +1,5 @@
 +++
-title = "Why Fargate?"
+title = "Fargate"
 chapter = false
 weight = 60
 +++
