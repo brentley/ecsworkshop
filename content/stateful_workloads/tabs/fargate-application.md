@@ -12,7 +12,7 @@ Run the following to export all of the resource values that we will need to refe
 
 ```bash
 export cloudformation_outputs=$(aws cloudformation describe-stacks --stack-name ecsworkshop-efs-fargate-demo | jq .Stacks[].Outputs)
-export cluster_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs.[] | select(.ExportName | contains("ECSClusterName"))| .OutputValue')
+export cluster_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName | contains("ECSClusterName"))| .OutputValue')
 export execution_role_arn=$(echo $cloudformation_outputs | jq -r '.[]| select(.ExportName | contains("ECSFargateEFSDemoTaskExecutionRoleARN"))| .OutputValue')
 export fs_id=$(echo $cloudformation_outputs | jq -r '.[]| select(.ExportName | contains("ECSFargateEFSDemoFSID"))| .OutputValue')
 export target_group_arn=$(echo $cloudformation_outputs | jq -r '.[]| select(.ExportName | contains("ECSFargateEFSDemoTGARN"))| .OutputValue')
@@ -63,3 +63,4 @@ Run the following command to create the service:
   --network-configuration "awsvpcConfiguration={subnets=["$private_subnets"],securityGroups=["$security_groups"],assignPublicIp=DISABLED}"
 ```
 
+At this point, we have deployed a Fargate ECS Service with an expectation of 1 task to be running. Let's interact with the app and see the stateful backend work in realtime.
