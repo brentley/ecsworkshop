@@ -4,12 +4,10 @@ disableToc: true
 hidden: true
 ---
  
-#### Clone the repo
+#### Navigate to the repo
 
 ```bash
-cd ~/environment
-git clone git@github.com:adamjkeller/ecsworkshop-efsdemo.git
-cd ecsworkshop-efsdemo
+cd ~/environment/ecsworkshop-efsdemo/ecsworkshop
 ```
  
 #### Code Review
