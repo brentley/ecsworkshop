@@ -76,7 +76,6 @@ self.service_sec_grp.connections.allow_from(
     port_range=ec2.Port(protocol=ec2.Protocol.TCP, string_representation="Self", from_port=2049, to_port=2049)
 )
 
-# TODO: possibly create another sec grp for 8000
 self.service_sec_grp.connections.allow_from(
     other=self.frontend_sec_grp,
     port_range=ec2.Port(protocol=ec2.Protocol.TCP, string_representation="LB2Service", from_port=8000, to_port=8000)
@@ -88,8 +87,6 @@ self.shared_fs = efs.EfsFileSystem(
     security_group=self.service_sec_grp,
 )
 ## End EFS Setup ##
-
-## TODO: IAM Role to access EFS access points for task ##
 
 # Task execution role
 self.task_execution_role = iam.Role(
