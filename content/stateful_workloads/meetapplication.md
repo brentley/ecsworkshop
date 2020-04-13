@@ -12,4 +12,4 @@ With the EFS integration, that extra work is gone, and all it takes is to simply
 
 Below is a diagram of the environment we will be building:
 
-<DIAGRAM HERE>
+![efsdiagram](/images/efsdemo.png)
