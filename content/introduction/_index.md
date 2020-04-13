@@ -15,6 +15,6 @@ and possibly even Docker container workflow.
 
 This chapter will give you a foundational introduction on ECS and the components involved to getting your services deployed to it.
 
-Please move on to the next session to begin.
+Please move on to the next section to begin.
 
 {{% children showhidden="false" %}}
