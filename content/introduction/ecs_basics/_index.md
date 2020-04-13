@@ -1,5 +1,5 @@
 ---
-title: "ECS Basics"
+title: "ECS Overview"
 draft: false
 weight: 10
 ---
