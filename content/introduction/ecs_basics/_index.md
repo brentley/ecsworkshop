@@ -1,8 +1,8 @@
-+++
-title = "Why ECS?"
-chapter = false
-weight = 50
-+++
+---
+title: "ECS Overview"
+draft: false
+weight: 10
+---
 
 ![integration](/images/ecs.png)
 
@@ -17,3 +17,7 @@ schedule containers on those virtual machines.
 ECS is also deeply integrated into the rest of the AWS ecosystem.
 
 ![integration](/images/integration.svg)
+
+In this section, we'll cover the following topics:
+
+{{% children showhidden="false" %}}
