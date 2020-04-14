@@ -7,6 +7,7 @@ weight = 56
 # Stateful workloads on ECS Fargate
 
 In this chapter, we will deploy a stateful workload on ECS Fargate with storage persisting on EFS. There are many reasons for wanting to deploy a stateful workload on containers, with some examples being: 
+
 - Content Management Systems like Wordpress, or Drupal.
 - Sharing static content for web servers
 - Jenkins Master Nodes
