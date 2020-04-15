@@ -4,7 +4,7 @@ chapter: true
 weight: 1
 ---
 
-## Amazon ECS Workshop for AWS Fargate
+<div style="text-align: center"><h2>Amazon ECS Workshop</h2></div>
 
 ![3-service-animated](/images/3-service-animated.gif)
 
