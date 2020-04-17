@@ -13,7 +13,7 @@ Execute the following commands. This will list the ECS clusters that are in your
 
 ```
 cluster_arn=$(aws ecs list-clusters | jq -r '.clusterArns[] | select(contains("container-demo"))')
-clustername=$(aws ecs describe-clusters --clusters $cluster_arn | jq -r .clusters[].clusterName)
+clustername=$(aws ecs describe-clusters --clusters $cluster_arn | jq -r '.clusters[].clusterName')
 ```
 
 #### Enable Container Insights 
