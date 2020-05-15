@@ -23,8 +23,8 @@ echo -e "Cloudformation Lines==$(cdk synth |wc -l)\nCDK Lines==$(cat app.py|wc -
 - The end result should look something like this:
 
 ```bash
-Cloudformation Lines==468
-CDK Lines==81
+Cloudformation Lines==470
+CDK Lines==82
 ```
 
 {{% /expand %}}
