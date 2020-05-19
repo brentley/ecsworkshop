@@ -22,3 +22,5 @@ Capacity providers can be used for ECS Fargate tasks, and ECS EC2 backed tasks.
 
 - Amazon ECS on EC2 capacity providers enable customers to use Cluster Auto Scaling, allowing the focus of the customer to shift from managing autocaling the backend infrastructure, to focusing on supporting the application.
 for more information on Amazon ECS Cluster Auto Scaling, see [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-auto-scaling.html)
+
+Let's move on to the next section, where we will enable a capacity provider strategy for Fargate services.
