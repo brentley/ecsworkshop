@@ -16,7 +16,7 @@ aws ecs put-cluster-capacity-providers \
 --capacity-providers FARGATE FARGATE_SPOT \
 --default-capacity-provider-strategy \
 capacityProvider=FARGATE,weight=1,base=1 \
-capacityProvider=FARGATE_SPOT,weight=2
+capacityProvider=FARGATE_SPOT,weight=4
 ```
 
 With this command, we're adding the Fargate and Fargate Spot capacity providers to our ECS Cluster. Let's break it down by each input:
@@ -29,7 +29,7 @@ The base value designates how many tasks, at a minimum, to run on the specified 
 
 The weight value designates the relative percentage of the total number of launched tasks that should use the specified capacity provider. For example, if you have a strategy that contains two capacity providers, and both have a weight of 1, then when the base is satisfied, the tasks will be split evenly across the two capacity providers. Using that same logic, if you specify a weight of 1 for capacityProviderA and a weight of 4 for capacityProviderB, then for every one task that is run using capacityProviderA, four tasks would use capacityProviderB. 
 
-In the command we ran, we are stating that we want a minimum of 1 Fargate task as our base, and after that, for every one task using Fargate strategy, two tasks will use Fargate Spot.
+In the command we ran, we are stating that we want a minimum of 1 Fargate task as our base, and after that, for every one task using Fargate strategy, four tasks will use Fargate Spot.
 
 Next, let's clone the service repo and navigate to the `fargate` directory, this is where we'll do the rest of the work.
 
@@ -68,7 +68,7 @@ cdk deploy --require-approval never
 
 #### Code Review
 
-{{%expand "Let's Dive in" %}}
+{{%expand "Let's dive in" %}}
 
 As we've gone over in other sections, we are importing platform related items using the BasePlatform construct. For the sake of time, we will skip the review.
 
