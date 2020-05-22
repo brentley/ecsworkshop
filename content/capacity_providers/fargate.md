@@ -5,5 +5,5 @@ weight = 2
 +++
 
 {{< tabs name="Fargate Capacity Provider" >}}
-{{< tab name="cli/console" include="tabs/fargate_console.md" />}}
+{{< tab name="cli" include="tabs/fargate.md" />}}
 {{< /tabs >}}

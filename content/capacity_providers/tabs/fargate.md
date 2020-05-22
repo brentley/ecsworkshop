@@ -66,6 +66,14 @@ Deploy the service
 cdk deploy --require-approval never
 ```
 
+#### Code Review
+
+{{%expand "Let's Dive in" %}}
+Review CDK code here
+{{% /expand %}}
+
+#### Post deploy
+
 Once the deployment is finished, copy the load balancer URL, and paste it into your browser.
 
 In the browser, you will see the json response. Go ahead and refresh a few times. You should see that as you are routed to different containers via the load balancer, fargate and fargate spot containers will be serving the respone.
