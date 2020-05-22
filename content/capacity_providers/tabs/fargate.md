@@ -69,7 +69,56 @@ cdk deploy --require-approval never
 #### Code Review
 
 {{%expand "Let's Dive in" %}}
-Review CDK code here
+
+As we've gone over in other sections, we are importing platform related items using the BasePlatform construct. For the sake of time, we will skip the review.
+
+This deployment pattern looks very similar to what we deployed for the frontend service. We are using a high level construct via the CDK which will build all of the resources we need to connect our application to a frontend load balancer.
+
+```python
+class CapacityProviderFargateService(core.Stack):
+    
+    def __init__(self, scope: core.Stack, id: str, **kwargs):
+        super().__init__(scope, id, **kwargs)
+
+        self.base_platform = BasePlatform(self, self.stack_name)
+
+        self.task_image = aws_ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
+            image=aws_ecs.ContainerImage.from_registry("adam9098/ecsdemo-capacityproviders:latest"),
+            container_port=5000,
+        )
+
+        self.load_balanced_service = aws_ecs_patterns.ApplicationLoadBalancedFargateService(
+            self, "FargateCapacityProviderService",
+            service_name='ecsdemo-capacityproviders-fargate',
+            cluster=self.base_platform.ecs_cluster,
+            cpu=256,
+            memory_limit_mib=512,
+            desired_count=10,
+            public_load_balancer=True,
+            task_image_options=self.task_image,
+            platform_version=aws_ecs.FargatePlatformVersion.VERSION1_4
+        )
+```
+
+The only difference you may notice in the code is that we remove the default launch type of being Fargate. The reason behind this, is we want to let the cluster choose the default capacity provider strategy (which we defined earlier). By removing the Launch type, the cluster capacity provider will decide the launch type(s) based on the default.
+
+We are also creating an IAM policy statement that will be attached to our service. This is another one of the native integrations ECS has with the AWS Cloud. We are creating a policy that is allowing the containers to list and describe ecs tasks in the AWS account, and attaching it to the service. This will ensure that every time a task is spun up by it's service, it will have the IAM permissions to make the calls to AWS resources.
+
+```python
+        self.cfn_resource = self.load_balanced_service.service.node.children[0]
+        
+        self.cfn_resource.add_deletion_override("Properties.LaunchType")
+            
+        self.load_balanced_service.task_definition.add_to_task_role_policy(
+            aws_iam.PolicyStatement(
+                actions=[
+                    'ecs:ListTasks',
+                    'ecs:DescribeTasks'
+                ],
+                resources=['*']
+            )
+        )
+```
 {{% /expand %}}
 
 #### Post deploy
