@@ -31,10 +31,12 @@ The weight value designates the relative percentage of the total number of launc
 
 In the command we ran, we are stating that we want a minimum of 1 Fargate task as our base, and after that, for every one task using Fargate strategy, two tasks will use Fargate Spot.
 
-Next, let's navigate to the `fargate` directory, this is where we'll do the rest of the work.
+Next, let's clone the service repo and navigate to the `fargate` directory, this is where we'll do the rest of the work.
 
 ```bash
-cd fargate
+cd ~/environment
+git clone git@github.com:adamjkeller/ecsdemo-capacityproviders.git
+cd ecsdemo-capacityproviders/fargate
 ```
 
 #### Meet the application
