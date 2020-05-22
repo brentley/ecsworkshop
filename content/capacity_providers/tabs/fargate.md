@@ -85,6 +85,14 @@ Here's what we accomplished in this section of the workshop:
 - We updated our ECS Clusters default Capacity Provider strategy, which ensures that if no launch type or capacity provider strategy is set, services will get deployed using the default mix of fargate and fargate spot.
 - We deployed a service with multiple tasks, and saw the Capacity Provider choose what type of Fargate task to launch (Fargate/Fargate Spot)
 
+#### Cleanup
+
+Run the cdk command to delete the service (and dependent components) that we deployed.
+
+```bash
+cdk destroy -f
+```
+
 #### Up Next
 
 In the next section, we're going to:

@@ -1,5 +1,5 @@
 +++
-title = "Deploy ECS Cluster Auto Scaling "
+title = "Deploy ECS Cluster Auto Scaling (COMING SOON)"
 chapter = false
 weight = 3
 +++
