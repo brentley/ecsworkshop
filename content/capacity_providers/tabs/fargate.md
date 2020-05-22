@@ -133,6 +133,8 @@ Here's what we accomplished in this section of the workshop:
 
 - We updated our ECS Clusters default Capacity Provider strategy, which ensures that if no launch type or capacity provider strategy is set, services will get deployed using the default mix of fargate and fargate spot.
 - We deployed a service with multiple tasks, and saw the Capacity Provider choose what type of Fargate task to launch (Fargate/Fargate Spot)
+- While this was just an example, this could translate to many real world use cases. By simply setting the base and weights between Fargate and Fargate Spot, we can take advantage of the cost savings of Fargate Spot in our every day workloads. Of course, it's important to understand that Spot tasks can be terminated at any time (for more information, see [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html#fargate-capacity-providers-termination)), when capacity requirements change. With that said, that is why we set the default strategy to be a mix of Fargate and Fargate spot to ensure that if spot tasks are terminated, we still have our service up using Farate on demand.
+- In this section, we deployed using a mix of strategies (Fargate and Fargate Spot). You can also stick to one strategy (Fargate or Fargate Spot), and this would be defined when you deploy your service.
 
 #### Cleanup
 
