@@ -18,7 +18,7 @@ sudo chmod +x /usr/local/bin/ecs-cli
 export AWS_CDK_VERSION="1.41.0"
 
 # Install aws-cdk
-npm install -g --no-bin-links aws-cdk@$AWS_CDK_VERSION
+npm install -g --force aws-cdk@$AWS_CDK_VERSION
 
 # For container insights and service autoscaling load generation
 curl -C - -O http://download.joedog.org/siege/siege-4.0.5.tar.gz
