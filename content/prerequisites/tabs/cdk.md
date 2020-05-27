@@ -15,10 +15,10 @@ sudo curl -so /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs
 sudo chmod +x /usr/local/bin/ecs-cli
 
 # Setting CDK Version
-export AWS_CDK_VERSION="1.31.0"
+export AWS_CDK_VERSION="1.41.0"
 
 # Install aws-cdk
-npm install -g --no-bin-links aws-cdk@$AWS_CDK_VERSION
+npm install -g --force aws-cdk@$AWS_CDK_VERSION
 
 # For container insights and service autoscaling load generation
 curl -C - -O http://download.joedog.org/siege/siege-4.0.5.tar.gz
