@@ -31,12 +31,10 @@ The weight value designates the relative percentage of the total number of launc
 
 In the command we ran, we are stating that we want a minimum of 1 Fargate task as our base, and after that, for every one task using Fargate strategy, four tasks will use Fargate Spot.
 
-Next, let's clone the service repo and navigate to the `fargate` directory, this is where we'll do the rest of the work.
+Next, let's navigate to the service repo and to the `fargate` directory. This is where we'll do the rest of the work.
 
 ```bash
-cd ~/environment
-git clone git@github.com:adamjkeller/ecsdemo-capacityproviders.git
-cd ecsdemo-capacityproviders/fargate
+cd ~/environment/ecsdemo-capacityproviders/fargate
 ```
 
 #### Meet the application
@@ -47,7 +45,7 @@ Lastly, the application will tell us the ARN of the container we landed on and t
 Here is what we should see when we hit the load balancer URL after we deploy the application:
 
 ```json
-{"ALL_TASKS":{"arn:aws:ecs:us-west-2:333258026273:task/418624db-7260-4ba8-8704-4b057982b571":"FARGATE_SPOT","arn:aws:ecs:us-west-2:333258026273:task/722e89d9-ad20-43ff-8f1c-14f532cbf197":"FARGATE_SPOT","arn:aws:ecs:us-west-2:333258026273:task/73f5e189-ffed-4e3c-ba47-71b37faf2427":"FARGATE_SPOT","arn:aws:ecs:us-west-2:333258026273:task/9dd917d2-34fd-439b-b11f-10b3d7cf9e33":"FARGATE_SPOT","arn:aws:ecs:us-west-2:333258026273:task/a2c3e7f9-0609-4dbb-9a66-cc35a612d821":"FARGATE_SPOT","arn:aws:ecs:us-west-2:333258026273:task/b3c05d52-bc25-4e86-aa52-48da5e03cefa":"FARGATE_SPOT","arn:aws:ecs:us-west-2:333258026273:task/ce7072f1-7c9e-474b-b56b-daf7f3812f05":"FARGATE","arn:aws:ecs:us-west-2:333258026273:task/cf9221af-2de4-4902-92e7-13ede592fbb5":"FARGATE","arn:aws:ecs:us-west-2:333258026273:task/d238d331-fed7-454a-a220-35e2abd11696":"FARGATE","arn:aws:ecs:us-west-2:333258026273:task/de884884-5f84-4e09-ab1e-78e56c5a57d8":"FARGATE"},"MY_ARN":"arn:aws:ecs:us-west-2:333258026273:task/418624db-7260-4ba8-8704-4b057982b571","MY_STRATEGY":"FARGATE_SPOT"}
+{"ALL_TASKS":{"arn:aws:ecs:us-west-2:123456789012:task/418624db-7260-4ba8-8704-4b057982b571":"FARGATE_SPOT","arn:aws:ecs:us-west-2:123456789012:task/722e89d9-ad20-43ff-8f1c-14f532cbf197":"FARGATE_SPOT","arn:aws:ecs:us-west-2:123456789012:task/73f5e189-ffed-4e3c-ba47-71b37faf2427":"FARGATE_SPOT","arn:aws:ecs:us-west-2:123456789012:task/9dd917d2-34fd-439b-b11f-10b3d7cf9e33":"FARGATE_SPOT","arn:aws:ecs:us-west-2:123456789012:task/a2c3e7f9-0609-4dbb-9a66-cc35a612d821":"FARGATE_SPOT","arn:aws:ecs:us-west-2:123456789012:task/b3c05d52-bc25-4e86-aa52-48da5e03cefa":"FARGATE_SPOT","arn:aws:ecs:us-west-2:123456789012:task/ce7072f1-7c9e-474b-b56b-daf7f3812f05":"FARGATE","arn:aws:ecs:us-west-2:123456789012:task/cf9221af-2de4-4902-92e7-13ede592fbb5":"FARGATE","arn:aws:ecs:us-west-2:123456789012:task/d238d331-fed7-454a-a220-35e2abd11696":"FARGATE","arn:aws:ecs:us-west-2:123456789012:task/de884884-5f84-4e09-ab1e-78e56c5a57d8":"FARGATE"},"MY_ARN":"arn:aws:ecs:us-west-2:123456789012:task/418624db-7260-4ba8-8704-4b057982b571","MY_STRATEGY":"FARGATE_SPOT"}
 ```
 
 Like our previous services, we are using the CDK to deploy. Let's go ahead and deploy it, and then do some deep dive and review the code!
@@ -139,16 +137,16 @@ The command line output should look something like this:
 
 ![curloutput](/images/cp_curl_output.png)
 
-Whether you or on the browser or using the command line, go ahead and refresh a few times. You should see that as you are routed to different containers via the load balancer, fargate and fargate spot containers will be serving the respone.
+Whether you or on the browser or using the command line, go ahead and refresh a few times. You should see that as you are routed to different containers via the load balancer on each new request. The containers responding will be running on either Fargate or fargate spot launch types.
 
 #### Review
 
 Here's what we accomplished in this section of the workshop:
 
 - We updated our ECS Clusters default Capacity Provider strategy, which ensures that if no launch type or capacity provider strategy is set, services will get deployed using the default mix of fargate and fargate spot.
-- We deployed a service with multiple tasks, and saw the Capacity Provider choose what type of Fargate task to launch (Fargate/Fargate Spot)
-- While this was just an example, this could translate to many real world use cases. By simply setting the base and weights between Fargate and Fargate Spot, we can take advantage of the cost savings of Fargate Spot in our every day workloads. Of course, it's important to understand that Spot tasks can be terminated at any time (for more information, see [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html#fargate-capacity-providers-termination)), when capacity requirements change. With that said, that is why we set the default strategy to be a mix of Fargate and Fargate spot to ensure that if spot tasks are terminated, we still have our service up using Farate on demand.
-- In this section, we deployed using a mix of strategies (Fargate and Fargate Spot). You can also stick to one strategy (Fargate or Fargate Spot), and this would be defined when you deploy your service.
+- We deployed a service with multiple tasks, and saw the Capacity Provider choose what type of Fargate task to launch (Fargate vs Fargate Spot)
+- While this was just an example, this could translate to many real world use cases. By simply setting the base and weights between Fargate and Fargate Spot, we can take advantage of the cost savings of Fargate Spot in our every day workloads. Of course, it's important to understand that Spot tasks can be terminated at any time (for more information, see [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html#fargate-capacity-providers-termination)), when capacity requirements change. That is why we set the default strategy to be a mix of Fargate and Fargate spot to ensure that if spot tasks are terminated, we still have our minimum, desired amount of tasks running on Fargate.
+- The strategy we took was to use a mix of strategies (Fargate and Fargate Spot). You can also stick to one strategy (Fargate or Fargate Spot), and this would be defined when you deploy your service or as the default for the cluster.
 
 #### Cleanup
 
@@ -157,6 +155,15 @@ Run the cdk command to delete the service (and dependent components) that we dep
 ```bash
 cdk destroy -f
 ```
+
+Next, go back to the ECS Cluster in the console. In the top right, select `Update Cluster`.
+
+![updatecluster](/images/cp_update_cluster.png)
+
+Under `Default capacity provider strategy`, click the `x` next to all of the strategies until there are no more left to remove.
+
+![deletecapprovider](/images/cp_delete_default.png)
+
 
 #### Up Next
 
