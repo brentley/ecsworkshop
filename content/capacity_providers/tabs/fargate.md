@@ -19,7 +19,7 @@ capacityProvider=FARGATE,weight=1,base=1 \
 capacityProvider=FARGATE_SPOT,weight=4
 ```
 
-With this command, we're adding the Fargate and Fargate Spot capacity providers to our ECS Cluster. Let's break it down by each input:
+With this command, we're adding the Fargate and Fargate Spot capacity providers to our ECS Cluster. Let's break it down by each parameter:
 
  - `--cluster`: we're simply passing in our cluster name that we want to update the capacity provider strategy for.
  - `--capacity-providers`: this is where we pass in our capacity providers that we want enabled on the cluster. Since we do not use EC2 backed ECS tasks, we don't need to create a cluster capacity provider prior to this. With that said, there are only the two options when using Fargate.
@@ -145,8 +145,8 @@ Here's what we accomplished in this section of the workshop:
 
 - We updated our ECS Clusters default Capacity Provider strategy, which ensures that if no launch type or capacity provider strategy is set, services will get deployed using the default mix of fargate and fargate spot.
 - We deployed a service with multiple tasks, and saw the Capacity Provider choose what type of Fargate task to launch (Fargate vs Fargate Spot)
-- While this was just an example, this could translate to many real world use cases. By simply setting the base and weights between Fargate and Fargate Spot, we can take advantage of the cost savings of Fargate Spot in our every day workloads. Of course, it's important to understand that Spot tasks can be terminated at any time (for more information, see [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html#fargate-capacity-providers-termination)), when capacity requirements change. That is why we set the default strategy to be a mix of Fargate and Fargate spot to ensure that if spot tasks are terminated, we still have our minimum, desired amount of tasks running on Fargate.
-- The strategy we took was to use a mix of strategies (Fargate and Fargate Spot). You can also stick to one strategy (Fargate or Fargate Spot), and this would be defined when you deploy your service or as the default for the cluster.
+- While this was just an example, this could translate to many real world use cases. By simply setting the base and weights between Fargate and Fargate Spot, we can take advantage of the cost savings of Fargate Spot in our every day workloads. Of course, it's important to understand that Spot tasks can be terminated at any time (for more information, [check out the official AWS documentation.](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html#fargate-capacity-providers-termination)), when capacity requirements change. That is why we set the default strategy to be a mix of Fargate and Fargate spot to ensure that if spot tasks are terminated, we still have our minimum, desired amount of tasks running on Fargate.
+- The strategy we chose was to use a mix of strategies (Fargate and Fargate Spot). You can also stick to one strategy (Fargate or Fargate Spot), and this would be defined when you deploy your service or as the default for the cluster.
 
 #### Cleanup
 
