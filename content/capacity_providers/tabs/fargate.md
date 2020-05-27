@@ -123,9 +123,23 @@ We are also creating an IAM policy statement that will be attached to our servic
 
 #### Post deploy
 
-Once the deployment is finished, copy the load balancer URL, and paste it into your browser.
+Once the deployment is finished, copy the load balancer URL, and paste it into your browser. The output should look something like this:
 
-In the browser, you will see the json response. Go ahead and refresh a few times. You should see that as you are routed to different containers via the load balancer, fargate and fargate spot containers will be serving the respone.
+![cdkoutput](/images/cp_lb_output.png)
+
+You can directly go to the url in the browser to see the json response. Or, if you want to see it on the command line, you can curl the load balancer.
+
+Here is what to run to see the output from the command line:
+
+```bash
+curl -s <paste-load-balancer-url-here> | jq
+```
+
+The command line output should look something like this:
+
+![curloutput](/images/cp_curl_output.png)
+
+Whether you or on the browser or using the command line, go ahead and refresh a few times. You should see that as you are routed to different containers via the load balancer, fargate and fargate spot containers will be serving the respone.
 
 #### Review
 
