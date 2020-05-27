@@ -160,7 +160,7 @@ Next, go back to the ECS Cluster in the console. In the top right, select `Updat
 
 ![updatecluster](/images/cp_update_cluster.png)
 
-Under `Default capacity provider strategy`, click the `x` next to all of the strategies until there are no more left to remove.
+Under `Default capacity provider strategy`, click the `x` next to all of the strategies until there are no more left to remove. Once you've done that, click `Update`.
 
 ![deletecapprovider](/images/cp_delete_default.png)
 
