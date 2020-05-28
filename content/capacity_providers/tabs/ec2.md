@@ -55,3 +55,23 @@ aws ecs create-capacity-provider \
      --auto-scaling-group-provider autoScalingGroupArn="$asg_arn",managedScaling=\{status="ENABLED",targetCapacity=80\},managedTerminationProtection="DISABLED" \
      --region us-west-2
 ```
+
+- In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section. We are querying the API via the AWS CLI to get the ARN of the auto scaling group.
+
+- The next command is creating a capacity provider via the AWS CLI. Let's look at the parameters and explain what their purpose:
+
+  - `--name`: This is the human readable name for the capacity provider that we are creating.
+  - `--auto-scaling-group-provider`: There is quite a bit here, let's unpack one by one:
+  
+    - `autoScalingGroupArn`: The ARN of the auto scaling group for the cluster autoscaler to use.
+    - `managedScaling`: This is where we enable/disable cluster auto scaling. We also set `targetCapacity`, which determines at what point in cluster utilization do we want the auto scaler to take action.
+    - `managedTerminationProtection`: Enable this parameter if you want to ensure that prior to an EC2 instance being terminated (for scale-in actions), the auto scaler will only terminate instances that are not running tasks.
+
+Now that we have a capacity provider created, we need to associate it with the ECS Cluster.
+
+```bash
+aws ecs put-cluster-capacity-providers \
+--cluster container-demo \
+--capacity-providers EC2BackedCapacity \
+--default-capacity-provider-strategy capacityProvider=EC2BackedCapacity,weight=1,base=1
+```
