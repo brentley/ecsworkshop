@@ -1,5 +1,5 @@
 ---
-title: "Deploy ECS Cluster Auto Scaling (COMING SOON)"
+title: "Deploy ECS Cluster Auto Scaling"
 disableToc: true
 hidden: true
 ---
@@ -204,3 +204,19 @@ What we accomplished in this section of the workshop is the following:
 
 #### Cleanup
 
+Run the cdk command to delete the service (and dependent components) that we deployed.
+
+```bash
+cdk destroy -f
+```
+
+Next, go back to the ECS Cluster in the console. In the top right, select `Update Cluster`.
+
+![updatecluster](/images/cp_update_cluster.png)
+
+Under `Default capacity provider strategy`, click the `x` next to all of the strategies until there are no more left to remove. Once you've done that, click `Update`.
+
+![deletecapprovider](/images/cp_delete_default.png)
+
+
+That's it! Great job! Let's move on to the next section...
