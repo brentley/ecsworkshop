@@ -138,7 +138,7 @@ Now, save the changes, and let's deploy.
 cdk deploy --require-approval never
 ```
 
-Let's walk through what we're did and what is happening.
+Let's walk through what we did and what is happening.
 
 - We are modifying our task count for the service to go from one, to ten. This will stretch us beyond the capacity that presently exists for the cluster.
 - The capacity provider assigned to the cluster will recognize that the target capacity of the total cluster resources is above 80%. This will trigger an autoscaling event to scale EC2 to get the capacity back to 80% or under.
