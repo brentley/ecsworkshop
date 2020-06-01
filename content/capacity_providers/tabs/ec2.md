@@ -35,9 +35,9 @@ Now, update the cluster using the cdk.
 cdk deploy --require-approval never
 ```
 
-By adding that small section of code, all of the necessary components to create an EC2 backed cluster will be created. This includes an Auto Scaling Group, Launch Configuration, etc.
+By adding that small section of code, all of the necessary components to add EC2 instances to the cluster will be created. This includes an Auto Scaling Group, Launch Configuration, ECS Optimized AMI, etc. For more information, see the [official cdk documentation.](https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_ecs/Cluster.html#aws_cdk.aws_ecs.Cluster.add_capacity)
 
-Once the deployment is complete, let's move back to the previous repo and start work on setting up cluster auto scaling.
+Once the deployment is complete, let's move back to the capacity provider demo repo and start work on setting up cluster auto scaling.
 
 ```bash
 cd ~/environment/ecsdemo-capacityproviders/ec2
