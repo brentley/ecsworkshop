@@ -48,15 +48,19 @@ cd ~/environment/ecsdemo-capacityproviders/ec2
 As we did in the previous section, we are going to once again create a capacity provider. This time; however, it will be a capacity provider to enable managed cluster auto scaling. Let's do that now.
 
 ```bash
+# Get the required cluster values needed when creating the capacity provider
 export asg_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName | contains("EC2ASGName"))| .OutputValue')
 export asg_arn=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $asg_name | jq .AutoScalingGroups[].AutoScalingGroupARN)
+# Creating capacity provider
 aws ecs create-capacity-provider \
      --name EC2BackedCapacity \
      --auto-scaling-group-provider autoScalingGroupArn="$asg_arn",managedScaling=\{status="ENABLED",targetCapacity=80\},managedTerminationProtection="DISABLED" \
      --region us-west-2
 ```
 
-- In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section. We are querying the API via the AWS CLI to get the ARN of the auto scaling group.
+- *Note*: If you get an error that the capacity provider already exists because you've created it in the workshop before, just move on to the next step.
+
+- In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section. We are using the AWS CLI to get the ARN of the auto scaling group.
 
 - The next command is creating a capacity provider via the AWS CLI. Let's look at the parameters and explain what their purpose:
 
