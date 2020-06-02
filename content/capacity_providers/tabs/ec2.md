@@ -51,9 +51,10 @@ As we did in the previous section, we are going to once again create a capacity 
 # Get the required cluster values needed when creating the capacity provider
 export asg_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName | contains("EC2ASGName"))| .OutputValue')
 export asg_arn=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $asg_name | jq .AutoScalingGroups[].AutoScalingGroupARN)
+export capacity_provider_name=$(echo "EC2$(date +'%s')")
 # Creating capacity provider
 aws ecs create-capacity-provider \
-     --name EC2BackedCapacity \
+     --name $capacity_provider_name \
      --auto-scaling-group-provider autoScalingGroupArn="$asg_arn",managedScaling=\{status="ENABLED",targetCapacity=80\},managedTerminationProtection="DISABLED" \
      --region us-west-2
 ```
@@ -76,7 +77,7 @@ Now that we have a capacity provider created, we need to associate it with the E
 ```bash
 aws ecs put-cluster-capacity-providers \
 --cluster container-demo \
---capacity-providers EC2BackedCapacity \
+--capacity-providers $capacity_provider_name \
 --default-capacity-provider-strategy capacityProvider=EC2BackedCapacity,weight=1,base=1
 ```
 
