@@ -60,7 +60,7 @@ aws ecs create-capacity-provider \
 
 - *Note*: If you get an error that the capacity provider already exists because you've created it in the workshop before, just move on to the next step.
 
-- In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section. We are using the AWS CLI to get the ARN of the auto scaling group.
+- In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section when we added the EC2 capacity to the ECS cluster. We run a couple of cli calls to get the autoscale group details which is required for the next command where we create the capacity provider.
 
 - The next command is creating a capacity provider via the AWS CLI. Let's look at the parameters and explain what their purpose:
 
