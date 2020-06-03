@@ -78,7 +78,7 @@ Now that we have a capacity provider created, we need to associate it with the E
 aws ecs put-cluster-capacity-providers \
 --cluster container-demo \
 --capacity-providers $capacity_provider_name \
---default-capacity-provider-strategy capacityProvider=EC2BackedCapacity,weight=1,base=1
+--default-capacity-provider-strategy capacityProvider=$capacity_provider_name,weight=1,base=1
 ```
 
 You will get a json response indicating that the cluster update has been applied, now it's time to deploy a service and test this functionality out!
