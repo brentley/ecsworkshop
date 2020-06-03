@@ -39,6 +39,12 @@ identifier = "tw"
 url = "https://twitter.com/intent/user?screen_name=brentContained"
 weight = 1
 
+[[menu.shortcuts]]
+name = "<i class='fab fa-twitter fa-lg'></i> @realadamjkeller"
+identifier = "twa"
+url = "https://twitter.com/intent/user?screen_name=realadamjkeller"
+weight = 2
+
 [outputs]
 home = [ "HTML", "JSON"]
 page = [ "HTML" ]
