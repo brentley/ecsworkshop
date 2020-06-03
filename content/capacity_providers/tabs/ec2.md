@@ -24,7 +24,6 @@ In the app.py, uncomment the code under the section of code that says `###### CA
             max_capacity=10
         )
         
-        core.CfnOutput(self, "EC2AutoScalingGroupArn", value=self.asg.auto_scaling_group_arn, export_name="EC2ASGArn")
         core.CfnOutput(self, "EC2AutoScalingGroupName", value=self.asg.auto_scaling_group_name, export_name="EC2ASGName")
         ##### END CAPACITY PROVIDER SECTION #####
 ```
