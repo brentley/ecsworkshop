@@ -4,6 +4,40 @@ disableToc: true
 hidden: true
 ---
 
+## Increase the disk size on the Cloud9 instance
+
+```bash
+export instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+python -c "import boto3
+import os
+from botocore.exceptions import ClientError 
+ec2 = boto3.client('ec2')
+volume_info = ec2.describe_volumes(
+    Filters=[
+        {
+            'Name': 'attachment.instance-id',
+            'Values': [
+                os.getenv('instance_id')
+            ]
+        }
+    ]
+)
+volume_id = volume_info['Volumes'][0]['VolumeId']
+try:
+    resize = ec2.modify_volume(    
+            VolumeId=volume_id,    
+            Size=30
+    )
+    print(resize)
+except ClientError as e:
+    if e.response['Error']['Code'] == 'InvalidParameterValue':
+        print('ERROR MESSAGE: {}'.format(e))"
+sudo reboot
+
+```
+
+- *Note*: The above command is adding more disk space to the root volume of the EC2 instance that Cloud9 runs on. Once the command completes, we reboot the instance which could take a minute or two for the IDE to come back online.
+
 ## Install and setup prerequisites
 
 ```
