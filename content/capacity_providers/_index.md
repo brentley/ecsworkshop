@@ -11,7 +11,7 @@ We will implement two capacity provider strategies in our cluster:
 
 - For a Fargate backed ECS service, we will implement a strategy to deploy that service as a mix between Fargate and Fargate Spot.
 
-- For an EC2 backed ECS service, we will implement Cluster Auto Scaling, and add load to that service. This will trigger service autoscaling, which will ultimately require the backend EC2 infrastucture to scale to meet the demand. 
+- For an EC2 backed ECS service, we will implement Cluster Auto Scaling by increasing the task count of a service beyond the capacity available. This will require the backend EC2 infrastucture to scale to meet the demand, which the ECS cluster autoscaler will handle.
 
 
 Let's get started!
