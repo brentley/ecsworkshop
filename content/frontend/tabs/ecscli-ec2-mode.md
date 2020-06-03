@@ -26,7 +26,7 @@ We set a default region so we can reference the region when we run our commands.
 
 ## Authorize traffic:
 ```
-aws ec2 authorize-security-group-ingress --group-id "$security_group" --protocol tcp --port 3000 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id "$security_group" --protocol tcp --port 3000 --source-group "$security_group"
 ```
 We know that our containers talk on port 3000, so authorize that traffic on our security group:
 
