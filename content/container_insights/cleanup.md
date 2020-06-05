@@ -39,5 +39,3 @@ Go to [CloudFormation] (https://console.aws.amazon.com/cloudformation/home) and 
 
 ![Cluster Dashboard](/images/ContainerInsights29.png)
 
-#### Clean up ECS cluster
-Clean up the ECS cluster by following the procedures [here](../../cleanup)
