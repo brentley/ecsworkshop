@@ -34,7 +34,7 @@ For more information on a task definition, see [here](https://docs.aws.amazon.co
 First we need to populate some of the values in the definition from the environment we created in step 1.
 
 ```bash
-  sed "s|{{EXECUTIONROLEARN}}|$execution_role_arn|g;s|{{TASKROLEARN}}|$task_role_arn|g;s|{{FSID}}|$fs_id|g;s|{{LOGGROUPNAME}}|$log_group_name|g" task_definition.json > task_definition.automated
+  sed "s|{{EXECUTIONROLEARN}}|$execution_role_arn|g;s|{{TASKROLEARN}}|$task_role_arn|g;s|{{FSID}}|$fs_id|g;s|{{LOGGROUPNAME}}|$log_group_name|g;s|{{REGION}}|$AWS_REGION|g" task_definition.json > task_definition.automated
 ```
   
 Next, it's time to create the task definition. We export the output from the task definition into an environment variable that we will use when deploying the service.
