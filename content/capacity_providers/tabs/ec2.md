@@ -55,7 +55,7 @@ export capacity_provider_name=$(echo "EC2$(date +'%s')")
 aws ecs create-capacity-provider \
      --name $capacity_provider_name \
      --auto-scaling-group-provider autoScalingGroupArn="$asg_arn",managedScaling=\{status="ENABLED",targetCapacity=80\},managedTerminationProtection="DISABLED" \
-     --region us-west-2
+     --region $AWS_REGION
 ```
 
 - *Note*: If you get an error that the capacity provider already exists because you've created it in the workshop before, just move on to the next step.
