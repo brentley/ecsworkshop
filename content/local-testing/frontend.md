@@ -34,6 +34,7 @@ sed -i 's/published: 3000/published: 8080/g' docker-compose.ecs-local.yml
 
 - We also use a different service discovery name convention when running locally, so we will modify the environment
 values used to reach the backend services.
+
 ```
 
  # this command downloads the existing task definition and extracts the containerdefinition name to be used for service discovery
