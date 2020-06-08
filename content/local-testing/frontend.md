@@ -35,11 +35,14 @@ sed -i 's/published: 3000/published: 8080/g' docker-compose.ecs-local.yml
 - We also use a different service discovery name convention when running locally, so we will modify the environment
 values used to reach the backend services.
 ```
-# this command downloads the existing task definition and extracts the containerdefinition name to be used for service discovery
+
+ # this command downloads the existing task definition and extracts the containerdefinition name to be used for service discovery
 
 nodeservicename=$(aws ecs describe-task-definition --task-definition $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("nodejs"))') | jq -r .taskDefinition.containerDefinitions[0].name)
 crystalservicename=$(aws ecs describe-task-definition --task-definition $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("crystal"))') | jq -r .taskDefinition.containerDefinitions[0].name)
 
+ # now that we know our service discovery names, we can substitute them into the docker-compose file
+ 
 sed -i "s/ecsdemo-nodejs.service:3000/${nodeservicename}:4000/g" docker-compose.ecs-local.yml
 sed -i "s/ecsdemo-crystal.service:3000/${crystalservicename}:3000/g" docker-compose.ecs-local.yml
 
