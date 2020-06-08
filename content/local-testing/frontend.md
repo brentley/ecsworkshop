@@ -12,7 +12,7 @@ cd ~/environment/ecsdemo-frontend/
 - Using the ecs cli, we can grab the task definition for our frontend service that is running in AWS. We accomplish this by passing in the --task-def-remote parameter the the ecs-cli local command. This will take the ecs task definition and convert it to a docker compose file.
 
 ```
-ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("ecsdemo-frontend"))')
+ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("frontend"))')
 ```
 
 - Take a look at the docker compose file that was generated. The file dictates how the container is to run on the local machine. One item to note is regarding the local bridge network.
@@ -26,11 +26,23 @@ cat docker-compose.ecs-local.yml
 
 #### Modify ports 
 
-- Because we run every service on the same port, we need to modify them to avoid collision locally.
+- Because cloud9 can only preview on port 8080, and we run every service on the same port, we need to modify the port assignments to avoid a port collision while running locally.
 
 ```
 sed -i 's/published: 3000/published: 8080/g' docker-compose.ecs-local.yml
-sed -i 's/ecsdemo-nodejs.service:3000/ecsdemo-nodejs.service:4000/g' docker-compose.ecs-local.yml
+```
+
+- We also use a different service discovery name convention when running locally, so we will modify the environment
+values used to reach the backend services.
+```
+# this command downloads the existing task definition and extracts the containerdefinition name to be used for service discovery
+
+nodeservicename=$(aws ecs describe-task-definition --task-definition $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("nodejs"))') | jq -r .taskDefinition.containerDefinitions[0].name)
+crystalservicename=$(aws ecs describe-task-definition --task-definition $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("crystal"))') | jq -r .taskDefinition.containerDefinitions[0].name)
+
+sed -i "s/ecsdemo-nodejs.service:3000/${nodeservicename}:4000/g" docker-compose.ecs-local.yml
+sed -i "s/ecsdemo-crystal.service:3000/${crystalservicename}:3000/g" docker-compose.ecs-local.yml
+
 ```
 
 #### Run the service
