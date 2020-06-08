@@ -16,19 +16,19 @@ cd ~/environment/ecsdemo-crystal/
 ecs-cli local create --task-def-remote $(aws ecs list-task-definitions | jq -r '.taskDefinitionArns[] | select(contains ("crystal"))')
 ```
 
-## Run the service locally
+#### Run the service locally
 
 ```
 ecs-cli local up
 ```
 
-## Confirm container is running locally
+#### Confirm container is running locally
 
 ```
 ecs-cli local ps --all
 ```
 
-## You should see your container running on the expected port. Now go ahead and give it a curl!
+#### You should see your container running on the expected port. Now go ahead and give it a curl!
 
 ```
 curl localhost:3000/health
