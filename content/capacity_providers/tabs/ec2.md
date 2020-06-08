@@ -68,7 +68,7 @@ aws ecs create-capacity-provider \
   - `--auto-scaling-group-provider`: There is quite a bit here, let's unpack one by one:
   
     - `autoScalingGroupArn`: The ARN of the auto scaling group for the cluster autoscaler to use.
-    - `managedScaling`: This is where we enable/disable cluster auto scaling. We also set `targetCapacity`, which determines at what point in cluster utilization do we want the auto scaler to take action.
+    - `managedScaling`: This is where we enable/disable cluster auto scaling. We also set `targetCapacity`, which instructs the cluster to how much idle EC2 capacity we expect. In the command above, we are setting the target to (best effort) maintain the capacity utilization of the EC2 instances to 80%, with a 20% buffer of idle instances.
     - `managedTerminationProtection`: Enable this parameter if you want to ensure that prior to an EC2 instance being terminated (for scale-in actions), the auto scaler will only terminate instances that are not running tasks.
 
 Now that we have a capacity provider created, we need to associate it with the ECS Cluster.
