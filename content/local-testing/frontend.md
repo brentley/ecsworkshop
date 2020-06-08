@@ -44,7 +44,7 @@ crystalservicename=$(aws ecs describe-task-definition --task-definition $(aws ec
 
  # now that we know our service discovery names, we can substitute them into the docker-compose file
  
-sed -i "s/ecsdemo-nodejs.service:3000/${nodeservicename}:4000/g" docker-compose.ecs-local.yml
+sed -i "s/ecsdemo-nodejs.service:3000/${nodeservicename}:3000/g" docker-compose.ecs-local.yml
 sed -i "s/ecsdemo-crystal.service:3000/${crystalservicename}:3000/g" docker-compose.ecs-local.yml
 
 ```
