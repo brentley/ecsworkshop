@@ -12,7 +12,7 @@ Using the AWS CLI, run the following command:
 
 ```bash
 aws ecs put-cluster-capacity-providers \
---cluster container-demo \
+--cluster ${clustername} \
 --capacity-providers FARGATE FARGATE_SPOT \
 --default-capacity-provider-strategy \
 capacityProvider=FARGATE,weight=1,base=1 \
