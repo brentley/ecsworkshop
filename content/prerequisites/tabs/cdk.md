@@ -63,13 +63,8 @@ make all
 sudo make install 
 popd
 
-# For the workshop, we will be using Python as our language for the aws-cdk
-cd ~/environment
-virtualenv .env
-source .env/bin/activate
-
 # Install cdk packages
-pip install --upgrade aws-cdk.core==$AWS_CDK_VERSION \
+pip install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs_patterns==$AWS_CDK_VERSION \
 aws-cdk.aws_ec2==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs==$AWS_CDK_VERSION \
