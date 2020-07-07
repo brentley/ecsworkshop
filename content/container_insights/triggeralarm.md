@@ -11,7 +11,7 @@ We are going to use Siege once again to create load on the environment so the al
 Execute the following command on your Cloud9 Workspace and watch for the CPU Utilization to go up.
 
 ```
-siege -c 200 -i {YOURLOADBALANCER URL}
+siege -c 200 -i $alb_url
 ```
 In about 5 minutes or so you will see the CPU Utilization crossing the 50% mark as shown below. 
 
