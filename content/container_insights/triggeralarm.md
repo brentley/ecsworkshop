@@ -11,7 +11,9 @@ We are going to use Siege once again to create load on the environment so the al
 Execute the following command on your Cloud9 Workspace and watch for the CPU Utilization to go up.
 
 ```
-siege -c 200 -i {YOURLOADBALANCER URL}
+alb_url=$(aws cloudformation describe-stacks --stack-name container-demo-alb --query 'Stacks[0].Outputs[?OutputKey==`ExternalUrl`].OutputValue' --output text 2> /dev/null || aws cloudformation describe-stacks --stack-name ecsworkshop-frontend | jq -r '.Stacks[].Outputs[] | select(.OutputKey | contains("FrontendFargateLBServiceServiceURL")) | .OutputValue')
+
+siege -c 200 -i $alb_url
 ```
 In about 5 minutes or so you will see the CPU Utilization crossing the 50% mark as shown below. 
 
@@ -23,5 +25,3 @@ This will trigger the alarm we configured earlier. Notice the state of the alarm
 
 You will also receive an email notification such as the one below.
 ![Cluster Dashboard](/images/ContainerInsights28.png)
-
-
