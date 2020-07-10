@@ -6,6 +6,8 @@ weight = 54
 
 # Amazon ECS Cluster Capacity Providers
 
+{{< youtube V0qyjSvGkJU >}}
+
 In this chapter, we will gain an understanding of how Capacity Providers can help us in managing autoscaling for EC2 backed tasks, as well as ways to implement cost savings when running Fargate tasks.
 We will implement two capacity provider strategies in our cluster: 
 

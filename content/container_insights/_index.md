@@ -6,6 +6,8 @@ weight: 52
 
 # Configure CloudWatch Container Insights for your ECS cluster
 
+{{< youtube hMqAApYgkaM >}}
+
 ### Introduction
 
 In this chapter we will learn about setting up Monitoring for the your ECS environment through Amazon CloudWatch Container Insights.
