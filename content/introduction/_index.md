@@ -6,6 +6,8 @@ weight = 5
 
 # Introduction to ECS (Elastic Container Service)
 
+{{< youtube mW3bTlJTU1w >}}
+
 Welcome to the Amazon ECS Workshop!
 
 This workshop is designed to educate engineers that might not be familiar with Fargate, ECS,
