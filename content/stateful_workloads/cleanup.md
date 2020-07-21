@@ -1,7 +1,7 @@
 +++
 title = "Cleanup"
 chapter = false
-weight = 6
+weight = 7
 +++
 
 #### Cleanup
