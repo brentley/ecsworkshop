@@ -39,3 +39,7 @@ Go to [CloudFormation] (https://console.aws.amazon.com/cloudformation/home) and 
 
 ![Cluster Dashboard](/images/ContainerInsights29.png)
 
+{{% notice tip%}}
+There is a lot more to learn about our Observability features using Amazon CloudWatch and AWS X-Ray. Take a look at our [One Observability Workshop](https://observability.workshop.aws)
+{{% /notice%}}
+
