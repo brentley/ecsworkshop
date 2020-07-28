@@ -2,6 +2,7 @@
 title: "Stateful Workloads"
 chapter: true
 weight: 56
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 ---
 
 # Stateful workloads on ECS Fargate

@@ -2,6 +2,7 @@
 title: "Introduction"
 chapter: true
 weight: 5
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 ---
 
 # Introduction to ECS (Elastic Container Service)

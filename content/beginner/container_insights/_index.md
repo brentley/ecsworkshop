@@ -2,6 +2,7 @@
 title: "CloudWatch Container Insights"
 chapter: true
 weight: 52
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 ---
 
 # Configure CloudWatch Container Insights for your ECS cluster
