@@ -1,8 +1,9 @@
-+++
-title = "Platform"
-chapter = true
-weight = 20
-+++
+---
+title: "Platform"
+chapter: true
+weight: 20
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
+---
 
 # Build the Platform
 
