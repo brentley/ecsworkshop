@@ -1,8 +1,8 @@
-+++
-title = "Deploying microservices to ECS"
-chapter = false
-weight = 20
-+++
+---
+title: "Deploying microservices to ECS"
+chapter: false
+weight: 20
+---
 
 What will we be doing in the workshop?
 

@@ -1,8 +1,8 @@
-+++
-title = "Stateful Workloads"
-chapter = true
-weight = 56
-+++
+---
+title: "Stateful Workloads"
+chapter: true
+weight: 56
+---
 
 # Stateful workloads on ECS Fargate
 

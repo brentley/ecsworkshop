@@ -1,8 +1,8 @@
-+++
-title = "Cluster"
-chapter = false
-weight = 20
-+++
+---
+title: "Cluster"
+chapter: false
+weight: 20
+---
 
 An Amazon ECS cluster is a logical grouping of tasks or services.
 

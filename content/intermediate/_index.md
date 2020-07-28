@@ -1,8 +1,8 @@
-+++
-title = "Intermediate"
-chapter = true
-weight = 20
-+++
+---
+title: "Intermediate"
+chapter: true
+weight: 20
+---
 
 # Intermediate
 

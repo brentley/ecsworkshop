@@ -1,8 +1,8 @@
-+++
-title = "Install and Configure Tools"
-chapter = false
-weight = 10
-+++
+---
+title: "Install and Configure Tools"
+chapter: false
+weight: 10
+---
 
 In the Cloud9 workspace, run the following commands:
 

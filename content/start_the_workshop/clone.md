@@ -1,8 +1,8 @@
-+++
-title = "Clone the Service Repos"
-chapter = false
-weight = 60
-+++
+---
+title: "Clone the Service Repos"
+chapter: false
+weight: 60
+---
 
 Clone the service repos to your workspace:
 

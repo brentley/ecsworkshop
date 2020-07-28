@@ -1,8 +1,8 @@
-+++
-title = "Capacity Providers"
-chapter = true
-weight = 54
-+++
+---
+title: "Capacity Providers"
+chapter: true
+weight: 54
+---
 
 # Amazon ECS Cluster Capacity Providers
 

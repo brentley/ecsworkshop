@@ -1,8 +1,8 @@
-+++
-title = "Beginner"
-chapter = true
-weight = 20
-+++
+---
+title: "Beginner"
+chapter: true
+weight: 20
+---
 
 # Beginner
 

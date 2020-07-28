@@ -1,8 +1,8 @@
-+++
-title = "Local Testing"
-chapter = true
-weight = 60
-+++
+---
+title: "Local Testing"
+chapter: true
+weight: 60
+---
 
 # Local Testing using the ecs-cli
 
