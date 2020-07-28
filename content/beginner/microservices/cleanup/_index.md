@@ -1,9 +1,8 @@
 +++
-title = "Cleanup Cloud9 Workspace"
+title = "Cleanup"
 chapter = true
 weight = 80
 +++
 
-# Cleanup Cloud9 Workspace
-
+# Cleanup
 ![Cleaned Environment](/images/cleanup.svg)
