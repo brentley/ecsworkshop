@@ -39,3 +39,11 @@ Go to [CloudFormation] (https://console.aws.amazon.com/cloudformation/home) and 
 
 ![Cluster Dashboard](/images/ContainerInsights29.png)
 
+Destroy the frontend service stack and the platform stack:
+
+```bash
+cd ~/environment/ecsdemo-frontend/cdk
+cdk destroy -f
+cd ~/environment/container-demo/cdk
+cdk destroy -f
+```

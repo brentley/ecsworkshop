@@ -5,7 +5,8 @@ weight: 10
 ---
 
 #### Application setup
-In this section we will setup Container insights for the sample application in this workshop [here](../../platform). If you haven't set it up yet, go ahead and setup the cluster on **ECS Fargate** and come back here.
+
+In this section we will setup Container insights on the ECS Cluster we just built.
 
 #### Get the cluster name
 
