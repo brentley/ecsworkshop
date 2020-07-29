@@ -1,7 +1,7 @@
 ---
 title: "Capacity Providers Primer"
 chapter: false
-weight: 1
+weight: 20
 ---
 
 ## Overview

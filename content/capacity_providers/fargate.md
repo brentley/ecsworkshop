@@ -1,7 +1,7 @@
 ---
 title: "Deploy Fargate Capacity Provider Strategy"
 chapter: false
-weight: 2
+weight: 30
 ---
 
 {{< tabs name="Fargate Capacity Provider" >}}

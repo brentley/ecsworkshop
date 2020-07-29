@@ -1,7 +1,7 @@
 ---
 title: "Deploy ECS Cluster Auto Scaling"
 chapter: false
-weight: 3
+weight: 40
 ---
 
 {{< tabs name="ECS Cluster Autoscaling" >}}
