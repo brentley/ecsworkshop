@@ -5,6 +5,7 @@ weight = 60
 +++
 
 #### Delete the ecs applications and platform
+
 ```bash
 cd ~/environment/ecsdemo-capacityproviders/ec2
 cdk destroy -f

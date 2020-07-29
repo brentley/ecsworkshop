@@ -2,6 +2,7 @@
 title: "Deploying microservices to ECS"
 chapter: false
 weight: 20
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 ---
 
 What will we be doing in the workshop?
