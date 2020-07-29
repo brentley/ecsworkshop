@@ -6,13 +6,6 @@ weight = 6
 
 In the Cloud9 workspace, run the following commands:
 
-- Clone the demo repository:
-
-```
-cd ~/environment
-git clone https://github.com/brentley/container-demo
-```
-
 - Ensure service linked roles exist for Load Balancers and ECS:
 
 ```
