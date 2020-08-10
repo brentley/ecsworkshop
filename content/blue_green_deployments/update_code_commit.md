@@ -50,9 +50,10 @@ git push
 * The code push has triggered the pipeline execution
 * We have three stages in the pipeline
     * **Source**
-        * Package the artifacts for the build stage
+        * Pull down the code from the git repository
+        * Package the code for the build stage
     * **Build**
-        * Build the code
+        * Build the Docker image from the code
         * Push to the ECR repository
         * Package the artifacts for the deploy stage 
     * **Deploy**
