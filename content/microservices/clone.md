@@ -12,4 +12,7 @@ git clone https://github.com/brentley/container-demo
 git clone https://github.com/brentley/ecsdemo-frontend
 git clone https://github.com/brentley/ecsdemo-nodejs
 git clone https://github.com/brentley/ecsdemo-crystal
+git clone https://github.com/adamjkeller/ecsworkshop-efsdemo
+git clone https://github.com/adamjkeller/ecsdemo-capacityproviders
+git clone https://github.com/smuralee/ecs-codepipeline-demo
 ```

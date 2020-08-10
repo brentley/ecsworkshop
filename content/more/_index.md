@@ -5,6 +5,8 @@ weight: 99
 
 Discover more AWS resources for building and running your application on AWS:
 
+* [Containers from the Couch](https://containersfromthecouch.com) - Check out our latest container shows, and learn all about running containers!
+
 #### More Workshops
 
 * [Amazon EKS Workshop](https://eksworkshop.com) - This workshop guides you through the process of setting up and using a Kubernetes cluster on AWS
