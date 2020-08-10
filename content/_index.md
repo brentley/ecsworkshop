@@ -4,6 +4,11 @@ chapter: true
 weight: 1
 ---
 
+{{% notice note %}}
+For even more container related content, check out our new show:
+[Containers from the Couch](https://containersfromthecouch.com)
+{{% /notice %}}
+
 ## Amazon ECS Workshop for AWS Fargate
 
 ![3-service-animated](/images/3-service-animated.gif)

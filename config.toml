@@ -34,16 +34,21 @@ editURL = "https://github.com/brentley/ecsworkshop/edit/master/content/"
     weight = -110
 
 [[menu.shortcuts]]
+name = "<i class='fab fa-youtube'></i> Containers from the Couch"
+url = "https://containersfromthecouch.com"
+weight = 1
+
+[[menu.shortcuts]]
 name = "<i class='fab fa-twitter fa-lg'></i> @brentContained"
 identifier = "tw"
 url = "https://twitter.com/intent/user?screen_name=brentContained"
-weight = 1
+weight = 2
 
 [[menu.shortcuts]]
 name = "<i class='fab fa-twitter fa-lg'></i> @realadamjkeller"
 identifier = "twa"
 url = "https://twitter.com/intent/user?screen_name=realadamjkeller"
-weight = 2
+weight = 3
 
 [[menu.shortcuts]]
 name = "<i class='fas fa-chalkboard'></i> AppMesh Workshop"
