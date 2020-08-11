@@ -40,7 +40,7 @@ cd ~/environment/container-demo/cdk
 cdk deploy --require-approval never
 ```
 
-#### Deploy the frontend load balanced microservice
+#### Deploy the microservices
 
 Next, we will deploy a three-tier polyglot web app to our ECS cluster. For more information on what is being deployed, see the [microservices](../../microservices) section of the workshop.
 
