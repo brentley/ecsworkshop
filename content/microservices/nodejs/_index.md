@@ -9,4 +9,7 @@ pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 
 {{< youtube xovOpP0ctfI >}}
 
-![Empty Environment](/images/nodejs.svg)
+{{< tabs name="Deploy Frontend" >}}
+{{< tab name="cdk" include="tabs/cdk.md" />}}
+{{< tab name="ecs-cli fargate mode" include="tabs/ecscli.md" />}}
+{{< /tabs >}}
