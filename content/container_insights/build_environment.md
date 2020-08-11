@@ -27,16 +27,32 @@ Clone the service repos:
 cd ~/environment
 git clone https://github.com/brentley/container-demo
 git clone https://github.com/brentley/ecsdemo-frontend
+git clone https://github.com/brentley/ecsdemo-nodejs
+git clone https://github.com/brentley/ecsdemo-crystal
 ```
 
 #### Build the platform
 
-First, we need to build the environment for our frontend service to run. Navigate to the microservices chapter and find the [Platform](../../microservices/platform) section and follow the steps to deploy via the cdk.
+First, we need to build the environment for our frontend service to run. For more information on what we're building, you can review the code here: [Platform](../../microservices/platform/build_environment).
+
+```bash
+cd ~/environment/container-demo/cdk
+cdk deploy --require-approval never
+```
 
 #### Deploy the frontend load balanced microservice
 
-Next, we need to deploy the frontend microservice to our ECS Cluster. Navigate to the microservices chapter and follow the cdk steps for the [Frontend Rails App](../../microservices/frontend).
+Next, we will deploy a three-tier polyglot web app to our ECS cluster. For more information on what is being deployed, see the [microservices](../../microservices) section of the workshop.
+
+```bash
+cd ~/environment/ecsdemo-frontend/cdk
+cdk deploy --require-approval never
+cd ~/environment/ecsdemo-nodejs/cdk
+cdk deploy --require-approval never
+cd ~/environment/ecsdemo-crystal/cdk
+cdk deploy --require-approval never
+```
 
 #### Next page
 
-Once you've created the platform and deployed the frontend service, please move on to the next page.
+Once you've created the platform and deployed the services to the cluster, please move on to the next page.

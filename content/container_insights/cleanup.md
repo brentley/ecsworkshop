@@ -45,11 +45,21 @@ Destroy the frontend service stack and the platform stack:
 ```bash
 cd ~/environment/ecsdemo-frontend/cdk
 cdk destroy -f
+cd ~/environment/ecsdemo-nodejs/cdk
+cdk destroy -f
+cd ~/environment/ecsdemo-crystal/cdk
+cdk destroy -f
 cd ~/environment/container-demo/cdk
 cdk destroy -f
-```
 
-=======
+python -c "import boto3
+c = boto3.client('logs')
+services = ['ecsworkshop-frontend', 'ecsworkshop-nodejs', 'ecsworkshop-crystal']
+for service in services:
+    frontend_logs = c.describe_log_groups(logGroupNamePrefix=service)
+    print([c.delete_log_group(logGroupName=x['logGroupName']) for x in frontend_logs['logGroups']])"
+
+```
 
 {{% notice tip%}}
 There is a lot more to learn about our Observability features using Amazon CloudWatch and AWS X-Ray. Take a look at our [One Observability Workshop](https://observability.workshop.aws)
