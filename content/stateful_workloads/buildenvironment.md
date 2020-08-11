@@ -1,7 +1,7 @@
 ---
 title: "Build the environment"
 chapter: false
-weight: 3
+weight: 40
 ---
 
 {{< tabs name="Deploy Environment" >}}

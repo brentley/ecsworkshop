@@ -1,7 +1,7 @@
 ---
 title: "Test Functionality"
 chapter: false
-weight: 5
+weight: 60
 ---
 
 #### Open the service in your browser

@@ -37,7 +37,7 @@ First, we need to build the environment for our frontend service to run. For mor
 
 ```bash
 cd ~/environment/container-demo/cdk
-cdk deploy --require-approval never
+cdk context --clear && cdk deploy --require-approval never
 ```
 
 #### Deploy the microservices
@@ -46,11 +46,11 @@ Next, we will deploy a three-tier polyglot web app to our ECS cluster. For more 
 
 ```bash
 cd ~/environment/ecsdemo-frontend/cdk
-cdk deploy --require-approval never
+cdk context --clear && cdk deploy --require-approval never
 cd ~/environment/ecsdemo-nodejs/cdk
-cdk deploy --require-approval never
+cdk context --clear && cdk deploy --require-approval never
 cd ~/environment/ecsdemo-crystal/cdk
-cdk deploy --require-approval never
+cdk context --clear && cdk deploy --require-approval never
 ```
 
 #### Next page

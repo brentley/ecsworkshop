@@ -1,7 +1,7 @@
 ---
 title: "Deploy the application"
 chapter: false
-weight: 4
+weight: 50
 ---
 
 {{< tabs name="Deploy Application" >}}

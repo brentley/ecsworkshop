@@ -1,7 +1,7 @@
 ---
 title: "Meet the application"
 chapter: false
-weight: 1
+weight: 20
 ---
 
 For this part of the workshop, we will be deploying a cloud file manager to Fargate. [Cloud Commander](https://cloudcmd.io/) is a file manager built for the web, and is a perfect fit to showcase persistent storage functionality.
