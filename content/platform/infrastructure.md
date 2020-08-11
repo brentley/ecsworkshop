@@ -9,7 +9,7 @@ If breaking down a monolith into microservices is a good idea, then it stands to
 keeping the code that manages your app platform small and simple also makes sense.
 
 In this workshop, we manage the infrastructure with this repository, and then each service
-will be maintained in it's own separate repository.
+will be maintained in its own separate repository.
 
 This repository will be used to build the base environment for the microservices to deploy to.
 
