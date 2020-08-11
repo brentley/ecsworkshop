@@ -31,11 +31,11 @@ git clone https://github.com/brentley/ecsdemo-frontend
 
 #### Build the platform
 
-First, we need to build the environment for our frontend service to run. Navigate to the microservices chapter and find the [Platform](../microservices/platform) section and follow the steps to deploy via the cdk.
+First, we need to build the environment for our frontend service to run. Navigate to the microservices chapter and find the [Platform](../../microservices/platform) section and follow the steps to deploy via the cdk.
 
 #### Deploy the frontend load balanced microservice
 
-Next, we need to deploy the frontend microservice to our ECS Cluster. Navigate to the microservices chapter and follow the cdk steps for the [Frontend Rails App](../microservices/frontend).
+Next, we need to deploy the frontend microservice to our ECS Cluster. Navigate to the microservices chapter and follow the cdk steps for the [Frontend Rails App](../../microservices/frontend).
 
 #### Next page
 
