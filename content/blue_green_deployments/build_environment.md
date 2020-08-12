@@ -7,6 +7,7 @@ weight = 3
 #### Navigate to the repo
 
 ```bash
+git clone https://github.com/smuralee/ecs-codepipeline-demo ~/environment/ecs-codepipeline-demo
 cd ~/environment/ecs-codepipeline-demo
 ```
 
