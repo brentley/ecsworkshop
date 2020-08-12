@@ -1,8 +1,8 @@
-+++
-title = "Test Functionality"
-chapter = false
-weight = 5
-+++
+---
+title: "Test Functionality"
+chapter: false
+weight: 60
+---
 
 #### Open the service in your browser
 

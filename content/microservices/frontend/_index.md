@@ -1,8 +1,13 @@
-+++
-title = "Deploy the Frontend Service"
-chapter = false
-weight = 3
-+++
+---
+title: "Frontend Rails App"
+chapter: true
+weight: 30
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
+---
+
+# Frontend Rails App
+
+{{< youtube D8ZuQIZrxqo >}}
 
 {{< tabs name="Deploy Frontend" >}}
 {{< tab name="cdk" include="tabs/cdk.md" />}}

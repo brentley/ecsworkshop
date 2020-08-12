@@ -1,8 +1,8 @@
-+++
-title = "Capacity Providers Primer"
-chapter = false
-weight = 1
-+++
+---
+title: "Capacity Providers Primer"
+chapter: false
+weight: 20
+---
 
 ## Overview
 

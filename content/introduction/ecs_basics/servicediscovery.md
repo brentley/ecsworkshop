@@ -1,8 +1,8 @@
-+++
-title = "Service Discovery"
-chapter = false
-weight = 65
-+++
+---
+title: "Service Discovery"
+chapter: false
+weight: 65
+---
 
 Because containers are immutable by nature, they can churn regularly and be replaced with newer versions of the service. This means that there is a need to register the new and deregister the old/unhealthy services. To do this on your own is challenging, hence the need for service discovery.
 

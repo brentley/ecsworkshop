@@ -1,8 +1,8 @@
-+++
-title = "Install prerequisites"
-chapter = false
-weight = 1
-+++
+---
+title: "Install prerequisites"
+chapter: false
+weight: 1
+---
 
 ## Install docker-compose
 

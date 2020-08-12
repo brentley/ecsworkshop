@@ -1,8 +1,8 @@
-+++
-title = "Fargate"
-chapter = false
-weight = 60
-+++
+---
+title: "Fargate"
+chapter: false
+weight: 60
+---
 
 ![fargate](/images/fargate.png)
 

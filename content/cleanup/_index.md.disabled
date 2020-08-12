@@ -2,6 +2,7 @@
 title = "Clean up Compute Resources."
 chapter = false
 weight = 10
+hidden = true
 +++
 
 Let's clean up our compute resources first:

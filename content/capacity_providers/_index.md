@@ -1,8 +1,9 @@
-+++
-title = "Capacity Providers"
-chapter = true
-weight = 54
-+++
+---
+title: "Capacity Providers"
+chapter: true
+weight: 54
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
+---
 
 # Amazon ECS Cluster Capacity Providers
 
