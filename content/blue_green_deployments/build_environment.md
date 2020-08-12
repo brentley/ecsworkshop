@@ -4,6 +4,13 @@ chapter = false
 weight = 3
 +++
 
+#### Install prerequisites
+
+```bash
+sudo yum install -y jq
+npm i -g -f aws-cdk@1.54.0
+```
+
 #### Navigate to the repo
 
 ```bash
