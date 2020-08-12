@@ -12,4 +12,3 @@ stack like you may work with in your organization.
 
 ![3 tier archicture](/images/3-tier-architecture.svg)
 
-{{% children showhidden="false" %}}
