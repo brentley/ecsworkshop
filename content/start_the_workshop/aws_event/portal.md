@@ -10,4 +10,4 @@ This workshop creates an AWS account. You will need the **Participant Hash** pro
 
 Connect to the portal by clicking the button or browsing to [https://dashboard.eventengine.run/](https://dashboard.eventengine.run/).
 
-Once you have completed the step above, you can head straight to [**Create a Workspace**](/prerequisites/workspace/)
+Once you have completed the step above, you can head straight to [**Create a Workspace**](../../workspace/)
