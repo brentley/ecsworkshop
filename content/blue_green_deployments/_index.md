@@ -2,7 +2,7 @@
 title = "Blue/Green Deployments"
 chapter = true
 weight = 56
-pre: '<i class="fa fa-film" aria-hidden="true"></i> '
+pre = '<i class="fa fa-film" aria-hidden="true"></i> '
 +++
 
 # Blue/Green Deployments on ECS Fargate
