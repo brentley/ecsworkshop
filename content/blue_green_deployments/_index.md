@@ -2,9 +2,12 @@
 title = "Blue/Green Deployments"
 chapter = true
 weight = 56
+pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 +++
 
 # Blue/Green Deployments on ECS Fargate
+
+{{< youtube DZ5eePBq74A >}}
 
 In this chapter, we will deploy a demo application on ECS Fargate and update the application using Blue/Green deployment capability of CodeDeploy and ECS.
 
