@@ -1,5 +1,5 @@
 ---
-title: "Deploying microservices to ECS"
+title: "Deploying Microservices to ECS"
 chapter: false
 weight: 20
 pre: '<i class="fa fa-film" aria-hidden="true"></i> '
