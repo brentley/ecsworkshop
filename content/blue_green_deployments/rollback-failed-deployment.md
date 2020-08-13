@@ -95,7 +95,7 @@ Here is the command to get the url:
 ```bash
 echo "http://$load_balancer_url"
 ```
-* You will notice the page returning **500 Internal Server Error**
+* You will notice the page returning **404 Not Found error**
 * We have configured CloudWatch alarms which will look for 4XX errors from the ELB target groups
 
 {{%expand "Expand to see the code" %}}
