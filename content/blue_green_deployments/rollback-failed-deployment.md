@@ -4,11 +4,23 @@ chapter = false
 weight = 7
 +++
 
-Here we will trigger an automated rollback but simulating a 500 error.
+#### Introduce a breaking change
 
-#### Edit the `nginx.conf` to return a 500 error instead of default `index.html`
+Here we will trigger an automated rollback by returning a 404 response code. Generally, the Application Load Balancer would catch this error, but for the sake of the demo, we are allowing that as an acceptable health check response.
 
-![Edit-Nginx-conf](/images/blue-green-edit-nginx-conf.gif)
+- Edit the `nginx.conf` to return a 500 error instead of default `index.html`
+
+Modify the / location directive to look like the following:
+
+```
+listen  80;
+root    /usr/share/nginx/html;
+include /etc/nginx/mime.types;
+
+location / {
+    return 404;
+}
+```
 
 {{%expand "Expand to see the complete nginx.conf" %}}
 ```
@@ -32,7 +44,7 @@ http {
         include /etc/nginx/mime.types;
 
         location / {
-            return 500;
+            return 404;
         }
 
         gzip            on;
@@ -67,7 +79,7 @@ http {
 ```bash
 cd ~/environment/nginx-example
 git add .
-git commit -m "Returning 500 error"
+git commit -m "Returning 404 error"
 git push
 ``` 
 
@@ -84,14 +96,14 @@ Here is the command to get the url:
 echo "http://$load_balancer_url"
 ```
 * You will notice the page returning **500 Internal Server Error**
-* We have configured CloudWatch alarms which will look for 5XX errors from the ELB target groups
+* We have configured CloudWatch alarms which will look for 4XX errors from the ELB target groups
 
 {{%expand "Expand to see the code" %}}
 ```typescript
-// CloudWatch Alarms for 5XX errors
+// CloudWatch Alarms for 4XX errors
 const blue5xxMetric = new cloudWatch.Metric({
     namespace: 'AWS/ApplicationELB',
-    metricName: 'HTTPCode_Target_5XX_Count',
+    metricName: 'HTTPCode_Target_4XX_Count',
     dimensions: {
         TargetGroup: blueGroup.targetGroupFullName,
         LoadBalancer: alb.loadBalancerFullName
@@ -99,9 +111,9 @@ const blue5xxMetric = new cloudWatch.Metric({
     statistic: cloudWatch.Statistic.SUM,
     period: Duration.minutes(1)
 });
-const blueGroupAlarm = new cloudWatch.Alarm(this, "blue5xxErrors", {
-    alarmName: "Blue_5xx_Alarm",
-    alarmDescription: "CloudWatch Alarm for the 5xx errors of Blue target group",
+const blueGroupAlarm = new cloudWatch.Alarm(this, "blue4xxErrors", {
+    alarmName: "Blue_4xx_Alarm",
+    alarmDescription: "CloudWatch Alarm for the 4xx errors of Blue target group",
     metric: blue5xxMetric,
     threshold: 1,
     evaluationPeriods: 1
@@ -109,7 +121,7 @@ const blueGroupAlarm = new cloudWatch.Alarm(this, "blue5xxErrors", {
 
 const green5xxMetric = new cloudWatch.Metric({
     namespace: 'AWS/ApplicationELB',
-    metricName: 'HTTPCode_Target_5XX_Count',
+    metricName: 'HTTPCode_Target_4XX_Count',
     dimensions: {
         TargetGroup: greenGroup.targetGroupFullName,
         LoadBalancer: alb.loadBalancerFullName
@@ -117,9 +129,9 @@ const green5xxMetric = new cloudWatch.Metric({
     statistic: cloudWatch.Statistic.SUM,
     period: Duration.minutes(1)
 });
-const greenGroupAlarm = new cloudWatch.Alarm(this, "green5xxErrors", {
-    alarmName: "Green_5xx_Alarm",
-    alarmDescription: "CloudWatch Alarm for the 5xx errors of Green target group",
+const greenGroupAlarm = new cloudWatch.Alarm(this, "green4xxErrors", {
+    alarmName: "Green_4xx_Alarm",
+    alarmDescription: "CloudWatch Alarm for the 4xx errors of Green target group",
     metric: green5xxMetric,
     threshold: 1,
     evaluationPeriods: 1
