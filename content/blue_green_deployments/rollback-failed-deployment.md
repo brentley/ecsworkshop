@@ -8,7 +8,7 @@ weight = 7
 
 Here we will trigger an automated rollback by returning a 404 response code. Generally, the Application Load Balancer would catch this error, but for the sake of the demo, we are allowing that as an acceptable health check response.
 
-- Edit the `nginx.conf` to return a 500 error instead of default `index.html`
+- Edit the `nginx.conf` to return a 404 error instead of default `index.html`
 
 Modify the / location directive to look like the following:
 
