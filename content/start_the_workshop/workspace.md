@@ -51,6 +51,7 @@ in the Cloud9 workspace menu.
 ### Increase the disk size on the Cloud9 instance
 
 ```bash
+sudo pip install boto3
 export instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 python -c "import boto3
 import os
@@ -76,7 +77,9 @@ try:
 except ClientError as e:
     if e.response['Error']['Code'] == 'InvalidParameterValue':
         print('ERROR MESSAGE: {}'.format(e))"
-sudo reboot
+if [ $? -eq 0 ]; then
+    sudo reboot
+fi
 
 ```
 
