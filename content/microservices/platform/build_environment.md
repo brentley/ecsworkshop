@@ -14,6 +14,13 @@ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam 
 aws iam get-role --role-name "AWSServiceRoleForECS" || aws iam create-service-linked-role --aws-service-name "ecs.amazonaws.com"
 ```
 
+- Install the session Manager plugin into cloud9 so we can connect to the temporary EC2 instance that we will use to load test the nodejs and crystal services
+
+```shell
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "session-manager-plugin.rpm"
+sudo yum install -y session-manager-plugin.rpm
+session-manager-plugin
+```
 
 {{< tabs name="Build the Acceptance and Production Environments" >}}
 {{< tab name="cdk" include="tabs/cdk.md" />}}

@@ -209,7 +209,7 @@ cdk deploy
 
 #### Setup Autoscaling in the code
 
-- Using the editor of your choice, open 'environment/ecsdemo-nodejs/cdk/app.py' in the cdk directory.
+- Using the editor of your choice, open '~/environment/ecsdemo-nodejs/cdk/app.py' in the cdk directory.
 
 - Search for `Enable Service Autoscaling` to find the code that will enable autoscaling for the service.
 
@@ -232,24 +232,19 @@ self.autoscale.scale_on_cpu_utilization(
 self.stressToolEc2 = self.nodejsTempEc2StressTool()
 ```
 
-### Install the session Manager plugin into cloud9 so we can connect to the ec2 instance
+#### Verify the SSM plugin is installed and working
 
-```shell
-curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "session-manager-plugin.rpm"
-sudo yum install -y session-manager-plugin.rpm
-```
-
-#### Verify the plugin is working
-
-Run the following to command to verify the installation
+- Run the following to command to verify the installation
 ```shell
 session-manager-plugin
 ```
 
 you should get something like this output:
-![verify-ssm-agent-plugin](/images/cdk-ssm-plugin-installation-output.png)
+![verify-ssm-agent-plugin](/images/cdk-ssm-plugin-verify-output.png)
 
 {{% /expand %}}
+
+- If it is not installed, please go back to the Platform configuration and install the SSM plugin
 
 #### Code Review
 
@@ -274,11 +269,8 @@ self.autoscale.scale_on_cpu_utilization(
 )
 ```
 
-- To stress the nodejs fargate service we need to have the ability to reach out the ECS nodejs fargate service end point. Since the nodejs service is in a private subnet, we will deploy an EC2 into the same VPC and use that EC2 instance to stress the nodejs service and see the auto-scale in action.
 
-```python
-self.stressToolEc2 = self.nodejsTempEc2StressTool()
-```
+
 
 
 #### Deploy Autoscaling
@@ -293,7 +285,7 @@ cdk diff
 
 - You should see the additon of two resources (image below). ECS is utilizing the Application Autoscaling service to manage the scaling of ECS tasks. In short, this will create a [target tracking policy](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-autoscaling-targettracking.html), which will set the desired target for scaling in and out (in this case, CPU utilization), and attach it to the ECS service.
 
-![task-as](/cdk-task-nodejs-ssm-ec2-autoscale-deployment-diff.png)
+![ecs-nodejs-as-diff](/images/cdk-ecs-nodejs-as-diff-output.png)
 
 - Deploy time!
 
@@ -301,19 +293,20 @@ cdk diff
 cdk deploy --require-approval never
 ```
 
-![task-as-output](/cdk-task-nodejs-ssm-ec2-autoscale-deployment-output.png)
+![ecs-nodejs-as-deployment](/images/cdk-ecs-nodejs-as-deployment-output.png)
 
 #### Load test
-- Once you have deployed the autoscaling, copy the instance id from the output and get into it using the ssm agent
 
+- In order to introduce load to the Nodejs Fargate service, we need to have the ability to reach its service endpoint. Since the service is in a private subnet, we will use the EC2 instance that was deployed within the same VPC. The instance was created in the Platform/Build Environment steps.
 
+- Once you have deployed the autoscaling, copy the instance id created during the platform deployment and get into temporary ec2 using the SSM agent or use the following code:
 
 ```shell
-ec2InstanceId=$(aws cloudformation describe-stacks --stack-name ecsworkshop-nodejs --query "Stacks" --output json | jq -r '.[].Outputs[] | select(.OutputKey |contains("StressToolEc2Id")) | .OutputValue')
+ec2InstanceId=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base --query "Stacks" --output json | jq -r '.[].Outputs[] | select(.OutputKey |contains("StressToolEc2Id")) | .OutputValue')
 aws ssm start-session --target "$ec2InstanceId"
 ```
 
-- Once you are in the ec2 instance, generate some load on the nodejs service. 
+- Once you are in the ec2 instance, generate the load test for the nodejs service. 
 
 ```bash
 siege -c 20 -i http://ecsdemo-nodejs.service:3000&
@@ -329,7 +322,7 @@ siege -c 20 -i http://ecsdemo-nodejs.service:3000&
 while true; do sleep 3; aws ecs describe-services --cluster container-demo --services ecsdemo-nodejs | jq '.services[] | "Tasks Desired: \(.desiredCount) vs Tasks Running: \(.runningCount)"'; done 
 ```
 
-![task-as-loadtest-output](/cdk-task-nodejs-ssm-ec2-autoscale-loadtest-output.png)
+![task-as-loadtest-output](/images/cdk-task-nodejs-ssm-ec2-autoscale-loadtest-output.png)
 
 - Now that we've seen the service autoscale out, let's stop the running while loop. Simply press `control + c` to cancel.
 
@@ -343,7 +336,7 @@ while true; do sleep 3; aws ecs describe-services --cluster container-demo --ser
 {{% /expand %}}
 
 {{%expand "Console" %}}
-![task-as-console-loadtest-output](/cdk-ecs-nodejs-as-console-output.gif)
+![task-as-console-loadtest-output](/images/cdk-ecs-nodejs-as-console-output.gif)
 {{% /expand %}}
 
 {{% /expand %}}
