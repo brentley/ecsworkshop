@@ -4,7 +4,7 @@ defaultContentLanguage = "en"
 title = "Amazon ECS Workshop"
 theme = "learn"
 uglyurls = false
-googleAnalytics = "UA-44634850-2"
+# googleAnalytics = "UA-44634850-2"
 sectionPagesMenu = "main"
 relativeURLs = true
 
