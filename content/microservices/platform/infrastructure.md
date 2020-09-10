@@ -19,6 +19,10 @@ This repository will build the baseline platform for the microservices to deploy
 We will be continue using the AWS CDK to deploy our applications into this cluster.
 {{% /expand %}}
 
+{{%expand "copilot-cli path" %}}
+FILL CONTENT HERE
+{{% /expand %}}
+
 {{%expand "ecs-cli path" %}}
 This repository will use 2 CloudFormation Stacks that will build our cluster environment and ALB.
 

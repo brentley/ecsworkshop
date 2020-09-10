@@ -15,8 +15,9 @@ aws iam get-role --role-name "AWSServiceRoleForECS" || aws iam create-service-li
 ```
 
 
-{{< tabs name="Build the Acceptance and Production Environments" >}}
+{{< tabs name="Build the environments" >}}
 {{< tab name="cdk" include="tabs/cdk.md" />}}
+{{< tab name="copilot-cli" include="tabs/copilot.md" />}}
 {{< tab name="ecs-cli fargate mode" include="tabs/ecscli.md" />}}
 {{< tab name="ecs-cli ec2 mode" include="tabs/ecscli-ec2-mode.md" />}}
 {{< /tabs >}}
