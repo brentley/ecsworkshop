@@ -1,5 +1,5 @@
 ---
-title: "Acceptance and Production"
+title: 'Acceptance and Production'
 disableToc: true
 hidden: true
 ---
@@ -199,6 +199,7 @@ cdk deploy
 {{% /expand %}}
 
 #### Autoscaling
+
 {{%expand "Expand here to see the solution" %}}
 
 #### Why autoscale?
@@ -229,22 +230,7 @@ self.autoscale.scale_on_cpu_utilization(
     scale_out_cooldown=core.Duration.seconds(30)
 )
 
-self.stressToolEc2 = self.nodejsTempEc2StressTool()
 ```
-
-#### Verify the SSM plugin is installed and working
-
-- Run the following to command to verify the installation
-```shell
-session-manager-plugin
-```
-
-you should get something like this output:
-![verify-ssm-agent-plugin](/images/cdk-ssm-plugin-verify-output.png)
-
-{{% /expand %}}
-
-- If it is not installed, please go back to the Platform configuration and install the SSM plugin
 
 #### Code Review
 
@@ -268,10 +254,6 @@ self.autoscale.scale_on_cpu_utilization(
     scale_out_cooldown=core.Duration.seconds(30)
 )
 ```
-
-
-
-
 
 #### Deploy Autoscaling
 
@@ -309,7 +291,7 @@ aws ssm start-session --target "$ec2InstanceId"
 - Once you are in the ec2 instance, generate the load test for the nodejs service. 
 
 ```bash
-siege -c 20 -i http://ecsdemo-nodejs.service:3000&
+siege -c 100 -i http://ecsdemo-nodejs.service:3000&
 ```
 
 - While siege is running in the background, either navigate to the console or monitor the autoscaling from the command line in a new cloud9 terminal.
@@ -319,7 +301,7 @@ siege -c 20 -i http://ecsdemo-nodejs.service:3000&
 - Compare the tasks running vs tasks desired. As the load increases on the nodejs service, we should see these counts eventually increase up to 10. This is autoscaling happening in real time. Please note that this step will take a few minutes. Feel free to run this in one terminal, and move on to the next steps in another terminal.
 
 ```bash
-while true; do sleep 3; aws ecs describe-services --cluster container-demo --services ecsdemo-nodejs | jq '.services[] | "Tasks Desired: \(.desiredCount) vs Tasks Running: \(.runningCount)"'; done 
+watch -d -n 3 echo `aws ecs describe-services --cluster container-demo --services ecsdemo-nodejs | jq '.services[] | "Tasks Desired: \(.desiredCount) vs Tasks Running: \(.runningCount)"'`
 ```
 
 ![task-as-loadtest-output](/images/cdk-task-nodejs-ssm-ec2-autoscale-loadtest-output.png)
