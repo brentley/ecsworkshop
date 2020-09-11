@@ -77,7 +77,40 @@ self.sec_grp_ingress_self_3000 = aws_ec2.CfnSecurityGroupIngress(
     group_id=self.services_3000_sec_group.security_group_id
 )
 
-# All Outputs required for other stacks to build in the same environment
+##CREATING TEMPORARY EC2 INSTANCE TO LOAD TEST NODEJS AND CRYSTAL SERVICES##
+# Pulling latest AMI that will be used to create the ec2 instance
+amzn_linux = aws_ec2.MachineImage.latest_amazon_linux(
+    generation=aws_ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
+    edition=aws_ec2.AmazonLinuxEdition.STANDARD,
+    virtualization=aws_ec2.AmazonLinuxVirt.HVM,
+    storage=aws_ec2.AmazonLinuxStorage.GENERAL_PURPOSE
+    )
+
+# Instance Role/profile that will be attached to the ec2 instance 
+# Enabling service role so the EC2 service can use ssm
+role = aws_iam.Role(self, "InstanceSSM", assumed_by=aws_iam.ServicePrincipal("ec2.amazonaws.com"))
+
+# Attaching the SSM policy to the role so we can use SSM to ssh into the ec2 instance
+role.add_managed_policy(aws_iam.ManagedPolicy.from_aws_managed_policy_name("service-role/AmazonEC2RoleforSSM"))
+
+
+# Reading user data, to install siege into the ec2 instance.
+with open("stresstool_user_data.sh") as f:
+    user_data = f.read()
+
+# Instance creation
+self.instance = aws_ec2.Instance(self, "Instance",
+    instance_name="{}-stresstool".format(stack_name),
+    instance_type=aws_ec2.InstanceType("t3.medium"),
+    machine_image=amzn_linux,
+    vpc = self.vpc,
+    role = role,
+    user_data=aws_ec2.UserData.custom(user_data),
+    security_group=self.services_3000_sec_group
+        )
+
+
+# All Outputs required for other stacks to build
 core.CfnOutput(self, "NSArn", value=self.namespace_outputs['ARN'], export_name="NSARN")
 core.CfnOutput(self, "NSName", value=self.namespace_outputs['NAME'], export_name="NSNAME")
 core.CfnOutput(self, "NSId", value=self.namespace_outputs['ID'], export_name="NSID")
@@ -85,24 +118,28 @@ core.CfnOutput(self, "FE2BESecGrp", value=self.services_3000_sec_group.security_
 core.CfnOutput(self, "ECSClusterName", value=self.cluster_outputs['NAME'], export_name="ECSClusterName")
 core.CfnOutput(self, "ECSClusterSecGrp", value=self.cluster_outputs['SECGRPS'], export_name="ECSSecGrpList")
 core.CfnOutput(self, "ServicesSecGrp", value=self.services_3000_sec_group.security_group_id, export_name="ServicesSecGrp")
+core.CfnOutput(self, "StressToolEc2Id",value=self.instance.instance_id)
+core.CfnOutput(self, "StressToolEc2Ip",value=self.instance.instance_private_ip)
 ```
 
 When the stack is done building, it will print out all of the outputs for the underlying CloudFormation stack. These outputs are what we use to reference the base platform when deploying the microservices. Below is an example of what the outputs look like:
 
 ```bash
-   ecsworkshop-base
+    ecsworkshop-base
 
 Outputs:
 ecsworkshop-base.NSName = service
-ecsworkshop-base.NSId = ns-jxsmy6sggusms4vr
-ecsworkshop-base.ECSClusterName = ecsworkshop-base-ECSCluster7D463CD4-123JC9IHENY94
-ecsworkshop-base.FE2BESecGrp = sg-0681f217a4d567ece
-ecsworkshop-base.NSArn = arn:aws:servicediscovery:us-west-2:123456789:namespace/ns-jxsmy6sggusms4vr
-ecsworkshop-base.ServicesSecGrp = sg-0681f217a4d567ece
+ecsworkshop-base.StressToolEc2Ip = 10.0.0.100
+ecsworkshop-base.NSId = ns-6ao4bo7j4atvqt6d
+ecsworkshop-base.ECSClusterName = container-demo
+ecsworkshop-base.FE2BESecGrp = sg-022215fe3d238e192
+ecsworkshop-base.NSArn = arn:aws:servicediscovery:us-west-2:875448814018:namespace/ns-6ao4bo7j4atvqt6d
+ecsworkshop-base.ServicesSecGrp = sg-022215fe3d238e192
 ecsworkshop-base.ECSClusterSecGrp = []
+ecsworkshop-base.StressToolEc2Id = i-04908250956954470
 
 Stack ARN:
-arn:aws:cloudformation:us-west-2:123456789:stack/ecsworkshop-base/afe381b0-58e1-11ea-8997-02e1301110e6
+arn:aws:cloudformation:us-west-2:875448814018:stack/ecsworkshop-base/62614260-f22e-11ea-8d70-061326aceaf4
 ```
 
 That's it, we have deployed the base platform. Now let's move on to deploying the microservices.
