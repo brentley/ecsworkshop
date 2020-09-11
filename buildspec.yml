@@ -60,7 +60,10 @@ phases:
   build:
     commands:
       - mkdir -p themes/learn
-      - git clone --branch 2.4.0 https://github.com/matcornic/hugo-theme-learn.git themes/learn
+      # Cloning ecsworkshop branch on brents clone of hugo learn theme.
+      # Reason is due to p tag css defaulting to center align, changed to left
+      - git clone --branch ecsworkshop https://github.com/brentley/hugo-theme-learn.git themes/learn
+      #- git clone --branch 2.4.0 https://github.com/matcornic/hugo-theme-learn.git themes/learn
       - echo "<p class="build-number">${IMAGE_TAG}</p>" >> layouts/partials/menu-footer.html
       - cat layouts/partials/menu-footer.html
       - npm install
