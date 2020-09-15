@@ -22,7 +22,7 @@ cdk synth
 cdk diff
 ```
 
-## Deploy the Nodejs backend service
+## Deploy the crystal backend service
 ```bash
 cdk deploy --require-approval never
 ```
@@ -199,8 +199,128 @@ cdk deploy
 {{% /expand %}}
 
 #### Autoscaling
+
 {{%expand "Expand here to see the solution" %}}
 
-- Coming soon!
+#### Why autoscale?
+
+- Well, to put it simply - it's either a human scales the service, or the orchestrator. 
+    - If we choose to do it manually, this means that as load increases, we need to stop what we are doing to scale the service to meet the load (and not to mention that we have to eventually scale back down once the load clears). This can be tedious and painful, hence why autoscaling exists.
+    - If we let the orchestrator handle the scaling in and out for the service, we can focus on continuous improvement, and less on operational heavy lifting. In order to get autoscaling setup, one first needs to know what metric to use as the decision to autoscale. Some example metrics for scaling are CPU utilization, memory utilization, and queue depth.
+
+#### Setup Autoscaling in the code
+
+- Using the editor of your choice, open '~/environment/ecsdemo-crystal/cdk/app.py' in the cdk directory.
+
+- Search for `Enable Service Autoscaling` to find the code that will enable autoscaling for the service.
+
+- Remove the comments (#) from the code for self.autoscale and below, once you remove them, it should look like the following:
+
+```python
+# Enable Service Autoscaling
+self.autoscale = self.fargate_service.auto_scale_task_count(
+    min_capacity=1,
+    max_capacity=10
+)
+
+# We will use target_utilization_percent=20% for testing purposes
+self.autoscale.scale_on_cpu_utilization(
+    "CPUAutoscaling",
+    target_utilization_percent=20,
+    scale_in_cooldown=core.Duration.seconds(30),
+    scale_out_cooldown=core.Duration.seconds(30)
+)
+
+```
+
+#### Code Review
+
+- To start modeling our autoscaling logic, we first set what our upper and lower bounds are. This ensures that we will always be at a minimum of 1 task, and a maximum of 10 tasks.
+
+```python
+# Enable Service Autoscaling
+self.autoscale = self.fargate_service.auto_scale_task_count(
+    min_capacity=1,
+    max_capacity=10
+)
+```
+
+- When the ECS service is deployed, Cloudwatch metrics such as CPU utilization are enabled by default. We are going to take advantage of that metric and use it as our scaling target. In this method, we are setting what our target cpu utilization percent is, and how long in between scale activities we want to wait before it adds/removes another task.
+
+```python
+# We will use target_utilization_percent=20% for testing purposes
+self.autoscale.scale_on_cpu_utilization(
+    "CPUAutoscaling",
+    target_utilization_percent=20,
+    scale_in_cooldown=core.Duration.seconds(30),
+    scale_out_cooldown=core.Duration.seconds(30)
+)
+```
+
+#### Deploy Autoscaling
+
+- Now that you have the autoscaling code in place, let's deploy it!
+
+- Let's see a diff of our present state, vs the proposed changes to our environment. Run the following:
+
+```bash
+cdk diff
+```
+
+- You should see the additon of two resources (image below). ECS is utilizing the Application Autoscaling service to manage the scaling of ECS tasks. In short, this will create a [target tracking policy](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-autoscaling-targettracking.html), which will set the desired target for scaling in and out (in this case, CPU utilization), and attach it to the ECS service.
+
+![ecs-crystal-as-diff](/images/ecs-cdk-crystal-diff-output.png)
+
+- Deploy time!
+
+```bash
+cdk deploy --require-approval never
+```
+
+![ecs-crystal-as-deployment](/images/ecs-cdk-crystal-deploy-output.png)
+
+#### Load test
+
+- In order to introduce load to the crystal Fargate service, we need to have the ability to reach its service endpoint. Since the service is in a private subnet, we will use the EC2 instance that was deployed within the same VPC. The instance was created in the Platform/Build Environment steps.
+
+- Once you have deployed the autoscaling, copy the instance id created during the platform deployment and get into temporary ec2 using the SSM agent or use the following code:
+
+```shell
+ec2InstanceId=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base --query "Stacks" --output json | jq -r '.[].Outputs[] | select(.OutputKey |contains("StressToolEc2Id")) | .OutputValue')
+aws ssm start-session --target "$ec2InstanceId"
+```
+
+- Once you are in the ec2 instance, generate the load test for the crystal service. 
+
+```bash
+siege -c 200 -i http://ecsdemo-crystal.service:3000/crystal&
+```
+
+- While siege is running in the background, either navigate to the console or monitor the autoscaling from the command line in a new cloud9 terminal.
+
+{{%expand "Command Line" %}}
+
+- Compare the tasks running vs tasks desired. As the load increases on the crystal service, we should see these counts eventually increase up to 10. This is autoscaling happening in real time. Please note that this step will take a few minutes. Feel free to run this in one terminal, and move on to the next steps in another terminal.
+
+```bash
+watch -d -n 3 echo `aws ecs describe-services --cluster container-demo --services ecsdemo-crystal | jq '.services[] | "Tasks Desired: \(.desiredCount) vs Tasks Running: \(.runningCount)"'`
+```
+
+![task-as-loadtest-output](/images/ecs-cdk-crystal-as-loadtest-output-cli.png)
+
+- Now that we've seen the service autoscale out, let's stop the running while loop. Simply press `control + c` to cancel.
+
+- Time to cancel the load test. By prepending our command with `&`, we instructed it to run in the background. Bring it back to the foreground, and stop it. To stop it, type the following:
+
+    - `fg`
+    - `control + c`
+
+- NOTE: To ensure application availability, the service scales out proportionally to the metric as fast as it can, but scales in more gradually. For more information, see the [documentation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-autoscaling-targettracking.html)
+
+{{% /expand %}}
+
+{{%expand "Console" %}}
+![task-as-console-loadtest-output](/images/cdk-ecs-crystal-as-console-output.gif)
+{{% /expand %}}
 
 {{% /expand %}}
