@@ -39,7 +39,9 @@ Below is an example of what the cli interaction will look like:
 
 ![deployment](/images/copilot-frontend.gif)
 
-Ok, that's it! With one command and answering a few questions, we have our frontend service deployed to an environment! But how do we interact with our environment and service? Let's dive in and answer those questions.
+Ok, that's it! With one command and answering a few questions, we have our frontend service deployed to an environment! Grab the load balancer url and paste it into your browser. You should see the frontend service up and running.
+The app may look strange or like it's not working properly. You are correct! We should see the architectural diagram with the details of what Availability Zone the services are running in. Rest assured, this is intentional and we will fix this later in this section.
+Now that we have the frontend service deployed, how do we interact with our environment and service? Let's dive in and answer those questions.
 
 ## Interacting with the application
 
@@ -98,7 +100,7 @@ copilot env show -n test
 
 ![env_show](/images/copilot-env-show.png)
 
-With this view, we're able to see all of the services deployed to our applciation's test environment. As we add more services, we will see this grow.
+With this view, we're able to see all of the services deployed to our application's test environment. As we add more services, we will see this grow.
 A couple of neat things to point out here: 
 
 - The tags associated with our environment. The default tags have the application name as well as the environment.
@@ -175,7 +177,231 @@ Note that if you are in the same directory of the service you want to review log
 ```bash
 copilot svc logs
 ```
-
 Last thing to bring up is that you aren't limited to live tailing logs, type `copilot svc logs --help` to see the different ways to review logs from the command line.
 
 ## Create a CI/CD Pipeline
+
+{{%expand "Expand here to deploy a pipeline" %}}
+
+In this section, we'll go from a local workflow, to a more production ready one. To accomplish this, we will be using GitHub and the copilot cli.
+
+#### Prepare and setup the repository in GitHub
+
+First thing we will do is create a git repository. We will use GitHub to house our git repository. There are some prerequisites that need to be met prior to moving forward.
+
+1) You need a GitHub account.
+
+2) You need to create a personal access token in GitHub. For further assistance, please go here: https://git.io/JfDFD. When you are selecting the scope, check "repo".
+
+![repo_scope](/images/copilot-scope-repo.png)
+
+Once you have step one and two completed, we can move forward. Please copy the personal access token, and store it somewhere safe. You will be referencing it a couple of times in this section.
+
+Navigate to the frontend service repo [here](https://github.com/brentley/ecsdemo-frontend). 
+
+We will create a fork of this repository. Click the "Fork" button in the top left, and then select your GitHub username. This will create a copy of the repository under your GitHub namespace.
+
+![fork_1](/images/copilot-fork-click-frontend.png)
+![fork_2](/images/copilot-fork-frontend.png)
+
+Next, click "Code" in the upper left, and copy the HTTPS uri for the repository.
+
+![clone](/images/frontend-git-clone.png)
+
+Add the remote:
+
+```bash
+git remote add upstream https://github.com/YOURGITHUBUSERNAME/ecsdemo-frontend.git
+```
+
+Now that we have a git repository, we can setup a git workflow that will trigger a pipeline on push.
+
+#### Creating the pipeline
+
+Generally, when we create CI/CD pipelines, there is quite a bit of work that goes into it. Copilot does all of the heavy lifting, leaving you to just answer a couple of questions in the cli, and that's it. Let's see it in action!
+
+Run the following:
+
+```bash
+copilot pipeline init
+```
+
+Once again, you will be prompted with a series of questions. Answer the questions with the following answers:
+
+- Would you like to add an environment to your pipeline? Answer: "y"
+- Which environment would you like to add to your pipeline? Answer: Choose "test"
+- Which GitHub repository would you like to use for your service? Answer: Choose the repo url with YOUR github username
+
+The core pipeline files will be created in the ./copilot directory. Here is what the output should show:
+
+![init](/images/copilot-pipeline-init.png)
+
+Commit and push the new files to your repo. To get more information about the files that were created, check out the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Pipelines#setting-up-a-pipeline-step-by-step).
+In short, we are pushing the deployment manifest (for copilot to use as reference to deploy the service), pipeline.yml (which defines the stages in the pipeline), and the buildspec.yml (contains the build instructions for the service).
+
+```bash
+git add copilot
+git commit -m "Adding copilot pipeline configuration"
+git push upstream HEAD
+```
+
+You will be prompted to login. The username is your github username, and the password will be the personal access token we created earlier.
+
+Now that our repo has the pipeline configuration, let's build/deploy the pipeline:
+
+```bash
+copilot pipeline update
+```
+
+![output](/images/copilot-pipeline-output.png)
+
+That's it! A pipeline has been created! Yes, it's that simple! 
+
+Now there are two ways that I can review the status of the pipeline. 
+
+1) Console: Navigate here: https://us-west-2.console.aws.amazon.com/codesuite/codepipeline/pipelines, click your pipeline, and you can see the stages.
+2) Command line: `copilot pipeline status`. 
+
+![status](/images/copilot-pipeline-status.png)
+
+#### Fix the frontend service
+
+We mentioned earlier that the frontend service wasn't fully functional. The reason for this is that the service uses the aws cli to determine what subnet its in and then uses that to determine availability zone.
+To fix this, we need to create an IAM policy that we can attach to our service to enable the proper access.
+
+Copilot enables you to add additional AWS resources via CloudFormation with "addons". To get more information on this, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Additional-AWS-Resources#how-to-do-i-add-other-resources)
+In this example, the addon for our service will be an IAM policy to allow the access needed, which will in turn be attached to the task role.
+
+The following commands are going to create an addons directory for the ecsdemo-frontend service, and the CloudFormation yaml which grants the proper access.
+On the next deployment, copilot-cli will recognize the new CloudFormation in the addons directory, and use that to attach the IAM Policy to the task role for the service.
+
+```bash
+mkdir -p copilot/ecsdemo-frontend/addons
+cat << EOF > copilot/ecsdemo-frontend/addons/TESTtask-role.yaml
+# You can use any of these parameters to create conditions or mappings in your template.
+Parameters:
+  App:
+    Type: String
+    Description: Your application's name.
+  Env:
+    Type: String
+    Description: The environment name your service, job, or workflow is being deployed to.
+  Name:
+    Type: String
+    Description: The name of the service, job, or workflow being deployed.
+
+Resources:
+  SubnetsAccessPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: EC2Actions
+            Effect: Allow
+            Action:
+              - ec2:DescribeSubnets
+            Resource: "*"
+
+Outputs:
+  # You also need to output the IAM ManagedPolicy so that Copilot can inject it to your ECS task role.
+  SubnetsAccessPolicyArn:
+    Description: "The ARN of the Policy to attach to the task role."
+    Value: !Ref SubnetsAccessPolicy
+EOF
+cat << EOF >> copilot/ecsdemo-frontend/manifest.yml
+variables:
+  REGION: $(echo $AWS_REGION)
+  CRYSTAL_URL: "http://ecsdemo-crystal.ecsworkshop.local:3000/crystal",
+  NODEJS_URL: "http://ecsdemo-nodejs.ecsworkshop.local:3000"
+EOF
+
+```
+
+Push the new file to the git repo, and let's watch the pipeline build/deploy the changes:
+
+```bash
+git add copilot/ecsdemo-frontend/addons
+git commit -m "Adding an IAM policy addon"
+git push upstream HEAD
+```
+
+You will be prompted to login. The username is your github username, and the password will be the personal access token we created earlier.
+
+Once again, there are two ways that I can review the status of the pipeline. 
+
+1) Console: https://${AWS_REGION}.console.aws.amazon.com/codesuite/codepipeline/pipelines, click your pipeline, and you can see the stages.
+
+2) Command line: `copilot pipeline status`.
+
+When the pipeline is complete, navigate to the load balancer url. You should now see the application working as expected.
+
+{{% /expand %}}
+
+{{%expand "Expand here if you don't want to create the pipeline, but still want to fix the frontend service" %}}
+
+#### Fix the frontend service
+
+We mentioned earlier that the frontend service wasn't fully functional. The reason for this is that the service uses the aws cli to determine what subnet its in and then uses that to determine availability zone.
+To fix this, we need to create an IAM policy that we can attach to our service to enable the proper access.
+
+Copilot enables you to add additional AWS resources via CloudFormation with "addons". To get more information on this, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Additional-AWS-Resources#how-to-do-i-add-other-resources)
+In this example, the addon for our service will be an IAM policy to allow the access needed, which will in turn be attached to the task role.
+
+The following commands are going to create an addons directory for the ecsdemo-frontend service, and the CloudFormation yaml which grants the proper access.
+On the next deployment, copilot-cli will recognize the new CloudFormation in the addons directory, and use that to attach the IAM Policy to the task role for the service.
+
+```bash
+mkdir -p copilot/ecsdemo-frontend/addons
+cat << EOF > copilot/ecsdemo-frontend/addons/TESTtask-role.yaml
+# You can use any of these parameters to create conditions or mappings in your template.
+Parameters:
+  App:
+    Type: String
+    Description: Your application's name.
+  Env:
+    Type: String
+    Description: The environment name your service, job, or workflow is being deployed to.
+  Name:
+    Type: String
+    Description: The name of the service, job, or workflow being deployed.
+
+Resources:
+  SubnetsAccessPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: EC2Actions
+            Effect: Allow
+            Action:
+              - ec2:DescribeSubnets
+            Resource: "*"
+
+Outputs:
+  # You also need to output the IAM ManagedPolicy so that Copilot can inject it to your ECS task role.
+  SubnetsAccessPolicyArn:
+    Description: "The ARN of the Policy to attach to the task role."
+    Value: !Ref SubnetsAccessPolicy
+EOF
+cat << EOF >> copilot/ecsdemo-frontend/manifest.yml
+variables:
+  REGION: $(echo $AWS_REGION)
+  CRYSTAL_URL: "http://ecsdemo-crystal.ecsworkshop.local:3000/crystal",
+  NODEJS_URL: "http://ecsdemo-nodejs.ecsworkshop.local:3000"
+EOF
+
+```
+
+Now that we've updated the manifest with the required environment variables as well as IAM role in the addons directory, let's deploy the service:
+
+```bash
+copilot svc deploy
+```
+
+{{% /expand %}}
+
+## Next steps
+
+We have officially completed deploying our frontend. In the next section, we will extend our application by adding two backend services.
