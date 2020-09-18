@@ -31,7 +31,7 @@ After you answer the questions, it will begin the process of creating some basel
 This includes the manifest file for the frontend service, which we will review later.
 
 Next, you will be prompted to deploy a test environment. An environment encompasses all of the resources that are required to support running your containers in ECS.
-This includes the networking stack (VPC, Subnets, Security Groups, etc), the ECS Cluster, Load Balancers (if required), and more.
+This includes the networking stack (VPC, Subnets, Security Groups, etc), the ECS Cluster, Load Balancers (if required), service discovery namespace (via CloudMap), and more.
 
 Type "y", and hit enter. This part will take a few minutes because of all of the resources that are being created. This is not an action you run every time you deploy your service, it's just the one time to get your environment up and running.
 
@@ -312,7 +312,7 @@ EOF
 cat << EOF >> copilot/ecsdemo-frontend/manifest.yml
 variables:
   REGION: $(echo $AWS_REGION)
-  CRYSTAL_URL: "http://ecsdemo-crystal.ecsworkshop.local:3000/crystal",
+  CRYSTAL_URL: "http://ecsdemo-crystal.ecsworkshop.local:3000/crystal"
   NODEJS_URL: "http://ecsdemo-nodejs.ecsworkshop.local:3000"
 EOF
 
