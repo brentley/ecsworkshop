@@ -42,7 +42,57 @@ Below is an example of what the cli interaction will look like:
 
 ![deployment](/images/copilot-init-nodejs.gif)
 
-The Nodejs service is now deployed! Navigate back to the frontend load balancer url, and you should now see the nodejs service in the diagram!
+The nodejs service is now deployed! Navigate back to the frontend load balancer url, and you should now see the crystal service. You may notice that it is not working as we fully expect with the diagram. 
+This is because the service needs an environment variable as well as an IAM role addon to fully function as expected. Run the commands below to add an environment variable, and create the IAM role in the addons path.
+
+```bash
+mkdir -p copilot/ecsdemo-nodejs/addons
+cat << EOF > copilot/ecsdemo-nodejs/addons/task-role.yaml
+# You can use any of these parameters to create conditions or mappings in your template.
+Parameters:
+  App:
+    Type: String
+    Description: Your application's name.
+  Env:
+    Type: String
+    Description: The environment name your service, job, or workflow is being deployed to.
+  Name:
+    Type: String
+    Description: The name of the service, job, or workflow being deployed.
+
+Resources:
+  SubnetsAccessPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: EC2Actions
+            Effect: Allow
+            Action:
+              - ec2:DescribeSubnets
+            Resource: "*"
+
+Outputs:
+  # You also need to output the IAM ManagedPolicy so that Copilot can inject it to your ECS task role.
+  SubnetsAccessPolicyArn:
+    Description: "The ARN of the Policy to attach to the task role."
+    Value: !Ref SubnetsAccessPolicy
+EOF
+
+cat << EOF >> copilot/ecsdemo-nodejs/manifest.yml
+
+variables:
+  REGION: $(echo $AWS_REGION)
+EOF
+
+```
+
+Now, let's redeploy the service:
+
+```bash
+copilot svc deploy
+```
 
 ## Interacting with the application
 

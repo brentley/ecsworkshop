@@ -277,7 +277,7 @@ On the next deployment, copilot-cli will recognize the new CloudFormation in the
 
 ```bash
 mkdir -p copilot/ecsdemo-frontend/addons
-cat << EOF > copilot/ecsdemo-frontend/addons/TESTtask-role.yaml
+cat << EOF > copilot/ecsdemo-frontend/addons/task-role.yaml
 # You can use any of these parameters to create conditions or mappings in your template.
 Parameters:
   App:
