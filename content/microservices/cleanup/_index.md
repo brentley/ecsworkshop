@@ -6,6 +6,18 @@ weight = 60
 
 Let's clean up our compute resources first:
 
+{{%expand "Expand here to cleanup the copilot portion of the workshop" %}}
+```bash
+cd ~/environment/ecsdemo-nodejs/
+copilot svc delete --yes
+cd ~/environment/ecsdemo-crystal/
+copilot svc delete --yes
+cd ~/environment/ecsdemo-frontend/
+copilot svc delete --yes
+copilot app delete --yes
+```
+{{% /expand %}}
+
 
 {{%expand "Expand here to cleanup ecs cli portion of the workshop" %}}
 
