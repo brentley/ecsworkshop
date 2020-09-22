@@ -27,11 +27,11 @@ We will be prompted with a series of questions related to the application, envir
 - Would you like to use one of your existing applications? "Y"
 - Which existing application do you want to add a new service to? Select "ecsworkshop", hit enter
 - Which service type best represents yur service's architecture? Select "Backend Service", hit enter
-- What do you want to name this Load Balanced Web Service: ecsdemo-nodejs
+- What do you want to name this Backend Service: ecsdemo-nodejs
 - Dockerfile: ./Dockerfile
 
 After you answer the questions, it will begin the process of creating some baseline resources for your service. 
-This includes the manifest file for the backend service, for more information on the manifest file, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Manifests).
+This includes the manifest file for the backend service, for more information on the manifest file, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Backend-Service-Manifest).
 
 Next, you will be prompted to deploy a test environment. An environment encompasses all of the resources that are required to support running your containers in ECS.
 This includes the networking stack (VPC, Subnets, Security Groups, etc), the ECS Cluster, Load Balancers (if required), and more.
@@ -42,7 +42,7 @@ Below is an example of what the cli interaction will look like:
 
 ![deployment](/images/copilot-init-nodejs.gif)
 
-The nodejs service is now deployed! Navigate back to the frontend load balancer url, and you should now see the crystal service. You may notice that it is not working as we fully expect with the diagram. 
+The nodejs service is now deployed! Navigate back to the frontend load balancer url, and you should now see the nodejs service. You may notice that it is not working as we fully expect with the diagram. 
 This is because the service needs an environment variable as well as an IAM role addon to fully function as expected. Run the commands below to add an environment variable, and create the IAM role in the addons path.
 
 ```bash
@@ -83,8 +83,10 @@ EOF
 cat << EOF >> copilot/ecsdemo-nodejs/manifest.yml
 
 variables:
-  REGION: $(echo $AWS_REGION)
+  AWS_DEFAULT_REGION: $(echo $AWS_REGION)
 EOF
+
+git rev-parse --short=7 HEAD > code_hash.txt
 
 ```
 
@@ -110,7 +112,7 @@ We can see that our recently deployed Nodejs service is shown as a Backend Servi
 
 ## Interacting with the environment
 
-Given that we deployed the test environment when creating our frontend service, let's show the details of the test environment:
+Given that we deployed the test environment when creating our nodejs service, let's show the details of the test environment:
 
 ```bash
 copilot env show -n test
@@ -122,7 +124,7 @@ We now can see our newly deployed service in the test environment!
 
 ## Interacting with the Nodejs service
 
-Let's now check the status of the frontend service.
+Let's now check the status of the nodejs service.
 
 Run:
 
@@ -169,7 +171,7 @@ copilot svc status -n ecsdemo-nodejs
 
 You should now see three tasks running!
 
-Now go back to the load balancer url, and you should see the diagram alternate between the three frontend tasks.
+Now go back to the load balancer url, and you should see the diagram alternate between the three nodejs tasks.
 
 #### Review the service logs
 

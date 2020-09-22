@@ -83,8 +83,10 @@ EOF
 cat << EOF >> copilot/ecsdemo-crystal/manifest.yml
 
 variables:
-  REGION: $(echo $AWS_REGION)
+  AWS_DEFAULT_REGION: $(echo $AWS_REGION)
 EOF
+
+git rev-parse --short=7 HEAD > code_hash.txt
 
 ```
 

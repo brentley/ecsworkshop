@@ -28,7 +28,7 @@ We will be prompted with a series of questions related to the application, and t
 - Dockerfile: ./Dockerfile
 
 After you answer the questions, it will begin the process of creating some baseline resources for your application and service. 
-This includes the manifest file for the frontend service, which we will review later.
+This includes the manifest file for the frontend service, for more information on the Load Balanced Web Service manifest, see the [copilot documentation](https://github.com/aws/copilot-cli/wiki/Load-Balanced-Web-Service-Manifest).
 
 Next, you will be prompted to deploy a test environment. An environment encompasses all of the resources that are required to support running your containers in ECS.
 This includes the networking stack (VPC, Subnets, Security Groups, etc), the ECS Cluster, Load Balancers (if required), service discovery namespace (via CloudMap), and more.
@@ -40,7 +40,7 @@ Below is an example of what the cli interaction will look like:
 ![deployment](/images/copilot-frontend.gif)
 
 Ok, that's it! With one command and answering a few questions, we have our frontend service deployed to an environment! Grab the load balancer url and paste it into your browser. You should see the frontend service up and running.
-The app may look strange or like it's not working properly. You are correct! We should see the architectural diagram with the details of what Availability Zone the services are running in. Rest assured, this is intentional and we will fix this later in this section.
+The app may look strange or like it’s not working properly. This is because our service relies on the ability to talk to AWS services that it presently doesn’t have access to. We should see an architectural diagram with the details of what Availability Zones the services are running in. We will address this fix later in the chapter. 
 Now that we have the frontend service deployed, how do we interact with our environment and service? Let's dive in and answer those questions.
 
 ## Interacting with the application
@@ -110,7 +110,8 @@ A couple of neat things to point out here:
 
 ![env_show](/images/copilot-svc.png)
 
-There is a lot of power with the `copilot svc` command. As you can see from the above, we can achieve quite a bit with this command.
+There is a lot of power with the `copilot svc` command. As you can see from the above image, there is quite a bit that we can do when interacting with our service.
+
 Let's look at a couple of the commands:
 
 - package: The copilot-cli uses CloudFormation to manage the state of the environment and services. If you want to get the CloudFormation template for the service deployment, you can simply run `copilit svc package`. This can be especially helpful if you for some reason decide to move to CloudFormation to manage your deployments on your own.
@@ -132,13 +133,19 @@ We can see that we have one active running task, and the details.
 
 #### Scale our task count
 
-One thing we haven't discussed yet is ways to manage/control our service configurations. This is where the manifest comes in.
-The manifest is a declarative yaml template that defines how the service will run. The manifest was created automatically when we ran through the setup wizard (running copilot init).
-This file includes details such as docker image, port, load balancer requirements, environment variables/secrets, as well as resource allocation.
+One thing we haven’t discussed yet is ways to manage/control our service configurations. 
+Let’s update our services manifest to define our desired state. 
+The manifest is a declarative yaml template that defines how the service will run. 
+It was created automatically when we ran through the setup wizard (running copilot init), and includes details such as docker image, port, load balancer requirements, environment variables/secrets, as well as resource allocation. It dynamically populates this file based off of the Dockerfile as well as opinionated, sane defaults.
 
 Feel free to look at the manifest file here: ./copilot/ecsdemo-frontend/manifest.yml
 
 Open the manifest file, and replace the value of the count key from 1 to 3. This is declaring our state of the service to change from 1 task, to 3.
+
+```
+# Number of tasks that should be running in your service.
+count: 3
+```
 
 Once you are done and save the changes, run the following:
 
@@ -195,7 +202,7 @@ First thing we will do is create a git repository. We will use GitHub to house o
 
 ![repo_scope](/images/copilot-scope-repo.png)
 
-Once you have step one and two completed, we can move forward. Please copy the personal access token, and store it somewhere safe. You will be referencing it a couple of times in this section.
+Once you have step one and two completed, we can move forward. Please copy the personal access token, and store it somewhere safe. You will be referencing it a few times throughout the workshop.
 
 Navigate to the frontend service repo [here](https://github.com/brentley/ecsdemo-frontend). 
 
@@ -231,6 +238,7 @@ Once again, you will be prompted with a series of questions. Answer the question
 - Would you like to add an environment to your pipeline? Answer: "y"
 - Which environment would you like to add to your pipeline? Answer: Choose "test"
 - Which GitHub repository would you like to use for your service? Answer: Choose the repo url with YOUR github username
+- Please enter your GitHub Personal Access Token for your repository ecsdemo-frontend. Answer: Paste the copied token when you created in in GitHub earlier.
 
 The core pipeline files will be created in the ./copilot directory. Here is what the output should show:
 
@@ -255,22 +263,25 @@ copilot pipeline update
 
 ![output](/images/copilot-pipeline-output.png)
 
-That's it! A pipeline has been created! Yes, it's that simple! 
+Our pipeline is now deployed (yes, it's that simple). Let’s interact with it!
 
 Now there are two ways that I can review the status of the pipeline. 
 
-1) Console: Navigate here: https://us-west-2.console.aws.amazon.com/codesuite/codepipeline/pipelines, click your pipeline, and you can see the stages.
+1) Console: Navigate here: https://${YOUR_REGION}.console.aws.amazon.com/codesuite/codepipeline/pipelines, click your pipeline, and you can see the stages.
+
 2) Command line: `copilot pipeline status`. 
 
 ![status](/images/copilot-pipeline-status.png)
 
+Whether you’re in the console or checking from the cli, you will see the pipeline is actively running. You can watch as the pipeline executes, and when it is complete, all updates in the Status column will show "Succeeded".
+
 #### Fix the frontend service
 
-We mentioned earlier that the frontend service wasn't fully functional. The reason for this is that the service uses the aws cli to determine what subnet its in and then uses that to determine availability zone.
+We mentioned earlier that the frontend service wasn’t fully functional. The reason for this is that the service interacts with the AWS API’s to determine what availability zone it resides in. To fix this, we need to create an IAM policy that we can attach to our service to enable the proper access.
 To fix this, we need to create an IAM policy that we can attach to our service to enable the proper access.
 
 Copilot enables you to add additional AWS resources via CloudFormation with "addons". To get more information on this, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Additional-AWS-Resources#how-to-do-i-add-other-resources)
-In this example, the addon for our service will be an IAM policy to allow the access needed, which will in turn be attached to the task role.
+In this example, the addon for our service will be an IAM policy to allow the access needed, which copilot will automatically recognize and add to the task role for the service.
 
 The following commands are going to create an addons directory for the ecsdemo-frontend service, and the CloudFormation yaml which grants the proper access.
 On the next deployment, copilot-cli will recognize the new CloudFormation in the addons directory, and use that to attach the IAM Policy to the task role for the service.
@@ -311,10 +322,12 @@ Outputs:
 EOF
 cat << EOF >> copilot/ecsdemo-frontend/manifest.yml
 variables:
-  REGION: $(echo $AWS_REGION)
+  AWS_DEFAULT_REGION: $(echo $AWS_REGION)
   CRYSTAL_URL: "http://ecsdemo-crystal.ecsworkshop.local:3000/crystal"
   NODEJS_URL: "http://ecsdemo-nodejs.ecsworkshop.local:3000"
 EOF
+
+git rev-parse --short=7 HEAD > code_hash.txt
 
 ```
 
@@ -322,6 +335,7 @@ Push the new file to the git repo, and let's watch the pipeline build/deploy the
 
 ```bash
 git add copilot/ecsdemo-frontend/addons
+git add code_hash.txt
 git commit -m "Adding an IAM policy addon"
 git push upstream HEAD
 ```
