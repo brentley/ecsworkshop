@@ -15,4 +15,15 @@ echo "export AWS_DEFAULT_REGION=$(curl -s 169.254.169.254/latest/dynamic/instanc
 echo "export AWS_REGION=\$AWS_DEFAULT_REGION" >> ~/.bashrc
 echo "export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)" >> ~/.bashrc
 source ~/.bashrc
+
+mkdir -p ~/.aws
+
+cat << EOF >> ~/.aws/config
+[default]
+region = ${AWS_DEFAULT_REGION}
+output = json
+role_arn = $(get role arn here)
+credential_source = Ec2InstanceMetadata
+EOF
+
 ```
