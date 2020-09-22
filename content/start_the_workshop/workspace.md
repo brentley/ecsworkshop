@@ -10,14 +10,6 @@ not the root account user. Please ensure you are logged in as an IAM user, not t
 account user.
 {{% /notice %}}
 
-<!---
-{{% notice info %}}
-This workshop was designed to run in the **Oregon (us-west-2)** region. **Please don't
-run in any other region.** Future versions of this workshop will expand region availability,
-and this message will be removed.
-{{% /notice %}}
--->
-
 {{% notice tip %}}
 Ad blockers, javascript disablers, and tracking blockers should be disabled for
 the cloud9 domain, or connecting to the workspace might be impacted.
@@ -47,6 +39,22 @@ and **lower work area**, and opening a new **terminal** tab in the main work are
 
 - If you like this theme, you can choose it yourself by selecting **View / Themes / Solarized / Solarized Dark**
 in the Cloud9 workspace menu.
+
+### Create the IAM Role and attach it to the Cloud9 instance
+
+- Follow [this deep link to create an IAM role with Administrator access.](https://console.aws.amazon.com/iam/home#/roles$new?step=review&commonUseCase=EC2%2BEC2&selectedUseCase=EC2&policies=arn:aws:iam::aws:policy%2FAdministratorAccess)
+- Confirm that **AWS service** and **EC2** are selected, then click **Next** to view permissions.
+- Confirm that **AdministratorAccess** is checked, then click **Next: Tags** to assign tags.
+- Take the defaults, and click **Next: Review** to review.
+- Enter **ecsworkshop-admin** for the Name, and click **Create role**.
+![createrole](/images/createrole.png)
+
+- Follow [this deep link to find your Cloud9 EC2 instance](https://console.aws.amazon.com/ec2/v2/home?#Instances:tag:Name=aws-cloud9-ecsworkshop;sort=desc:launchTime)
+- Select the instance, then choose **Actions / Instance Settings / Attach/Replace IAM Role**
+![c9instancerole](/images/c9instancerole.png)
+- Choose **ecsworkshop-admin** from the **IAM Role** drop down, and select **Apply**
+![c9attachrole](/images/c9attachrole.png)
+- Now head back to the Cloud9 IDE
 
 ### Increase the disk size on the Cloud9 instance
 

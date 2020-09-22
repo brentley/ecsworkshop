@@ -22,7 +22,7 @@ cat << EOF >> ~/.aws/config
 [default]
 region = ${AWS_DEFAULT_REGION}
 output = json
-role_arn = $(get role arn here)
+role_arn = $(aws iam get-role --role-name ecsworkshop-admin | jq -r .Role.Arn)
 credential_source = Ec2InstanceMetadata
 EOF
 
