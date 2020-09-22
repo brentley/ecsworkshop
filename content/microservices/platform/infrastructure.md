@@ -20,7 +20,7 @@ We will be continue using the AWS CDK to deploy our applications into this clust
 {{% /expand %}}
 
 {{%expand "copilot-cli path" %}}
-FILL CONTENT HERE
+When we initialize our application, we will create our environment (which builds the platform resources). Let's move on to the [frontend service page.](../../frontend)
 {{% /expand %}}
 
 {{%expand "ecs-cli path" %}}
