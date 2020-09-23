@@ -13,14 +13,14 @@ will be maintained in its own separate repository.
 
 This repository will be used to build the base environment for the microservices to deploy to.
 
+{{%expand "copilot-cli path" %}}
+When we initialize our application, we will create our environment (which builds the platform resources). Let's move on to the [frontend service page.](../../frontend)
+{{% /expand %}}
+
 {{%expand "cdk path" %}}
 This repository will build the baseline platform for the microservices to deploy to. This includes VPC, ECS Cluster, and Cloud Map service discovery namespace. The AWS CDK will be the mechanism used to achieve this.
 
 We will be continue using the AWS CDK to deploy our applications into this cluster.
-{{% /expand %}}
-
-{{%expand "copilot-cli path" %}}
-When we initialize our application, we will create our environment (which builds the platform resources). Let's move on to the [frontend service page.](../../frontend)
 {{% /expand %}}
 
 {{%expand "ecs-cli path" %}}
