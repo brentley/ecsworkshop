@@ -48,7 +48,7 @@ As we did in the previous section, we are going to once again create a capacity 
 
 ```bash
 # Get the required cluster values needed when creating the capacity provider
-export asg_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName | contains("EC2ASGName"))| .OutputValue')
+export asg_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName != null) | select(.ExportName | contains("EC2ASGName"))| .OutputValue')
 export asg_arn=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $asg_name | jq .AutoScalingGroups[].AutoScalingGroupARN)
 export capacity_provider_name=$(echo "EC2$(date +'%s')")
 # Creating capacity provider
