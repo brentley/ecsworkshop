@@ -7,6 +7,11 @@ hidden: true
 ### Install and setup prerequisites
 
 ```
+# Install prerequisites 
+sudo yum install -y jq
+
+pip install --user --upgrade awscli
+
 # Install copilot-cli
 brew install aws/tap/copilot-cli
 
