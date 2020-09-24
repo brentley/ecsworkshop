@@ -14,7 +14,7 @@ will be maintained in its own separate repository.
 This repository will be used to build the base environment for the microservices to deploy to.
 
 {{%expand "copilot-cli path" %}}
-When we initialize our application, we will create our environment (which builds the platform resources). Let's move on to the [frontend service page.](../../frontend)
+When we initialize our application, we will create our environment (which builds the platform resources). The platform resources that will be built and shared across our application are: VPC, Subnets, Security Groups, IAM Roles/Policies, ECS Cluster, Cloud Map Namespace (Service Discovery), Cloudwatch logs/metrics, and more!
 {{% /expand %}}
 
 {{%expand "cdk path" %}}
