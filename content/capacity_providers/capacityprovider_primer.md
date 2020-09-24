@@ -18,7 +18,7 @@ For more information, [check out the official AWS documentation.](https://docs.a
 
 Capacity providers can be used for ECS Fargate tasks, and ECS EC2 backed tasks.
 
-- Fargate capacity providers enable you to use both Fargate and Fargate Spot capacity with your Amazon ECS tasks. For more information, [check out the official AWS documentation.](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html)
+- Fargate capacity providers enable you to use both Fargate and Fargate Spot capacity with your Amazon ECS tasks. Fargate Spot uses spare compute capacity and provides **up to 70% savings** compared to Fargate. When AWS needs the capacity back, your tasks will be interrupted with a two-minute warning. With Fargate Spot you can run interruption tolerant Amazon ECS tasks at a fraction of the cost. For more information, [check out the official AWS documentation.](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html)
 
 - Amazon ECS on EC2 capacity providers enable customers to use Cluster Auto Scaling, allowing the focus of the customer to shift from managing autoscaling the backend infrastructure, to focusing on supporting the application.
 for more information on Amazon ECS Cluster Auto Scaling, For more information, [check out the official AWS documentation.](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-auto-scaling.html)

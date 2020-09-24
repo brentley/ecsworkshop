@@ -139,6 +139,10 @@ The command line output should look something like this:
 
 Whether you or on the browser or using the command line, go ahead and refresh a few times. You should see that as you are routed to different containers via the load balancer on each new request. The containers responding will be running on either Fargate or fargate spot launch types.
 
+{{% notice tip%}}
+To learn all about Fargate Spot check out [this blog post](https://aws.amazon.com/blogs/compute/deep-dive-into-fargate-spot-to-run-your-ecs-tasks-for-up-to-70-less/)
+{{% /notice%}}
+
 #### Review
 
 Here's what we accomplished in this section of the workshop:
