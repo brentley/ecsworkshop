@@ -142,14 +142,14 @@ We can see that we have one active running task, and the details.
 
 #### Scale our task count
 
-One thing we haven’t discussed yet is ways to manage/control our service configurations. 
-Let’s update our services manifest to define our desired state. 
-The manifest is a declarative yaml template that defines how the service will run. 
-It was created automatically when we ran through the setup wizard (running copilot init), and includes details such as docker image, port, load balancer requirements, environment variables/secrets, as well as resource allocation. It dynamically populates this file based off of the Dockerfile as well as opinionated, sane defaults.
+One thing we haven’t discussed yet is ways to manage/control our service configuration. 
+This is done via the manifest file.
+The manifest is a declarative yaml template that defines the desired state of our service. 
+It was created automatically when we ran through the setup wizard (running copilot init), and includes details such as docker image, port, load balancer requirements, environment variables/secrets, as well as resource allocation. 
+It dynamically populates this file based off of the Dockerfile as well as opinionated, sane defaults.
 
-Feel free to look at the manifest file here: ./copilot/ecsdemo-frontend/manifest.yml
-
-Open the manifest file, and replace the value of the count key from 1 to 3. This is declaring our state of the service to change from 1 task, to 3.
+Open the manifest file (./copilot/ecsdemo-frontend/manifest.yml), and replace the value of the count key from 1 to 3. This is declaring our state of the service to change from 1 task, to 3.
+Feel free to explore the manifest file to familiarize yourself.
 
 ```
 # Number of tasks that should be running in your service.
