@@ -28,7 +28,7 @@ We will be prompted with a series of questions related to the application, and t
 - Dockerfile: ./Dockerfile
 
 After you answer the questions, it will begin the process of creating some baseline resources for your application and service. 
-This includes the manifest file for the frontend service, for more information on the Load Balanced Web Service manifest, see the [copilot documentation](https://github.com/aws/copilot-cli/wiki/Load-Balanced-Web-Service-Manifest).
+This includes the manifest file for the frontend service, which defines the desired state of your service deployment. For more information on the Load Balanced Web Service manifest, see the [copilot documentation](https://github.com/aws/copilot-cli/wiki/Load-Balanced-Web-Service-Manifest).
 
 Next, you will be prompted to deploy a test environment. An environment encompasses all of the resources that are required to support running your containers in ECS.
 This includes the networking stack (VPC, Subnets, Security Groups, etc), the ECS Cluster, Load Balancers (if required), service discovery namespace (via CloudMap), and more.
