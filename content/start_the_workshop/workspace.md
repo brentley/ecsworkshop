@@ -61,6 +61,12 @@ in the Cloud9 workspace menu.
 - Close the Preferences tab
 ![c9disableiam](/images/c9disableiam.png)
 
+Install jq, as we will use this quite a bit throughout the workshop when interacting with json outputs.
+
+```sh
+sudo yum install -y jq
+```
+
 To ensure temporary credentials aren't already in place we will also remove
 any existing credentials file:
 ```sh
