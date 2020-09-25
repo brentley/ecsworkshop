@@ -86,7 +86,7 @@ The result should look like this:
 ![app_show](/images/copilot-app-show.png)
 
 Reviewing the output, we see the environments and services deployed under the application.
-In a production scenario, we would want to deploy a production environment that is completely isolated from test. Ideally that would be in another account as well.
+In a real world scenario, we would want to deploy a production environment that is completely isolated from test. Ideally that would be in another account as well.
 With this view, we see what accounts and regions our application is deployed to.
 
 ## Interacting with the environment
@@ -123,7 +123,7 @@ There is a lot of power with the `copilot svc` command. As you can see from the 
 
 Let's look at a couple of the commands:
 
-- package: The copilot-cli uses CloudFormation to manage the state of the environment and services. If you want to get the CloudFormation template for the service deployment, you can simply run `copilit svc package`. This can be especially helpful if you for some reason decide to move to CloudFormation to manage your deployments on your own.
+- package: The copilot-cli uses CloudFormation to manage the state of the environment and services. If you want to get the CloudFormation template for the service deployment, you can simply run `copilit svc package`. This can be especially helpful if you decide to move to CloudFormation to manage your deployments on your own.
 - deploy: To put it simply, this will deploy your service. For local development, this enables one to locally push their service changes up to the desired environment. Of course when it comes time to deploy to production, a proper git workflow integrated with CI/CD would be the best path forward. We will deploy a pipeline later!
 - status: This command will give us a detailed view of the the service. This includes health information, task information, as well as active task count with details.
 - logs: Lastly, this is an easy way to view your service logs from the command line.
