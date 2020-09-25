@@ -85,9 +85,9 @@ The result should look like this:
 
 ![app_show](/images/copilot-app-show.png)
 
-Reviewing the output, we can see that all of the environments that are application is deployed to, as well as the services deployed under the application.
+Reviewing the output, we see the environments and services deployed under the application.
 In a production scenario, we would want to deploy a production environment that is completely isolated from test. Ideally that would be in another account as well.
-With this view, we can get a view into what accounts and regions our application is deployed to.
+With this view, we see what accounts and regions our application is deployed to.
 
 ## Interacting with the environment
 
