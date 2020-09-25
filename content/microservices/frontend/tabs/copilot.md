@@ -39,8 +39,17 @@ Below is an example of what the cli interaction will look like:
 
 ![deployment](/images/copilot-frontend.gif)
 
-Ok, that's it! With one command and answering a few questions, we have our frontend service deployed to an environment! Grab the load balancer url and paste it into your browser. You should see the frontend service up and running.
-The app may look strange or like it’s not working properly. This is because our service relies on the ability to talk to AWS services that it presently doesn’t have access to. We should see an architectural diagram with the details of what Availability Zones the services are running in. We will address this fix later in the chapter. 
+Ok, that's it! With one command and answering a few questions, we have our frontend service deployed to an environment!
+
+Grab the load balancer url and paste it into your browser. 
+
+```bash
+copilot svc show -n ecsdemo-frontend --json | jq -r .routes[].url
+```
+
+You should see the frontend service up and running.
+The app may look strange or like it’s not working properly. This is because our service relies on the ability to talk to AWS services that it presently doesn’t have access to. 
+The app should be showing an architectural diagram with the details of what Availability Zones the services are running in. We will address this fix later in the chapter. 
 Now that we have the frontend service deployed, how do we interact with our environment and service? Let's dive in and answer those questions.
 
 ## Interacting with the application
