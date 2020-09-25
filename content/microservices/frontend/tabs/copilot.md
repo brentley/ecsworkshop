@@ -177,7 +177,8 @@ copilot svc status -n ecsdemo-frontend
 ```
 
 You should now see three tasks running!
-Now go back to the load balancer url, and you should see the diagram alternate between the three frontend tasks.
+Now go back to the load balancer url, and you should see the service showing different IP addresses based on which frontend service responds to the request.
+Note, it's still not showing the full diagram, we're going to fix this shortly.
 
 #### Review the service logs
 
@@ -199,11 +200,12 @@ Last thing to bring up is that you aren't limited to live tailing logs, type `co
 
 {{%expand "Expand here to deploy a pipeline" %}}
 
-In this section, we'll go from a local workflow, to a more production ready one. To accomplish this, we will be using GitHub and the copilot cli.
+In this section, we'll go from a local development workflow, to a fully automated CI/CD pipeline and git workflow. 
+We will be using GitHub to host our git repository, and the copilot cli to do the rest.
 
 #### Prepare and setup the repository in GitHub
 
-First thing we will do is create a git repository. We will use GitHub to house our git repository. There are some prerequisites that need to be met prior to moving forward.
+First thing we will do is create a git repository. There are some prerequisites that need to be met prior to moving forward.
 
 1) You need a GitHub account.
 
@@ -211,7 +213,7 @@ First thing we will do is create a git repository. We will use GitHub to house o
 
 ![repo_scope](/images/copilot-scope-repo.png)
 
-Once you have step one and two completed, we can move forward. Please copy the personal access token, and store it somewhere safe. You will be referencing it a few times throughout the workshop.
+Once you have steps one and two completed, we can move forward. Please copy the personal access token, and store it somewhere safe. You will be referencing it a few times throughout the workshop.
 
 Navigate to the frontend service repo [here](https://github.com/brentley/ecsdemo-frontend). 
 
@@ -247,7 +249,7 @@ Once again, you will be prompted with a series of questions. Answer the question
 - Would you like to add an environment to your pipeline? Answer: "y"
 - Which environment would you like to add to your pipeline? Answer: Choose "test"
 - Which GitHub repository would you like to use for your service? Answer: Choose the repo url with YOUR github username
-- Please enter your GitHub Personal Access Token for your repository ecsdemo-frontend. Answer: Paste the copied token when you created in in GitHub earlier.
+- Please enter your GitHub Personal Access Token for your repository ecsdemo-frontend. Answer: Paste the copied token that you created in GitHub earlier.
 
 The core pipeline files will be created in the ./copilot directory. Here is what the output should show:
 
@@ -287,7 +289,6 @@ Whether you’re in the console or checking from the cli, you will see the pipel
 #### Fix the frontend service
 
 We mentioned earlier that the frontend service wasn’t fully functional. The reason for this is that the service interacts with the AWS API’s to determine what availability zone it resides in. To fix this, we need to create an IAM policy that we can attach to our service to enable the proper access.
-To fix this, we need to create an IAM policy that we can attach to our service to enable the proper access.
 
 Copilot enables you to add additional AWS resources via CloudFormation with "addons". To get more information on this, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Additional-AWS-Resources#how-to-do-i-add-other-resources)
 In this example, the addon for our service will be an IAM policy to allow the access needed, which copilot will automatically recognize and add to the task role for the service.
@@ -411,9 +412,11 @@ EOF
 cat << EOF >> copilot/ecsdemo-frontend/manifest.yml
 variables:
   REGION: $(echo $AWS_REGION)
-  CRYSTAL_URL: "http://ecsdemo-crystal.ecsworkshop.local:3000/crystal",
+  CRYSTAL_URL: "http://ecsdemo-crystal.ecsworkshop.local:3000/crystal"
   NODEJS_URL: "http://ecsdemo-nodejs.ecsworkshop.local:3000"
 EOF
+
+git rev-parse --short=7 HEAD > code_hash.txt
 
 ```
 
