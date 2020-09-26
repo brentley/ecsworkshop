@@ -44,7 +44,7 @@ In the app.py, uncomment the code under the section of code that says `###### EC
                     self.ecs_spot_instance_role.role_name
                 ]
             )
-                #
+                
         # This creates a Launch Template for the Auto Scaling group
         self.lt = aws_ec2.CfnLaunchTemplate(
             self, "ECSEC2SpotCapacityLaunchTemplate",
@@ -106,7 +106,7 @@ In the app.py, uncomment the code under the section of code that says `###### EC
                 }
             }
         )
-                #
+                
         core.Tag.add(self.ecs_ec2_spot_mig_asg, "Name", self.ecs_ec2_spot_mig_asg.node.path)   
         core.CfnOutput(self, "EC2SpotAutoScalingGroupName", value=self.ecs_ec2_spot_mig_asg.ref, export_name="EC2SpotASGName")     
 ```
@@ -316,6 +316,33 @@ You can review the mixed instance types policy we've configured before on the `D
 
 ![SpotASGMixedInstancesPolicy](/images/ec2-spot-cp-mixed-instances.png)
 
+#### Handling Spot Instance Interruptions
+
+We've configured the ECS agent to set a Spot container instance in `DRAINING` upon receiving an interruption notice by enabling the `ECS_ENABLE_SPOT_INSTANCE_DRAINING=true` flag on the agent configuration file. When an instance is set to `DRAINING`, for the tasks configured behind an Application Load Balancer, ALB will stop sending new requests to the to-be-interrupted tasks and allow the time configured on the `deregistration_delay.timeout_seconds` configured on the ALB Target Group for the in-flight requests to finish. As a Spot instance is interrupted with a 120 seconds notice, we have configured this value to be 90 seconds. 
+
+At the same time, ECS will start replacement tasks for the tasks running on the to-be-interrupted instance. As we have configured 80% as `targetCapacity` on Cluster auto scaling, the replacement tasks that fit on the remaining space on the cluster will be scheduled and started soon. Ideally we want these tasks to be considered `healthy` by the ALB fast, so we have configured the `healthy_threshold_count=2`. With default settings, health checks are evaluated every 30 seconds . This means that it will take at least 1 minute with two successful consecutive health checks for the new tasks to be healthy and start handling traffic.  
+
+If there are additional tasks `PENDING` waiting for EC2 capacity to be scheduled, cluster auto scaling will trigger a scale out action as the target is over 80%.
+
+Take your time to review the configuration on `~/environment/ecsdemo-capacityproviders/ec2/app.py`:
+
+```python
+self.cfn_target_group.target_group_attributes = [{ "key" : "deregistration_delay.timeout_seconds", "value": "90" }]
+self.cfn_target_group.healthy_threshold_count = 2
+```
+
+You can see an example of the flow on the image below.
+
+![ecs-connection-draining](/images/ecs-connection-draining.png)
+
+- On the three events starting from the bottom, you can see how upon `DRAINING` ECS deregisters the 3 targets that were running on the instance from the Target group. This action starts connection draining from the load balancer and also creates 3 replacement task.
+- Around 13 seconds later, the new tasks are `RUNNING` and registered to the target group, which will start performing health checks until the healthy_threshold_count (2 in our case) is passed.
+- 90 seconds after connection draining started, the tasks running on the to-be-interrupted instance are stopped as connection draining is complete.
+- Before completing 2 minutes after setting the instance to `DRAINING`, the ECS service reaches a steady state
+
+You can reproduce this yourself by manually draining an instance on the ECS Console, within containers-demo cluster, by going to the `ECS instances` tab, selecting one instance and clicking `Actions` --> `Drain instances`.
+
+
 ### Scale the service back down to one
 
 Now that we've seen the capacity provider strategy in action, let's drop the count back to one and watch as it will scale our infrastructure back in.
@@ -345,6 +372,7 @@ cdk deploy --require-approval never
 ```
 
 That's it. Now, over the course of the next few minutes,  cluster auto scaling will recognize that we are well above capacity requirements on both capacity providers, and will scale the EC2 instances back in.
+
 
 #### Cleanup
 
