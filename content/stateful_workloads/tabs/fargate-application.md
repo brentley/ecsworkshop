@@ -12,7 +12,7 @@ Run the following to export all of the resource values that we will need to refe
 
 ```bash
 export cloudformation_outputs=$(aws cloudformation describe-stacks --stack-name ecsworkshop-efs-fargate-demo | jq .Stacks[].Outputs)
-export cluster_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName | contains("ECSClusterName"))| .OutputValue')
+export cluster_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName != null) | select(.ExportName | contains("ECSClusterName"))| .OutputValue')
 export execution_role_arn=$(echo $cloudformation_outputs | jq -r '.[]| select(.ExportName | contains("ECSFargateEFSDemoTaskExecutionRoleARN"))| .OutputValue')
 export fs_id=$(echo $cloudformation_outputs | jq -r '.[]| select(.ExportName | contains("ECSFargateEFSDemoFSID"))| .OutputValue')
 export target_group_arn=$(echo $cloudformation_outputs | jq -r '.[]| select(.ExportName | contains("ECSFargateEFSDemoTGARN"))| .OutputValue')

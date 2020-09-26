@@ -136,7 +136,7 @@ As we did in the previous section, we are going to once again create a capacity 
 ```bash
 # Get the required cluster values needed when creating the capacity provider
 export spot_asg_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base --query 'Stacks[*].Outputs[?ExportName==`EC2SpotASGName`].OutputValue' --output text)
-export spot_asg_arn=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $spot_asg_name | jq .AutoScalingGroups[].AutoScalingGroupARN)
+export spot_asg_arn=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $spot_asg_name --query 'AutoScalingGroups[].AutoScalingGroupARN' --output text)
 export spot_capacity_provider_name=$(echo "EC2Spot$(date +'%s')")
 # Creating capacity provider
 aws ecs create-capacity-provider \
