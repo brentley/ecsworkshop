@@ -67,7 +67,7 @@ aws ecs create-capacity-provider \
   - `--name`: This is the human readable name for the capacity provider that we are creating.
   - `--auto-scaling-group-provider`: There is quite a bit here, let's unpack one by one:
   
-    - `autoScalingGroupArn`: The ARN of the auto scaling group for the cluster autoscaler to use.
+    - `autoScalingGroupArn`: The ARN of the Auto Scaling group for the cluster autoscaler to use.
     - `managedScaling`: This is where we enable/disable cluster auto scaling. We also set `targetCapacity`, which determines at what point in cluster utilization do we want the auto scaler to take action.
     - `managedTerminationProtection`: Enable this parameter if you want to ensure that prior to an EC2 instance being terminated (for scale-in actions), the auto scaler will only terminate instances that are not running tasks.
 
@@ -210,8 +210,8 @@ What we accomplished in this section of the workshop is the following:
 
 In the next section, we're going to:
 
-- Add EC2 Spot instances to our cluster
-- Create a capacity provider for the Spot instances, enable Cluster Auto Scaling
-- Add the new capacity provider to the default Capacity provider strategy
+- Add EC2 Spot instances to our cluster.
+- Create a capacity provider for the Spot instances, enable Cluster Auto Scaling on the new capacity provider.
+- Add the new capacity provider to the default cluster capacity provider strategy.
 - Deploy the service across both On-Demand and Spot capacity providers to spread our tasks and optimize costs overprovisioning our service using Spot Instances.
 - Scale the service out and in to see how the strategy spreads the tasks across capacity providers.

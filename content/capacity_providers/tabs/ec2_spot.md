@@ -120,8 +120,8 @@ cdk deploy --require-approval never
 By adding that section of code, all of the necessary components to add EC2 Spot instances to the cluster will be created. This includes an Auto Scaling Group with mixed instance types, Launch Template, ECS Optimized AMI, etc. Let's break down the important pieces:
 - Notice we are creating a [Launch Template](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-launch-templates.html). This is required to combine instance types and purchase options on an Auto Scaling group.
 - On the User Data of the launch template, we're configuring the ECS agent to drain a Spot Container Instance when receiving an interruption notice: `ECS_ENABLE_SPOT_INSTANCE_DRAINING=true`.
-- On the Auto Scaling group, we're defining a Mixed Instances Policy. On instance distribution, we're setting up the Auto Scaling group to launch only EC2 Spot Instances and use the `capacity-optimized` Spot Allocation Strategy. This makes Auto Scaling launch instances from the Spot capacity pool with optimal capacity for the number or instances that are launching. Deploying this way helps you make the most efficient use of spare EC2 capacity.
-- On the `overrides` section, we're configuring 10 different instance types that we can use on our ECS cluster. Multipliying this number by the number of AZs in use will give us the number of Spot capacity pools we can launch capacity from ( e.g. if we're across 3 AZs, it means we can get capacity from 30 different Spot capacity pools). This increases our ability acquire the required Spot capacity. 
+- On the Auto Scaling group, we're defining a Mixed Instances Policy. On instance distribution, we're setting up the Auto Scaling group to launch only EC2 Spot Instances and use the `capacity-optimized` Spot Allocation Strategy. This makes Auto Scaling launch instances from the Spot capacity pool with optimal capacity for the number or instances that are launching. Deploying this way helps you make the most efficient use of spare EC2 capacity and reduce the likelihood of interruptions.
+- On the `overrides` section, we're configuring 10 different instance types that we can use on our ECS cluster. Multipliying this number by the number of Availability Zones in use will give us the number of Spot capacity pools we can launch capacity from ( e.g. if we're across 3 AZs, it means we can get capacity from 30 different Spot capacity pools). This maximizes our ability acquire the required Spot capacity (the more pools the better). 
 
 Once the deployment is complete, let's move back to the capacity provider demo repo and start work on setting up cluster auto scaling.
 
@@ -131,7 +131,7 @@ cd ~/environment/ecsdemo-capacityproviders/ec2
 
 ### Enable Cluster Auto Scaling
 
-As we did in the previous section, we are going to once again create a capacity provider for the Spot Instances Auto Scaling group we just created. We'll also enable managed cluster autoscaling on it. Let's do that now.
+As we did in the previous section, we are going to once again create a capacity provider, this time for the Spot Instances Auto Scaling group we just created. We'll also enable managed cluster autoscaling on it. Let's do that now.
 
 ```bash
 # Get the required cluster values needed when creating the capacity provider
@@ -156,7 +156,7 @@ aws ecs create-capacity-provider \
     - `managedScaling`: This is where we enable/disable cluster auto scaling. We also set `targetCapacity`, which determines at what point in cluster utilization do we want the auto scaler to take action.
     - `managedTerminationProtection`: Enable this parameter if you want to ensure that prior to an EC2 instance being terminated (for scale-in actions), the auto scaler will only terminate instances that are not running tasks.
 
-Now that we have a capacity provider created, we need to associate it with the ECS Cluster. As we created an On-Demand Auto Scaling capacity provider on the previous section, we'll add the Spot Auto Scaling capacity provider and assign both capacity providers the same weight on the cluster default capacity provider strategy, with a base of 1 initial task scheduled on the on-demand capacity provider. With this configuration, the first task will be scheduled on the On-Demand capacity provider. Subsequent tasks will be scheduled 50% on the Spot Auto Scaling capacity provider and the other 50% on the On-Demand Auto Scaling capacity provider.  
+Now that we have a new capacity provider created, we need to associate it with the ECS Cluster. As we created an On-Demand Auto Scaling capacity provider on the previous section, we'll add the Spot Auto Scaling capacity provider to the cluster and assign both capacity providers the same weight on the cluster default capacity provider strategy, with a base of 1 initial task scheduled on the On-Demand capacity provider. With this configuration, the first task will be scheduled on the On-Demand capacity provider. Subsequent tasks will be scheduled 50% on the Spot Auto Scaling capacity provider and the other 50% on the On-Demand Auto Scaling capacity provider.  
 
 ```bash
 aws ecs put-cluster-capacity-providers \
@@ -167,7 +167,7 @@ aws ecs put-cluster-capacity-providers \
 
 You will get a json response indicating that the cluster update has been applied.
 
-If you go back to the ECS console and select the `container-demo`cluster, you will see the new Capacity provider on the `CapacityProviders`tab. If you go to the `ECS Instances` tab, you will see that we now have 4 EC2 instances, 2 of each Capacity provider. This is because we have specified an 80% as target capacity on Cluster Auto Scaling so we allow some room for new tasks to be scheduled without needing to wait for new instances to come up. It's a best practice to overprovision a bit to allow faster task scaling and faster launch of task replacements when a Spot Instance is interrupted. If you don't want to leave any extra room, you can adjust the `targetCapacity` value to 100.
+If you go back to the ECS console and select the `container-demo` cluster, you will see the new Capacity provider on the `CapacityProviders` tab. If you go to the `ECS Instances` tab, you will see that we now have 4 EC2 instances, 2 of each Capacity provider. This is because we have specified an 80% as target capacity on Cluster Auto Scaling so we allow some room for new tasks to be scheduled without needing to wait for new instances to come up. It's a best practice to overprovision your cluster a bit to allow faster task scaling and faster launch of task replacements when a Spot Instance is interrupted. If you don't want to leave any extra room, you can adjust the `targetCapacity` value to 100.
 
 ![ecsdemo-cluster-registered-instances](/images/ecs-container-demo-registered-instances.png)
 
@@ -204,7 +204,7 @@ The output will be similar to the following:
 
 Even though we have updated the cluster default capacity provider strategy, it will only apply to new services with no specified strategy. This means our service is still using the previous strategy. To update the capacity providers strategy of the service, we'll need to update the service and redeploy it. 
 
-On the Amazon ECS console go to the `container-demo`cluster and on the `Services` tab, click on the `ecsdemo-capacityproviders-ec2` service.
+On the Amazon ECS console go to the `container-demo` cluster and on the `Services` tab, click on the `ecsdemo-capacityproviders-ec2` service.
 
 ![ecsdemo-capacity-providers-ec2-service](/images/ecsdemo-capacityproviders-ec2-service.png)
 
@@ -219,12 +219,6 @@ Wait for a few minutes while the service is re-deployed. You can monitor it on t
 ### Scale the service beyond the current capacity available
 
 Now we can scale out again our service. ECS will adhere to the capacity providers strategy we just configured: one base task on the On-Demand Auto Scaling Capacity provider and then 50% of the tasks on the Spot Auto Scaling capacity provider and the other 50% on the On-Demand capacity provider.
-
-Let's move back to the capacity provider demo repo.
-
-```bash
-cd ~/environment/ecsdemo-capacityproviders/ec2
-```
 
 Go to the deployment configuration (`~/environment/ecsdemo-capacityproviders/ec2/app.py`), and do the following:
 
@@ -254,7 +248,7 @@ Let's walk through what we did and what is happening.
 
 - We are modifying our task count for the service to go from one, to twenty. This will stretch us beyond the capacity that presently exists for the cluster on both capacity providers.
 - The capacity providers used by the service will recognize that the target capacity of each of them is above 80%. This will trigger a autoscaling events to scale capacity of the underlying auto scaling groups back to 80% or under.
-- The EC2 Spot Auto Scaling group will scale out selecting the instance types on each AZ optimal based on the spare capacity availability of each pool. 
+- The EC2 Spot Auto Scaling group will scale out selecting the instance types on each AZ optimal based on the spare capacity availability of each pool at launch time. 
 
 If you navigate to the ECS console you will notice there're 20 tasks attempting to run:
 
@@ -310,7 +304,7 @@ Notice that, as configured on the strategy, out of the `20` tasks, 1 base task h
 
 Go to the [EC2 Auto Scaling console](https://console.aws.amazon.com/ec2autoscaling/home) and open the `ecsworkshop-base-ECSEC2SpotCapacity-*`. On the `Instance management` tab, check out which instance types Auto Scaling group has launched. The instance types depend on what the optimal Spot pools are at the time your instances are launched. 
 
-![SpotASGInstances](/images/ecs-spot-asg.png)
+![SpotASGInstances](/images/ec2-spot-cp-asg.png)
 
 You can review the mixed instance types policy we've configured before on the `Details` tab and scrolling-down to `Purchase options and instance types`.
 
