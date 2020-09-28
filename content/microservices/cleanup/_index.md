@@ -13,6 +13,10 @@ Answer yes when prompted. Make sure the application you delete is called "ecswor
 ```bash
 cd ~/environment/ecsdemo-frontend/
 copilot pipeline delete
+```
+Once done, run the following:
+
+```bash
 copilot app delete 
 ```
 {{% /expand %}}
