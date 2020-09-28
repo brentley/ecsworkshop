@@ -43,7 +43,7 @@ Below is an example of what the cli interaction will look like:
 ![deployment](/images/copilot-init-crystal.gif)
 
 The crystal service is now deployed! Navigate back to the frontend load balancer url, and you should now see the crystal service. You may notice that it is not working as we fully expect with the diagram. 
-This is because the service needs an environment variable as well as an IAM role addon to fully function as expected. Run the commands below to add an environment variable, and create the IAM role in the addons path.
+Like we've experienced with the previous services, this is because the service needs an environment variable as well as an IAM role addon to fully function as expected. Run the commands below to add an environment variable, and create the IAM role in the addons path.
 
 ```bash
 mkdir -p copilot/ecsdemo-crystal/addons
