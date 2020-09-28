@@ -14,7 +14,7 @@ cd ~/environment/ecsdemo-crystal
 
 In the previous section, we deployed our application, test environment, frontend service, and the nodejs service. 
 
-To start, we need to create our crystal service in the ecsworkshop application.
+Like we've done in previous sections, we will first need to create our crystal service in the ecsworkshop application.
 
 The following command will open a prompt for us to add our service to the application.
 
@@ -139,10 +139,8 @@ We can see that we have one active running task, along with some additional deta
 #### Scale our task count
 
 Let's scale our task count up! To do this, we are going to update the manifest file that was created when we initialized our service earlier.
-
-Feel free to look at the manifest file here: ./copilot/ecsdemo-crystal/manifest.yml
-
-Open the manifest file, and replace the value of the count key from 1 to 3. This is declaring our state of the service to change from 1 task, to 3.
+Open the manifest file (./copilot/ecsdemo-frontend/manifest.yml), and replace the value of the count key from 1 to 3. This is declaring our state of the service to change from 1 task, to 3.
+Feel free to explore the manifest file to familiarize yourself.
 
 ```
 # Number of tasks that should be running in your service.
