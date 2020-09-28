@@ -31,7 +31,7 @@ We will be prompted with a series of questions related to the application, envir
 - Dockerfile: ./Dockerfile
 
 After you answer the questions, it will begin the process of creating some baseline resources for your service. 
-This includes the manifest file for the backend service, for more information on the manifest file, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Backend-Service-Manifest).
+This also includes the manifest file which defines the desired state of this service. For more information on the manifest file, see the [copilot-cli documentation](https://github.com/aws/copilot-cli/wiki/Backend-Service-Manifest).
 
 Next, you will be prompted to deploy a test environment. An environment encompasses all of the resources that are required to support running your containers in ECS.
 This includes the networking stack (VPC, Subnets, Security Groups, etc), the ECS Cluster, Load Balancers (if required), and more.
