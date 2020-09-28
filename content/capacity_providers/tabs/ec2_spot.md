@@ -165,7 +165,9 @@ aws ecs put-cluster-capacity-providers \
 --default-capacity-provider-strategy capacityProvider=$capacity_provider_name,weight=1,base=1 capacityProvider=$spot_capacity_provider_name,weight=1,base=0
 ```
 
-You will get a json response indicating that the cluster update has been applied.
+You will get a json response indicating that the cluster update has been applied. 
+
+Wait for a couple of minutes until cluster autoscaling utilization metric of the new capacity provider is triggered and the Spot Auto Scaling group is scaled out. 
 
 If you go back to the ECS console and select the `container-demo` cluster, you will see the new Capacity provider on the `CapacityProviders` tab. If you go to the `ECS Instances` tab, you will see that we now have 4 EC2 instances, 2 of each Capacity provider. This is because we have specified an 80% as target capacity on Cluster Auto Scaling so we allow some room for new tasks to be scheduled without needing to wait for new instances to come up. It's a best practice to overprovision your cluster a bit to allow faster task scaling and faster launch of task replacements when a Spot Instance is interrupted. If you don't want to leave any extra room, you can adjust the `targetCapacity` value to 100.
 
