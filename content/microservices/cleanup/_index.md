@@ -6,6 +6,21 @@ weight = 60
 
 Let's clean up our compute resources first:
 
+{{%expand "Expand here to cleanup the copilot portion of the workshop" %}}
+
+Answer yes when prompted. Make sure the application you delete is called "ecsworkshop"
+
+```bash
+cd ~/environment/ecsdemo-frontend/
+copilot pipeline delete
+```
+Once done, run the following:
+
+```bash
+copilot app delete 
+```
+{{% /expand %}}
+
 
 {{%expand "Expand here to cleanup ecs cli portion of the workshop" %}}
 
