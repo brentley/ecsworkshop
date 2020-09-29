@@ -118,10 +118,16 @@ cdk deploy --require-approval never
 ```
 
 By adding that section of code, all of the necessary components to add EC2 Spot instances to the cluster will be created. This includes an Auto Scaling Group with mixed instance types, Launch Template, ECS Optimized AMI, etc. Let's break down the important pieces:
+
 - Notice we are creating a [Launch Template](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-launch-templates.html). This is required to combine instance types and purchase options on an Auto Scaling group.
 - On the User Data of the launch template, we're configuring the ECS agent to drain a Spot Container Instance when receiving an interruption notice: `ECS_ENABLE_SPOT_INSTANCE_DRAINING=true`.
 - On the Auto Scaling group, we're defining a Mixed Instances Policy. On instance distribution, we're setting up the Auto Scaling group to launch only EC2 Spot Instances and use the `capacity-optimized` Spot Allocation Strategy. This makes Auto Scaling launch instances from the Spot capacity pool with optimal capacity for the number or instances that are launching. Deploying this way helps you make the most efficient use of spare EC2 capacity and reduce the likelihood of interruptions.
 - On the `overrides` section, we're configuring 10 different instance types that we can use on our ECS cluster. Multipliying this number by the number of Availability Zones in use will give us the number of Spot capacity pools we can launch capacity from ( e.g. if we're across 3 AZs, it means we can get capacity from 30 different Spot capacity pools). This maximizes our ability acquire the required Spot capacity (the more pools the better). 
+
+
+{{% notice note %}}
+On the Auto Scaling group mixed instance policies we included `t2` and `t3` instance types, which  fit perfectly well for our use case. For CPU intensive and/or production use cases, keep in mind t2 and t3 instances are burstable performance instances. T3 instances by default run in `unlimited mode`, meaning if your workload consistently bursts above the instance baseline performance and depletes burst credits, credit surplus charges are incurred. T2 instances run in `standard mode` by default, meaning that once burst credits are depleted, CPU utilization will be gradually lowered to the baseline level. You can learn more about burstable performance instances [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html). You can also modify your default settings at account level with the [modify-default-credit-specification](https://docs.aws.amazon.com/cli/latest/reference/ec2/modify-default-credit-specification.html) CLI command. 
+{{% /notice%}}
 
 Once the deployment is complete, let's move back to the capacity provider demo repo and start work on setting up cluster auto scaling.
 
