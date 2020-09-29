@@ -19,6 +19,7 @@ From wherever you checkout repos:
 `cd ecsworkshop`
 
 `git submodule init`
+
 `git submodule update --checkout --recursive`
 
 #### Install node packages:
