@@ -139,6 +139,42 @@ The command line output should look something like this:
 
 Whether you or on the browser or using the command line, go ahead and refresh a few times. You should see that as you are routed to different containers via the load balancer on each new request. The containers responding will be running on either Fargate or Fargate Spot capacity providers.
 
+From a cluster administrator point of view, you can also easily check how your tasks are spread across capacity providers with the following CLI command:
+
+```bash
+aws ecs describe-tasks --cluster container-demo \
+                       --tasks \
+                         $(aws ecs list-tasks --cluster container-demo --query 'taskArns[]' --output text) \
+                       --query 'sort_by(tasks,&capacityProviderName)[].{ 
+                                          Id: taskArn, 
+                                          AZ: availabilityZone, 
+                                          CapacityProvider: capacityProviderName, 
+                                          LastStatus: lastStatus, 
+                                          DesiredStatus: desiredStatus}' \
+                        --output table
+```
+
+The output will be similar to the following:
+
+```
+---------------------------------------------------------------------------------------------------------------------------------------------------
+|                                                                  DescribeTasks                                                                  |
++------------+-------------------+----------------+--------------------------------------------------------------------------------+--------------+
+|     AZ     | CapacityProvider  | DesiredStatus  |                                      Id                                        | LastStatus   |
++------------+-------------------+----------------+--------------------------------------------------------------------------------+--------------+
+|  us-west-2a|  FARGATE          |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/00fd41c9-6b7b-41a3-8b37-fb2404b58cb8  |  RUNNING     |
+|  us-west-2b|  FARGATE          |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/56e5e043-be66-4d18-ac52-7156c2eadd6c  |  RUNNING     |
+|  us-west-2c|  FARGATE          |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/9dad79c0-fd66-4785-a11e-a6b4c586157b  |  RUNNING     |
+|  us-west-2b|  FARGATE_SPOT     |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/36a51210-a869-4933-b028-c8ee9b3243dd  |  RUNNING     |
+|  us-west-2c|  FARGATE_SPOT     |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/3a864ba5-fe60-42f8-83b2-4de8838a99ac  |  RUNNING     |
+|  us-west-2a|  FARGATE_SPOT     |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/665ecef8-c0a5-45db-8fcf-f06c02cfe16b  |  RUNNING     |
+|  us-west-2c|  FARGATE_SPOT     |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/69361c15-f76d-4765-b1c9-236f1124c28f  |  RUNNING     |
+|  us-west-2a|  FARGATE_SPOT     |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/dd0aa6dc-3a5e-4692-9e10-f5d7a169c4d6  |  RUNNING     |
+|  us-west-2c|  FARGATE_SPOT     |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/e60a98b4-adca-4f38-98ab-bb44c4890455  |  RUNNING     |
+|  us-west-2a|  FARGATE_SPOT     |  RUNNING       |  arn:aws:ecs:us-west-2:012345678910:task/f3e4db9d-effb-41c6-bf9e-527a5cc58603  |  RUNNING     |
++------------+-------------------+----------------+--------------------------------------------------------------------------------+--------------+
+```
+
 {{% notice tip%}}
 To learn all about Fargate Spot check out [this blog post](https://aws.amazon.com/blogs/compute/deep-dive-into-fargate-spot-to-run-your-ecs-tasks-for-up-to-70-less/)
 {{% /notice%}}

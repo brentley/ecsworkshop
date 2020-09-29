@@ -44,7 +44,7 @@ cd ~/environment/ecsdemo-capacityproviders/ec2
 
 ### Enable Cluster Auto Scaling
 
-As we did in the previous section, we are going to once again create a capacity provider. This time; however, it will be a capacity provider to enable managed cluster auto scaling. Let's do that now.
+As we did in the previous section, we are going to once again create a capacity provider. This time; however, it will be a capacity provider backed by EC2 and we'll enable managed cluster auto scaling. Let's do that now.
 
 ```bash
 # Get the required cluster values needed when creating the capacity provider
@@ -211,7 +211,7 @@ What we accomplished in this section of the workshop is the following:
 In the next section, we're going to:
 
 - Add EC2 Spot instances to our cluster.
-- Create a capacity provider for the Spot instances, enable Cluster Auto Scaling on the new capacity provider.
+- Create a capacity provider for the Spot instances, then enable Cluster Auto Scaling on the new capacity provider.
 - Add the new capacity provider to the default cluster capacity provider strategy.
-- Deploy the service across both On-Demand and Spot capacity providers to spread our tasks and optimize costs overprovisioning our service using Spot Instances.
-- Scale the service out and in to see how the strategy spreads the tasks across capacity providers.
+- Deploy the service across both On-Demand and Spot capacity providers with the new strategy to spread our tasks across them. With this strategy, we optimize costs while scaling out our service using Spot Instances.
+- Scale the service out and in to see how the strategy spreads the tasks across capacity providers and cluster autoscaling takes care of scaling the underlying EC2 instances.
