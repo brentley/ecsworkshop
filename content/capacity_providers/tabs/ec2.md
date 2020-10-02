@@ -44,12 +44,12 @@ cd ~/environment/ecsdemo-capacityproviders/ec2
 
 ### Enable Cluster Auto Scaling
 
-As we did in the previous section, we are going to once again create a capacity provider. This time; however, it will be a capacity provider to enable managed cluster auto scaling. Let's do that now.
+As we did in the previous section, we are going to once again create a capacity provider. This time; however, it will be a capacity provider backed by EC2 and we'll enable managed cluster auto scaling. Let's do that now.
 
 ```bash
 # Get the required cluster values needed when creating the capacity provider
-export asg_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base | jq -r '.Stacks[].Outputs[] | select(.ExportName != null) | select(.ExportName | contains("EC2ASGName"))| .OutputValue')
-export asg_arn=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $asg_name | jq .AutoScalingGroups[].AutoScalingGroupARN)
+export asg_name=$(aws cloudformation describe-stacks --stack-name ecsworkshop-base --query 'Stacks[*].Outputs[?ExportName==`EC2ASGName`].OutputValue' --output text)
+export asg_arn=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $asg_name --query 'AutoScalingGroups[].AutoScalingGroupARN' --output text)
 export capacity_provider_name=$(echo "EC2$(date +'%s')")
 # Creating capacity provider
 aws ecs create-capacity-provider \
@@ -60,14 +60,14 @@ aws ecs create-capacity-provider \
 
 - *Note*: If you get an error that the capacity provider already exists because you've created it in the workshop before, just move on to the next step.
 
-- In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section when we added the EC2 capacity to the ECS cluster. We run a couple of cli calls to get the autoscale group details which is required for the next command where we create the capacity provider.
+- In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section when we added the EC2 capacity to the ECS cluster. We run a couple of cli calls to get the Auto Scaling group details which is required for the next command where we create the capacity provider.
 
 - The next command is creating a capacity provider via the AWS CLI. Let's look at the parameters and explain what their purpose:
 
   - `--name`: This is the human readable name for the capacity provider that we are creating.
   - `--auto-scaling-group-provider`: There is quite a bit here, let's unpack one by one:
   
-    - `autoScalingGroupArn`: The ARN of the auto scaling group for the cluster autoscaler to use.
+    - `autoScalingGroupArn`: The ARN of the Auto Scaling group for the cluster autoscaler to use.
     - `managedScaling`: This is where we enable/disable cluster auto scaling. We also set `targetCapacity`, which determines at what point in cluster utilization do we want the auto scaler to take action.
     - `managedTerminationProtection`: Enable this parameter if you want to ensure that prior to an EC2 instance being terminated (for scale-in actions), the auto scaler will only terminate instances that are not running tasks.
 
@@ -195,32 +195,23 @@ Now, save the changes, and let's deploy.
 cdk deploy --require-approval never
 ```
 
-That's it. Now, over the course of the next few minutes, the cluster autoscaler will recognize that we are well above capacity requirements, and will scale the EC2 instances back in.
+That's it. Now, over the course of the next few minutes, the cluster auto scaling will recognize that we are well above capacity requirements, and will scale the EC2 instances back in.
 
 
 #### Review
 
 What we accomplished in this section of the workshop is the following:
 
-- Created an capacity provider for EC2 backed tasks that has managed cluster auto scaling enabled.
+- Created a capacity provider for EC2 backed tasks that has managed cluster auto scaling enabled.
 - We deployed a service with one task and plenty of backend capacity, and then scaled out to ten tasks. This caused the managed cluster auto scaling to trigger a scale out event to have the backend infrastructure meet the availability requirements of the tasks.
-- We then scaled the service back to one, and watched as the cluster autoscaler scaled the EC2 instances back in to ensure that we weren't over provisioned.
+- We then scaled the service back to one, and watched as the cluster auto scaling scaled the EC2 instances back in to ensure that we weren't over provisioned.
 
-#### Cleanup
+#### Up Next
 
-Run the cdk command to delete the service (and dependent components) that we deployed.
+In the next section, we're going to:
 
-```bash
-cdk destroy -f
-```
-
-Next, go back to the ECS Cluster in the console. In the top right, select `Update Cluster`.
-
-![updatecluster](/images/cp_update_cluster.png)
-
-Under `Default capacity provider strategy`, click the `x` next to all of the strategies until there are no more left to remove. Once you've done that, click `Update`.
-
-![deletecapprovider](/images/cp_delete_default.png)
-
-
-That's it! Great job! Let's move on to the next section...
+- Add EC2 Spot instances to our cluster.
+- Create a capacity provider for the Spot instances, then enable Cluster Auto Scaling on the new capacity provider.
+- Add the new capacity provider to the default cluster capacity provider strategy.
+- Deploy the service across both On-Demand and Spot capacity providers with the new strategy to spread our tasks across them. With this strategy, we optimize costs while scaling out our service using Spot Instances.
+- Scale the service out and in to see how the strategy spreads the tasks across capacity providers and cluster autoscaling takes care of scaling the underlying EC2 instances.
