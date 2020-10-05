@@ -47,7 +47,7 @@ phases:
       - echo "==> CODEBUILD_GIT_MOST_RECENT_TAG = $CODEBUILD_GIT_MOST_RECENT_TAG"
       - echo "==> CODEBUILD_PROJECT = $CODEBUILD_PROJECT"
       - echo "==> CODEBUILD_PULL_REQUEST = $CODEBUILD_PULL_REQUEST"
-      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "master" ] ; then
+      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "main" ] ; then
           export DEPLOY_DIR='/';
         else
           export DEPLOY_DIR=${CODEBUILD_GIT_CLEAN_BRANCH};
@@ -69,7 +69,7 @@ phases:
       - npm install
       - head config.toml
       - npm run build
-      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "master" ] ; then
+      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "main" ] ; then
           docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
         else 
           echo docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-swap "/$CODEBUILD_GIT_CLEAN_BRANCH:" --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
