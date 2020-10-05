@@ -47,7 +47,7 @@ phases:
       - echo "==> CODEBUILD_GIT_MOST_RECENT_TAG = $CODEBUILD_GIT_MOST_RECENT_TAG"
       - echo "==> CODEBUILD_PROJECT = $CODEBUILD_PROJECT"
       - echo "==> CODEBUILD_PULL_REQUEST = $CODEBUILD_PULL_REQUEST"
-      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "master" ] ; then
+      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "main" ] ; then
           export DEPLOY_DIR='/';
         else
           export DEPLOY_DIR=${CODEBUILD_GIT_CLEAN_BRANCH};
@@ -64,17 +64,17 @@ phases:
       - echo "<p class="build-number">${IMAGE_TAG}</p>" >> layouts/partials/menu-footer.html
       - cat layouts/partials/menu-footer.html
       - npm install
-      - if [ "${CODEBUILD_GIT_CLEAN_BRANCH}" != "master" ] ; then
+      - if [ "${CODEBUILD_GIT_CLEAN_BRANCH}" != "main" ] ; then
           sed -i "s@href=./.@href=\"/$CODEBUILD_GIT_CLEAN_BRANCH\"@" layouts/partials/logo.html;
         fi
       - cut -c1-50 layouts/partials/logo.html
-      - if [ "${CODEBUILD_GIT_CLEAN_BRANCH}" != "master" ] ; then
+      - if [ "${CODEBUILD_GIT_CLEAN_BRANCH}" != "main" ] ; then
           sed -i "s@baseURL =.*@baseURL = \"https://ecsworkshop.com/$CODEBUILD_GIT_CLEAN_BRANCH\"@" config.toml;
         fi
       - head config.toml
       - npm install
       - npm run build
-      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "master" ] ; then
+      - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "main" ] ; then
           docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
         else 
           docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-swap "/$CODEBUILD_GIT_CLEAN_BRANCH:" --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
