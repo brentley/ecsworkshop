@@ -85,7 +85,7 @@ In the app.py, uncomment the code under the section of code that says `###### EC
                 "instancesDistribution": {
                     "onDemandAllocationStrategy": "prioritized",
                     "onDemandBaseCapacity": 0,
-                    "onDemandPercentageAboveCapacity": 0,
+                    "onDemandPercentageAboveBaseCapacity": 0,
                     "spotAllocationStrategy": "capacity-optimized"
                     },
                 "launchTemplate": {
