@@ -28,7 +28,7 @@ sudo make install
 popd
 
 # Install cdk packages
-pip install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
+pip3 install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs_patterns==$AWS_CDK_VERSION \
 aws-cdk.aws_ec2==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs==$AWS_CDK_VERSION \
