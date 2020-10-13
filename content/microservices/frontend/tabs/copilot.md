@@ -217,7 +217,7 @@ Once you have steps one and two completed, we can move forward. Please copy the 
 
 Navigate to the frontend service repo [here](https://github.com/brentley/ecsdemo-frontend). 
 
-We will create a fork of this repository. Click the "Fork" button in the top left, and then select your GitHub username. This will create a copy of the repository under your GitHub namespace.
+We will create a fork of this repository. Click the "Fork" button in the top right, and then select your GitHub username. This will create a copy of the repository under your GitHub namespace.
 
 ![fork_1](/images/copilot-fork-click-frontend.png)
 ![fork_2](/images/copilot-fork-frontend.png)
