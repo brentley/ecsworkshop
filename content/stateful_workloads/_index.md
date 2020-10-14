@@ -13,7 +13,7 @@ In this chapter, we will deploy a stateful workload on ECS Fargate with storage 
 
 - Content Management Systems like Wordpress, or Drupal.
 - Sharing static content for web servers
-- Jenkins Master Nodes
+- Jenkins Leader Nodes
 - Machine learning
 - Relational Databases for dev/test environments
 
