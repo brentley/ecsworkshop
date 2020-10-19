@@ -27,14 +27,17 @@ make all
 sudo make install 
 popd
 
+# Upgrade pip to pip3
+pip install --user --upgrade pip
+
 # Install cdk packages
 pip3 install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs_patterns==$AWS_CDK_VERSION \
 aws-cdk.aws_ec2==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs==$AWS_CDK_VERSION \
 aws-cdk.aws_servicediscovery==$AWS_CDK_VERSION \
-aws_cdk.aws_iam==$AWS_CDK_VERSION \
-aws_cdk.aws_efs==$AWS_CDK_VERSION \
+aws-cdk.aws_iam==$AWS_CDK_VERSION \
+aws-cdk.aws_efs==$AWS_CDK_VERSION \
 awscli \
 awslogs
 

@@ -18,16 +18,19 @@ export AWS_CDK_VERSION="1.41.0"
 # Install aws-cdk
 npm install -g --force aws-cdk@$AWS_CDK_VERSION
 
+# Upgrade pip to pip3
+pip install --user --upgrade pip
+ 
 # Install cdk packages
-pip install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
+pip3 install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs_patterns==$AWS_CDK_VERSION \
 aws-cdk.aws_ec2==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs==$AWS_CDK_VERSION \
 aws-cdk.aws_servicediscovery==$AWS_CDK_VERSION \
-aws_cdk.aws_iam==$AWS_CDK_VERSION \
-aws_cdk.aws_efs==$AWS_CDK_VERSION \
-aws_cdk.aws_autoscaling==$AWS_CDK_VERSION \
-aws_cdk.aws_ssm==$AWS_CDK_VERSION \
+aws-cdk.aws_iam==$AWS_CDK_VERSION \
+aws-cdk.aws_efs==$AWS_CDK_VERSION \
+aws-cdk.aws_autoscaling==$AWS_CDK_VERSION \
+aws-cdk.aws_ssm==$AWS_CDK_VERSION \
 awscli \
 awslogs
 
