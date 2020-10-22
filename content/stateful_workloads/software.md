@@ -34,4 +34,9 @@ echo "export AWS_DEFAULT_REGION=$(curl -s 169.254.169.254/latest/dynamic/instanc
 echo "export AWS_REGION=\$AWS_DEFAULT_REGION" >> ~/.bashrc
 echo "export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)" >> ~/.bashrc
 source ~/.bashrc
+
+# Clone the service repo
+cd ~/environment
+git clone https://github.com/adamjkeller/ecsworkshop-efsdemo.git
+
 ```
