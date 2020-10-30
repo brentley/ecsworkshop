@@ -139,7 +139,7 @@ We can see that we have one active running task, along with some additional deta
 #### Scale our task count
 
 Let's scale our task count up! To do this, we are going to update the manifest file that was created when we initialized our service earlier.
-Open the manifest file (./copilot/ecsdemo-frontend/manifest.yml), and replace the value of the count key from 1 to 3. This is declaring our state of the service to change from 1 task, to 3.
+Open the manifest file (./copilot/ecsdemo-nodejs/manifest.yml), and replace the value of the count key from 1 to 3. This is declaring our state of the service to change from 1 task, to 3.
 Feel free to explore the manifest file to familiarize yourself.
 
 ```
