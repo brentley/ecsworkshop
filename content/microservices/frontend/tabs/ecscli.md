@@ -59,7 +59,7 @@ and log group in cloudwatch logs.
 ecs-cli compose --project-name ecsdemo-frontend service ps \
     --cluster-config container-demo
 
-task_id=$(ecs-cli compose --project-name ecsdemo-frontend service ps --cluster-config container-demo | awk -F \/ 'FNR == 2 {print $1}')
+task_id=$(ecs-cli compose --project-name ecsdemo-frontend service ps --cluster-config container-demo | awk -F \/ 'FNR == 2 {print $2}')
 ```
 We should have one task registered.
 
