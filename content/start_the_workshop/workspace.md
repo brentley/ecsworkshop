@@ -106,7 +106,7 @@ If the IAM role is not valid, <span style="color: red;">**DO NOT PROCEED**</span
 ### Increase the disk size on the Cloud9 instance
 
 ```bash
-pip install --user --upgrade boto3
+python -m pip install --user --upgrade boto3
 export instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 python -c "import boto3
 import os
