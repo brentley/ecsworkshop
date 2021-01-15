@@ -50,7 +50,7 @@ in the Cloud9 workspace menu.
 ![createrole](/images/createrole.png)
 
 - Follow [this deep link to find your Cloud9 EC2 instance](https://console.aws.amazon.com/ec2/v2/home?#Instances:tag:Name=aws-cloud9-ecsworkshop;sort=desc:launchTime)
-- Select the instance, then choose **Actions / Instance Settings / Attach/Replace IAM Role**
+- Select the instance, then choose **Actions / Security / Modify IAM Role**
 ![c9instancerole](/images/c9instancerole.png)
 - Choose **ecsworkshop-admin** from the **IAM Role** drop down, and select **Apply**
 ![c9attachrole](/images/c9attachrole.png)
