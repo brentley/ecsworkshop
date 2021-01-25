@@ -12,6 +12,7 @@ Discover more AWS resources for building and running your application on AWS:
 * [Amazon EKS Workshop](https://eksworkshop.com) - This workshop guides you through the process of setting up and using a Kubernetes cluster on AWS
 * [Amazon Lightsail Workshop](https://lightsailworkshop.com) - If you are getting started with the cloud and looking for a way to run an extremely low cost environment Lightsail is perfect. Learn how to deploy to Amazon Lightsail with this workshop.
 * [CI/CD Workshop for Amazon ECS](https://cicd-for-ecs.workshop.aws) - This workshop guides you through setting up CI/CD pipelines for Amazon ECS. Includes coverage of rolling updates, blue/green with test port, canary / linear deployments, GitOps, service discovery (for internal traffic), and pipeline templating (both CloudFormation and Terraform).
+* [ECS Cats and Dogs](https://ecs-cats-dogs.workshop.aws) - This workshop is designed to educate engineers that might not be familiar with Amazon ECS, Fargate, and possibly even Docker container workflow. It covers Amazon ECS fundamentals and new features including Cluster Auto Scaling, CloudWatch Container Insights, AWS FireLens and so on.
 
 #### Tools for AWS Fargate and Amazon ECS
 
