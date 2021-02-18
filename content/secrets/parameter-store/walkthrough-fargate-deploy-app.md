@@ -1,7 +1,7 @@
 ---
 title: "Deploy the Application"
 chapter: false
-weight: 33
+weight: 52
 ---
 
 Next we run `cdk synth` to create the cloudformation templates which output to a local directory `cdk.out`.   If successful, you will see this:
