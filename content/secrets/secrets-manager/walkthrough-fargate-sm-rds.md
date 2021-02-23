@@ -6,15 +6,15 @@ weight: 27
 
 Next, the RDS instance is created.  
 
-#### lib/rds-stack-sm.ts
+#### lib/rds-stack-serverless-sm.ts
 
 ```
-import { App, StackProps, Stack, CfnOutput } from "@aws-cdk/core";
+import { App, StackProps, Stack, Duration, RemovalPolicy } from "@aws-cdk/core";
 import {
-    DatabaseSecret, DatabaseInstance, DatabaseInstanceEngine,
-    PostgresEngineVersion, Credentials, StorageType
+    DatabaseSecret, Credentials, ServerlessCluster, DatabaseClusterEngine, ParameterGroup, AuroraCapacityUnit
 } from '@aws-cdk/aws-rds';
-import { Vpc, Port, SubnetType, InstanceType } from '@aws-cdk/aws-ec2';
+import { Vpc, Port, SubnetType } from '@aws-cdk/aws-ec2';
+import { Secret } from '@aws-cdk/aws-secretsmanager';
 
 export interface RDSStackProps extends StackProps {
     vpc: Vpc
@@ -23,7 +23,7 @@ export interface RDSStackProps extends StackProps {
 export class RDSStack extends Stack {
 
     readonly dbSecret: DatabaseSecret;
-    readonly postgresRDSInstance: DatabaseInstance;
+    readonly postgresRDSserverless: ServerlessCluster;
 
     constructor(scope: App, id: string, props: RDSStackProps) {
         super(scope, id, props);
@@ -31,44 +31,56 @@ export class RDSStack extends Stack {
         const dbUser = this.node.tryGetContext("dbUser");
         const dbName = this.node.tryGetContext("dbName");
         const dbPort = this.node.tryGetContext("dbPort");
-        const dbInstanceType = this.node.tryGetContext("instanceType");
 
-        this.dbSecret = new DatabaseSecret(this, 'DbSecret', {
-            username: dbUser
+        this.dbSecret = new Secret(this, 'DBCredentialsSecret', {
+            secretName: "serverless-credentials",
+            generateSecretString: {
+                secretStringTemplate: JSON.stringify({
+                    username: dbUser,
+                }),
+                excludePunctuation: true,
+                includeSpace: false,
+                generateStringKey: 'password'
+            }
         });
 
-        this.postgresRDSInstance = new DatabaseInstance(this, 'Postgres-rds-instance', {
-            engine: DatabaseInstanceEngine.postgres({
-                version: PostgresEngineVersion.VER_12_4
-            }),
-            instanceType: new InstanceType(dbInstanceType),
+        this.postgresRDSserverless = new ServerlessCluster(this, 'Postgres-rds-serverless', {
+            engine: DatabaseClusterEngine.AURORA_POSTGRESQL,
+            parameterGroup: ParameterGroup.fromParameterGroupName(this, 'ParameterGroup', 'default.aurora-postgresql10'),
             vpc: props.vpc,
+            enableDataApi: true,
             vpcSubnets: { subnetType: SubnetType.PUBLIC },
-            storageEncrypted: false,
-            multiAz: false,
-            autoMinorVersionUpgrade: false,
-            allocatedStorage: 25,
-            storageType: StorageType.GP2,
-            deletionProtection: false,
             credentials: Credentials.fromSecret(this.dbSecret, dbUser),
-            databaseName: dbName,
-            port: dbPort,
+            scaling: {
+                autoPause: Duration.minutes(10), // default is to pause after 5 minutes of idle time
+                minCapacity: AuroraCapacityUnit.ACU_8, // default is 2 Aurora capacity units (ACUs)
+                maxCapacity: AuroraCapacityUnit.ACU_32, // default is 16 Aurora capacity units (ACUs)
+            },
+            defaultDatabaseName: dbName,
+            deletionProtection: false,
+            removalPolicy: RemovalPolicy.DESTROY
         });
 
-        this.postgresRDSInstance.connections.allowFromAnyIpv4(Port.tcp(dbPort));
-
-        new CfnOutput(this, 'POSTGRES_URL', { value: this.postgresRDSInstance.dbInstanceEndpointAddress });
+        this.postgresRDSserverless.connections.allowFromAnyIpv4(Port.tcp(dbPort));
 
     }
 }
 ```
 
-Here, we setup another Cloudformation Stack containing the template to build a single RDS Postgres Instance.   We pull the in the context variables `dbUser`, `dbName`,`dbPort` and `instanceType`.
+Here, another Cloudformation Stack is setup containing the template to build an Aurora Serverless Postgres Cluster.   
 
 The secret to use with RDS is created using the following code:
 ```
-        this.dbSecret = new DatabaseSecret(this, 'DbSecret', {
-            username: dbUser
+        this.dbSecret = new Secret(this, 'DBCredentialsSecret', {
+            secretName: "serverless-credentials",
+            generateSecretString: {
+                secretStringTemplate: JSON.stringify({
+                    username: dbUser,
+                }),
+                excludePunctuation: true,
+                includeSpace: false,
+                generateStringKey: 'password'
+            }
         });
 ```
 

@@ -23,9 +23,8 @@ The repository contains a sample application that deploys a Fargate Service runn
     "dbUser": "postgres",
     "dbPort": 5432,
     "containerPort": 4000,
-    "containerImage": "mptaws/secretecs",
-    "instanceType": "t2.micro"
+    "containerImage": "mptaws/secretecs"
   }
 }
 ```
-First, we setup some context variables that the application will consume.   We specify `vpcName`, `dbName`, `dbUser`, `dbPort`, `containerPort`, `containerImage`, and `instanceType`.   These values will be referenced by using `tryGetContext(<context-value>)`.   Managing context variables outside of the application files is a recommended best practice vs hard-coding values into the scripts themselves.  
+First, context variables are setup for that the application will consume.   `vpcName`, `dbName`, `dbUser`, `dbPort`, `containerPort` and `containerImage`.  These values will be referenced by using `tryGetContext(<context-value>)`.   Managing context variables outside of the application files is a recommended best practice vs hard-coding values into the scripts themselves.  

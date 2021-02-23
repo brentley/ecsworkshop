@@ -4,7 +4,7 @@ chapter: false
 weight: 15
 ---
 
-Inside your Cloud9 environment, clone the repository
+Inside the Cloud9 environment, clone the repository:
 
 ```
 cd ~/environment

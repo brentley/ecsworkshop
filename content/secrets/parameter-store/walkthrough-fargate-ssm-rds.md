@@ -9,30 +9,28 @@ Before the database is created - a new secret must be created in Parameter store
 ```
 aws ssm put-parameter --name "DBPass" --value "mySecurePassword123456" --type "SecureString"
 ```
-You will see a confirmation in the terminal:
+A confirmation will appear:
 ```
 {
     "Version": 1,
     "Tier": "Standard"
 }
 ```
-This will create a new Secure Parameter in the parameter store.   You can validate by checking the UI:
+This will create a new Secure Parameter in the parameter store.   Optionally, check the UI for the parameter:
 
 ![ssm-details](/images/ssm-details.png)
 
 Next, the RDS instance is created.  
 
-#### lib/rds-stack-ssm.ts
+#### lib/rds-stack-serverless-ssm.ts
 
 ```
-import { App, StackProps, Stack, CfnOutput, SecretValue } from "@aws-cdk/core";
+import { App, StackProps, Stack, Duration, RemovalPolicy, SecretValue } from "@aws-cdk/core";
 import {
-    DatabaseInstance, DatabaseInstanceEngine,
-    PostgresEngineVersion, Credentials, StorageType
+    Credentials, ServerlessCluster, DatabaseClusterEngine, ParameterGroup, AuroraCapacityUnit
 } from '@aws-cdk/aws-rds';
-import { Vpc, Port, SubnetType, InstanceType } from '@aws-cdk/aws-ec2';
+import { Vpc, Port, SubnetType } from '@aws-cdk/aws-ec2';
 import { StringParameter, ParameterTier } from "@aws-cdk/aws-ssm";
-
 
 export interface RDSStackProps extends StackProps {
     vpc: Vpc
@@ -40,7 +38,7 @@ export interface RDSStackProps extends StackProps {
 
 export class RDSStack extends Stack {
 
-    readonly postgresRDSInstance: DatabaseInstance;
+    readonly postgresRDSserverless: ServerlessCluster;
 
     constructor(scope: App, id: string, props: RDSStackProps) {
         super(scope, id, props);
@@ -48,36 +46,32 @@ export class RDSStack extends Stack {
         const dbUser = this.node.tryGetContext("dbUser");
         const stackDBName = this.node.tryGetContext("dbName");
         const stackDBPort = this.node.tryGetContext("dbPort");
-        const dbInstanceType = this.node.tryGetContext("instanceType");
-        const dbPass = SecretValue.ssmSecure('DBPass', '1');   
+        const dbPass = SecretValue.ssmSecure('DBPass', '1');   //NOTE: need to run cli before building stack to create this secret `aws ssm put-parameter --name "DBPass" --value "mySecurePassword123456" --type "SecureString"`
 
-        this.postgresRDSInstance = new DatabaseInstance(this, 'Postgres-rds-instance', {
-            engine: DatabaseInstanceEngine.postgres({
-                version: PostgresEngineVersion.VER_12_4
-            }),
-            instanceType: new InstanceType(dbInstanceType),
+        this.postgresRDSserverless = new ServerlessCluster(this, 'Postgres-rds-serverless', {
+            engine: DatabaseClusterEngine.AURORA_POSTGRESQL,
+            parameterGroup: ParameterGroup.fromParameterGroupName(this, 'ParameterGroup', 'default.aurora-postgresql10'),
             vpc: props.vpc,
+            enableDataApi: true,
             vpcSubnets: { subnetType: SubnetType.PUBLIC },
-            storageEncrypted: false,
-            multiAz: false,
-            autoMinorVersionUpgrade: false,
-            allocatedStorage: 25,
-            storageType: StorageType.GP2,
-            deletionProtection: false,
             credentials: Credentials.fromPassword(dbUser, dbPass),
-            databaseName: stackDBName,
-            port: stackDBPort,
+            scaling: {
+                autoPause: Duration.minutes(10), // default is to pause after 5 minutes of idle time
+                minCapacity: AuroraCapacityUnit.ACU_8, // default is 2 Aurora capacity units (ACUs)
+                maxCapacity: AuroraCapacityUnit.ACU_32, // default is 16 Aurora capacity units (ACUs)
+            },
+            defaultDatabaseName: stackDBName,
+            deletionProtection: false,
+            removalPolicy: RemovalPolicy.DESTROY
         });
 
-        this.postgresRDSInstance.connections.allowFromAnyIpv4(Port.tcp(stackDBPort));
-
-        new CfnOutput(this, 'POSTGRES_URL', { value: this.postgresRDSInstance.dbInstanceEndpointAddress });
+        this.postgresRDSserverless.connections.allowFromAnyIpv4(Port.tcp(stackDBPort));
 
         const dbHost = new StringParameter(this, 'DBHost', {
             allowedPattern: '.*',
             description: 'DB Host from CDK Stack Creation',
             parameterName: 'DBHost',
-            stringValue: this.postgresRDSInstance.dbInstanceEndpointAddress,
+            stringValue: this.postgresRDSserverless.clusterEndpoint.hostname,
             tier: ParameterTier.STANDARD
         });
 
@@ -85,7 +79,7 @@ export class RDSStack extends Stack {
             allowedPattern: '.*',
             description: 'DB Port from CDK Stack Creation',
             parameterName: 'DBPort',
-            stringValue: this.postgresRDSInstance.dbInstanceEndpointPort,
+            stringValue: stackDBPort.toString(),
             tier: ParameterTier.STANDARD
         });
 
@@ -110,22 +104,22 @@ export class RDSStack extends Stack {
 }
 ```
 
-Here, we setup another Cloudformation Stack containing the template to build a single RDS Postgres Instance.   We pull the in the context variables `dbUser`, `dbName`,`dbPort` and `instanceType`.
+Here, another Cloudformation Stack is setup containing the template to build an Aurora Serverless Postgres Cluster.   The secret to use with RDS is pulled in from parameter store:
 
-The secret to use with RDS is pulled in from parameter store:
 ```
 const dbPass = SecretValue.ssmSecure('DBPass', '1');  
 ```
-After the RDS instance is created, we store the newly created RDS parameters into parameter store, i.e.:
+
+After the RDS instance is created, the newly created RDS parameters are saved into parameter store, i.e.:
 ```
 const dbHost = new StringParameter(this, 'DBHost', {
     allowedPattern: '.*',
     description: 'DB Host from CDK Stack Creation',
     parameterName: 'DBHost',
-    stringValue: this.postgresRDSInstance.dbInstanceEndpointAddress,
+    stringValue: this.postgresRDSserverless.clusterEndpoint.hostname,
     tier: ParameterTier.STANDARD
 });
 ```
 
-This allows the application to access the secrets from the parameter store.  Note that everything but the password is stored in plaintext.  You can choose to store these securely. 
+This allows the application to access the secrets from the parameter store.  Note that everything but the password is stored in plaintext.  Any parameter stored in SSM may be done securely. 
 

@@ -4,11 +4,11 @@ chapter: false
 weight: 50
 ---
 
-To fetch the secrets from the parameter store, we use the `StringParameter.fromStringParameterName` for the plaintext values, and `StringParameter.fromSecureStringParameterAttributes` for the secure value.  We pass those values to the task definition container image options into the `secrets` property via the `fromSsmParameter` method. 
+To fetch the secrets from the parameter store, use the `StringParameter.fromStringParameterName` for the plaintext values, and `StringParameter.fromSecureStringParameterAttributes` for the secure value.  Pass those values to the task definition container image options into the `secrets` property via the `fromSsmParameter` method. 
 
 ### lib/ecs-fargate-stack-sm.ts
 ```
-import { App, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
+import { App, Stack, StackProps } from '@aws-cdk/core';
 import { Vpc } from "@aws-cdk/aws-ec2";
 import { Cluster, ContainerImage, Secret as ECSSecret } from "@aws-cdk/aws-ecs";
 import { ApplicationLoadBalancedFargateService } from '@aws-cdk/aws-ecs-patterns';
@@ -55,10 +55,6 @@ export class ECSStack extends Stack {
       desiredCount: 1,
       publicLoadBalancer: true
     });
-
-    const outputUrl = fargateService.loadBalancer.loadBalancerDnsName;
-
-    new CfnOutput(this, 'LoadBalancerDNS', { value: outputUrl});
   }
 }
 ```

@@ -8,7 +8,7 @@ The secrets are read from Secrets Manager and passed to our container task image
 
 ### lib/ecs-fargate-stack-sm.ts
 ```
-import { App, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
+import { App, Stack, StackProps } from '@aws-cdk/core';
 import { Vpc } from "@aws-cdk/aws-ec2";
 import { Cluster, ContainerImage, Secret as ECSSecret } from "@aws-cdk/aws-ecs";
 import { ApplicationLoadBalancedFargateService } from '@aws-cdk/aws-ecs-patterns';
@@ -31,7 +31,7 @@ export class ECSStack extends Stack {
     const cluster = new Cluster(this, 'Cluster', {
       vpc: props.vpc
     });
-  
+
     const fargateService = new ApplicationLoadBalancedFargateService(this, "FargateService", {
       cluster,
       taskImageOptions: {
@@ -49,8 +49,6 @@ export class ECSStack extends Stack {
       desiredCount: 1,
       publicLoadBalancer: true
     });
-
-    new CfnOutput(this, 'LoadBalancerDNS', { value: fargateService.loadBalancer.loadBalancerDnsName });
   }
 }
 ```

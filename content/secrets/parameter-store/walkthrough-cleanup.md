@@ -4,7 +4,7 @@ chapter: false
 weight: 54
 ---
 
-After you have reviewed the app and code, destroy the created stacks from the root of the cdk application project:
+After reviewing the app and code, destroy the created stacks from the root of the cdk application project:
 
 ```
 cdk destroy --all -f
