@@ -8,7 +8,7 @@ Next, lets look at the stacks.   The files in `lib` each represent a Cloudformat
 
 #### lib/vpc-stack.ts
 
-```
+```ts
 import { App, Stack, StackProps } from '@aws-cdk/core';
 import { Vpc } from '@aws-cdk/aws-ec2'
 

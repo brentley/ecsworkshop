@@ -5,7 +5,7 @@ weight: 31
 ---
 
 Next, create the stacks and the CDK infrastructure application itself in `bin/secret-ecs-app.ts`.   
-```
+```ts
 import { App } from '@aws-cdk/core';
 import { VPCStack } from '../lib/vpc-stack';
 import { RDSStack } from '../lib/rds-stack-serverless-sm';

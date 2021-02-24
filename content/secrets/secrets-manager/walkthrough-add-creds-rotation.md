@@ -1,20 +1,35 @@
 ---
-title: "Setup the RDS Cluster"
+title: "Adding Credential Rotation"
 chapter: false
-weight: 27
+weight: 28
 ---
 
-Next, the RDS Aurora Serverless cluster is created.  
+An added benefit of using AWS Secrets Manager to maintain sensitive credentials is the ability to rotate credentials on a regular basis.   In order to setup a new rotation, add a block inside the constructor of `lib/rds-stack-serverless.ts`.
 
-#### lib/rds-stack-serverless-sm.ts
+```ts
+        new SecretRotation(
+            this,
+            `db-creds-rotation`,
+            {
+                secret: this.dbSecret,
+                application: SecretRotationApplication.POSTGRES_ROTATION_SINGLE_USER,
+                vpc: props.vpc,
+                target: this.postgresRDSserverless,
+                automaticallyAfter: Duration.days(30),
+            }
+        )
+```
 
+This code will create a new secrets rotation every 30 days, and will automatically configure a Lambda function to trigger the rotation.  This adds a best practice for security with minimal code added.
+
+{{%expand "Click here to expand full code of rds-stack-serverless.ts" %}}
 ```ts
 import { App, StackProps, Stack, Duration, RemovalPolicy } from "@aws-cdk/core";
 import {
     DatabaseSecret, Credentials, ServerlessCluster, DatabaseClusterEngine, ParameterGroup, AuroraCapacityUnit
 } from '@aws-cdk/aws-rds';
 import { Vpc, Port, SubnetType } from '@aws-cdk/aws-ec2';
-import { Secret } from '@aws-cdk/aws-secretsmanager';
+import { Secret, SecretRotation, SecretRotationApplication } from '@aws-cdk/aws-secretsmanager';
 
 export interface RDSStackProps extends StackProps {
     vpc: Vpc
@@ -49,7 +64,7 @@ export class RDSStack extends Stack {
             parameterGroup: ParameterGroup.fromParameterGroupName(this, 'ParameterGroup', 'default.aurora-postgresql10'),
             vpc: props.vpc,
             enableDataApi: true,
-            vpcSubnets: { subnetType: SubnetType.PUBLIC },
+            vpcSubnets: { subnetType: SubnetType.PRIVATE },
             credentials: Credentials.fromSecret(this.dbSecret, dbUser),
             scaling: {
                 autoPause: Duration.minutes(10), // default is to pause after 5 minutes of idle time
@@ -63,29 +78,25 @@ export class RDSStack extends Stack {
 
         this.postgresRDSserverless.connections.allowFromAnyIpv4(Port.tcp(dbPort));
 
+        new SecretRotation(
+            this,
+            `db-creds-rotation`,
+            {
+                secret: this.dbSecret,
+                application: SecretRotationApplication.POSTGRES_ROTATION_SINGLE_USER,
+                vpc: props.vpc,
+                target: this.postgresRDSserverless,
+                automaticallyAfter: Duration.days(30),
+            }
+        );
     }
 }
+
 ```
+ {{% /expand%}}
 
-Here, another Cloudformation Stack is setup containing the template to build an Aurora Serverless Postgres Cluster.   
 
-The secret to use with RDS is created using the following code:
-```ts
-        this.dbSecret = new Secret(this, 'DBCredentialsSecret', {
-            secretName: "serverless-credentials",
-            generateSecretString: {
-                secretStringTemplate: JSON.stringify({
-                    username: dbUser,
-                }),
-                excludePunctuation: true,
-                includeSpace: false,
-                generateStringKey: 'password'
-            }
-        });
-```
 
-In this example, a new randomized secret password for the RDS database is created and stored along with all the other parameters needed to connect to the database.   This is all done automatically with Secrets Manager integration with RDS.   When run, the stored secret will look like this:
 
-![Secrets Manager Detail](/images/secrets-manager-detail.png)
 
-The stored secret is passed to the db creation code along with the other context parameters. 
+

@@ -12,6 +12,6 @@ Secrets Manager stores, retrieves, rotates, encrypts and monitors the use of sec
 This tutorial will demonstrate using AWS Secrets Manager with both Fargate and ECS on EC2.   
 
 Here is a diagram of the infrastructure we are going to build:
-![Secrets Diagram](/images/secrets-sm-diagram.png)
+{{< figure src="/images/secrets-sm-diagram.png" alt="Secrets Diagram" width="1200px" >}}
 
 When incoming web traffic passes through the load balancer to our ECS Cluster, the application running in the container reads environment variables that contain the sensitive content.  In this example the sensitive content is credentials for connecting the container app to the RDS instance.  The environment variables are populated by Secrets Manager when the service is started.   Managing your secrets is achieved with security in transit and at rest, and credential rotation can be configured within Secrets Manager, eliminating the need for custom code wtihin your application or extra operational overhead for manual intervention of secrets rotation. 

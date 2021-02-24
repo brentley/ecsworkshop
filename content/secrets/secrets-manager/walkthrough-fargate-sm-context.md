@@ -7,7 +7,7 @@ weight: 23
 The repository contains a sample application that deploys a Fargate Service running a NodeJS application that connects to a RDS Postgres Instance via credentials stored in Secrets Manager.
 
 #### cdk.json
-```
+```json
 {
   "app": "npx ts-node --prefer-ts-exts bin/secret-ecs-app.ts",
   "context": {

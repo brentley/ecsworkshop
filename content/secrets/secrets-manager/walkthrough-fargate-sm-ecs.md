@@ -1,5 +1,5 @@
 ---
-title: "Setup the ECS Cluster in Fargate"
+title: "Setup the ECS Fargate Cluster"
 chapter: false
 weight: 29
 ---
@@ -7,7 +7,7 @@ weight: 29
 The secrets are read from Secrets Manager and passed to our container task image via the `secrets` property.   Each property is created with a specific environment variable which is readable to the application.   
 
 ### lib/ecs-fargate-stack-sm.ts
-```
+```ts
 import { App, Stack, StackProps } from '@aws-cdk/core';
 import { Vpc } from "@aws-cdk/aws-ec2";
 import { Cluster, ContainerImage, Secret as ECSSecret } from "@aws-cdk/aws-ecs";
@@ -29,7 +29,8 @@ export class ECSStack extends Stack {
     const creds = Secret.fromSecretCompleteArn(this, 'pgcreds', props.dbSecretArn);
 
     const cluster = new Cluster(this, 'Cluster', {
-      vpc: props.vpc
+      vpc: props.vpc,
+      clusterName: 'FargateClusterDemo'
     });
 
     const fargateService = new ApplicationLoadBalancedFargateService(this, "FargateService", {
@@ -47,7 +48,8 @@ export class ECSStack extends Stack {
         }
       },
       desiredCount: 1,
-      publicLoadBalancer: true
+      publicLoadBalancer: true,
+      serviceName: 'FargateServiceDemo'
     });
   }
 }

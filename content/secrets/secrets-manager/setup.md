@@ -6,7 +6,7 @@ weight: 15
 
 Inside the Cloud9 environment, clone the repository:
 
-```
+```bash
 cd ~/environment
 git clone git://github.com/mptaws/secret-ecs-cdk-example
 cd secret-ecs-cdk-example
