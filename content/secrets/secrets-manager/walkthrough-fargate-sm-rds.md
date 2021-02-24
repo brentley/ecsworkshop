@@ -1,10 +1,10 @@
 ---
-title: "Setup the RDS Instance"
+title: "Setup the RDS Cluster"
 chapter: false
 weight: 27
 ---
 
-Next, the RDS instance is created.  
+Next, the RDS Aurora Serverless cluster is created.  
 
 #### lib/rds-stack-serverless-sm.ts
 

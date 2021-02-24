@@ -20,7 +20,7 @@ This will create a new Secure Parameter in the parameter store.   Optionally, ch
 
 ![ssm-details](/images/ssm-details.png)
 
-Next, the RDS instance is created.  
+Next, the RDS Aurora Serverless Cluster is created.  
 
 #### lib/rds-stack-serverless-ssm.ts
 
