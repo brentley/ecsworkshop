@@ -8,8 +8,8 @@ Next, create the stacks and the CDK infrastructure application itself in `bin/se
 ```ts
 import { App } from '@aws-cdk/core';
 import { VPCStack } from '../lib/vpc-stack';
-import { RDSStack } from '../lib/rds-stack-serverless-sm';
-import { ECSStack } from '../lib/ecs-fargate-stack-sm';
+import { RDSStack } from '../lib/rds-stack';
+import { ECSStack } from '../lib/ecs-fargate-stack';
 
 const cdkEnv = {
     account: process.env.AWS_ACCOUNT_ID,

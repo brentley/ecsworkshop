@@ -5,7 +5,7 @@ hidden: true
 ---
 
 
-#### lib/rds-stack-serverless-sm.ts
+#### lib/rds-stack.ts
 
 ```ts
 import { App, StackProps, Stack, Duration, RemovalPolicy } from "@aws-cdk/core";

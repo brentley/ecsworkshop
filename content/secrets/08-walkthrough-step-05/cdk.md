@@ -6,7 +6,7 @@ hidden: true
 
 The secrets are read from Secrets Manager and passed to our container task image via the `secrets` property.   Each property is created with a specific environment variable which is readable to the application.   
 
-### lib/ecs-fargate-stack-sm.ts
+### lib/ecs-fargate-stack.ts
 ```ts
 import { App, Stack, StackProps } from '@aws-cdk/core';
 import { Vpc } from "@aws-cdk/aws-ec2";

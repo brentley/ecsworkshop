@@ -4,7 +4,7 @@ disableToc: true
 hidden: true
 ---
 
-In order to setup a new rotation, add a block inside the constructor of `lib/rds-stack-serverless.ts`.
+In order to setup a new rotation, add a block inside the constructor of `lib/rds-stack.ts`.
 
 ```ts
         new SecretRotation(
@@ -22,7 +22,7 @@ In order to setup a new rotation, add a block inside the constructor of `lib/rds
 
 This code will create a new secrets rotation every 30 days, and will automatically configure a Lambda function to trigger the rotation.  This adds a best practice for security with minimal code added.
 
-{{%expand "Click here to expand full code of rds-stack-serverless.ts" %}}
+{{%expand "Click here to expand full code of rds-stack.ts" %}}
 ```ts
 import { App, StackProps, Stack, Duration, RemovalPolicy } from "@aws-cdk/core";
 import {
