@@ -15,7 +15,7 @@
 		"theme": "git submodule init && git submodule update",
 		"drafts": "hugo server -w -v -DF --disableFastRender --enableGitInfo --bind=0.0.0.0 --port 8080",
 		"test": "docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal",
-		"server": "hugo server -w -v --enableGitInfo --bind=0.0.0.0 --port 8080",
+		"server": "hugo server -w -v --enableGitInfo --bind=0.0.0.0 --port 1313",
 		"build": "hugo -v",
 		"deploy": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete",
 		"deploycontent": "aws s3 sync public/ s3://us-east-1-ecsworkshop.com/ --delete --cache-control \"max-age=3600, public\" --exclude \"*\" --include \"*.html\" --include \"*.xml\"",

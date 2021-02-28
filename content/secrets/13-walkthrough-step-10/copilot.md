@@ -1,0 +1,15 @@
+---
+title: "Embedded tab content"
+disableToc: true
+hidden: true
+---
+
+After reviewing the app and code, destroy the created stacks from the root of the cdk application project:
+
+```bash
+copilot app delete
+```
+
+This will remove the VPC, RDS Instance, Secrets Manager and ECS Fargate Cluster that were created along with any associated resources. 
+
+
