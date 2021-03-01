@@ -23,7 +23,7 @@ The repository contains a sample application that deploys a Fargate Service runn
     "dbUser": "postgres",
     "dbPort": 5432,
     "containerPort": 4000,
-    "containerImage": "mptaws/secretecs"
+    "containerImage": "public.ecr.aws/o0u3i9v5/secret-ecs-repo"
   }
 }
 ```
