@@ -18,7 +18,6 @@ The repository contains a sample application that deploys a Fargate Service runn
     "@aws-cdk/aws-secretsmanager:parseOwnedSecretName": true,
     "@aws-cdk/aws-kms:defaultKeyPolicies": true,
     "@aws-cdk/aws-s3:grantWriteWithoutAcl": true,
-    "vpcName": "ecsSecretsVpc",
     "dbName": "tododb",
     "dbUser": "postgres",
     "dbPort": 5432,

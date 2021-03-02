@@ -6,6 +6,8 @@ hidden: true
 
 The secrets are read from Secrets Manager and passed to our container task image via the `secrets` property.   Each property is created with a specific environment variable which is readable to the application.   
 
+The ECS Fargate cluster application is created here using the `ecs-patterns` library of the CDK.   This automatically creates the cluster from a given `containerImage` and sets up the code for a load balancer that is connected to the cluster and is public.  
+
 ### lib/ecs-fargate-stack.ts
 ```ts
 import { App, Stack, StackProps } from '@aws-cdk/core';
@@ -26,14 +28,14 @@ export class ECSStack extends Stack {
 
     const containerPort = this.node.tryGetContext("containerPort");
     const containerImage = this.node.tryGetContext("containerImage");
-    const creds = Secret.fromSecretCompleteArn(this, 'pgcreds', props.dbSecretArn);
+    const creds = Secret.fromSecretCompleteArn(this, 'postgresCreds', props.dbSecretArn);
 
     const cluster = new Cluster(this, 'Cluster', {
       vpc: props.vpc,
-      clusterName: 'FargateClusterDemo'
+      clusterName: 'fargateClusterDemo'
     });
 
-    const fargateService = new ApplicationLoadBalancedFargateService(this, "FargateService", {
+    const fargateService = new ApplicationLoadBalancedFargateService(this, "fargateService", {
       cluster,
       taskImageOptions: {
         image: ContainerImage.fromRegistry(containerImage),
@@ -49,7 +51,7 @@ export class ECSStack extends Stack {
       },
       desiredCount: 1,
       publicLoadBalancer: true,
-      serviceName: 'FargateServiceDemo'
+      serviceName: 'fargateServiceDemo'
     });
   }
 }

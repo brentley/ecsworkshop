@@ -13,7 +13,7 @@ import {
     DatabaseSecret, Credentials, ServerlessCluster, DatabaseClusterEngine, ParameterGroup, AuroraCapacityUnit
 } from '@aws-cdk/aws-rds';
 import { Vpc, Port, SubnetType } from '@aws-cdk/aws-ec2';
-import { Secret } from '@aws-cdk/aws-secretsmanager';
+import { Secret, SecretRotation, SecretRotationApplication } from '@aws-cdk/aws-secretsmanager';
 
 export interface RDSStackProps extends StackProps {
     vpc: Vpc
@@ -31,7 +31,7 @@ export class RDSStack extends Stack {
         const dbName = this.node.tryGetContext("dbName");
         const dbPort = this.node.tryGetContext("dbPort");
 
-        this.dbSecret = new Secret(this, 'DBCredentialsSecret', {
+        this.dbSecret = new Secret(this, 'dbCredentialsSecret', {
             secretName: "serverless-credentials",
             generateSecretString: {
                 secretStringTemplate: JSON.stringify({
@@ -43,12 +43,12 @@ export class RDSStack extends Stack {
             }
         });
 
-        this.postgresRDSserverless = new ServerlessCluster(this, 'Postgres-rds-serverless', {
+        this.postgresRDSserverless = new ServerlessCluster(this, 'postgresRdsServerless', {
             engine: DatabaseClusterEngine.AURORA_POSTGRESQL,
             parameterGroup: ParameterGroup.fromParameterGroupName(this, 'ParameterGroup', 'default.aurora-postgresql10'),
             vpc: props.vpc,
             enableDataApi: true,
-            vpcSubnets: { subnetType: SubnetType.PUBLIC },
+            vpcSubnets: { subnetType: SubnetType.PRIVATE },
             credentials: Credentials.fromSecret(this.dbSecret, dbUser),
             scaling: {
                 autoPause: Duration.minutes(10), // default is to pause after 5 minutes of idle time
@@ -61,16 +61,16 @@ export class RDSStack extends Stack {
         });
 
         this.postgresRDSserverless.connections.allowFromAnyIpv4(Port.tcp(dbPort));
-
     }
 }
+
 ```
 
 Here, another Cloudformation Stack is setup containing the template to build an Aurora Serverless Postgres Cluster.   
 
 The secret to use with RDS is created using the following code:
 ```ts
-        this.dbSecret = new Secret(this, 'DBCredentialsSecret', {
+        this.dbSecret = new Secret(this, 'dbCredentialsSecret', {
             secretName: "serverless-credentials",
             generateSecretString: {
                 secretStringTemplate: JSON.stringify({

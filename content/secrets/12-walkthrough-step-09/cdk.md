@@ -4,9 +4,9 @@ disableToc: true
 hidden: true
 ---
 
-Within a CDK application, you can pull in secure secret parameters via the `aws-cdk/aws-ssm` library.
+Within a CDK application, you can pull both plaintext and secure secret parameters via the `aws-cdk/aws-ssm` library.
 
-First, add the `aws-ssm` library to the CDK project
+First, add the `aws-ssm` library to the CDK project.
 
 ```bash
 npm install @aws-cdk/aws-ssm
