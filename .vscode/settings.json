@@ -3,5 +3,6 @@
         "Fargate",
         "Walkthrough",
         "postgres"
-    ]
+    ],
+    "cloud9sync.syncStrategy": "bidirectional"
 }
