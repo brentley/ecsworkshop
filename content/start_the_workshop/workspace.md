@@ -76,8 +76,9 @@ rm -vf ${HOME}/.aws/credentials
 We should configure our aws cli with our current region as default.
 
 ```sh
-export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 export AWS_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
+export AWS_DEFAULT_REGION=$AWS_REGION
+export ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
 ```
 
 Check if AWS_REGION is set to desired region
