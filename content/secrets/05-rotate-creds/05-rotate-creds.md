@@ -1,0 +1,65 @@
+---
+title: "Rotate the credentials"
+chapter: false
+weight: 34
+---
+
+In order to trigger a credential rotation - at the Cloud9 terminal enter:
+
+```bash
+aws secretsmanager get-secret-value --secret-id ecsworkshop/test/todo-app/aurora-pg --query SecretString --output text | jq
+```
+
+to get the current value of the secret stored in Secrets Manager.   
+```json
+{
+  "dbClusterIdentifier": "rdsstack-postgresrdsserverless",
+  "password": "OLD_PASSWORD",
+  "dbname": "tododb",
+  "engine": "postgres",
+  "port": 5432,
+  "host": "rdsstack-xxxxxxxx.us-west-2.rds.amazonaws.com",
+  "username": "postgres"
+}
+```
+Then rotate the secret:
+
+```bash
+aws secretsmanager rotate-secret --secret-id ecsworkshop/test/todo-app/aurora-pg | jq
+```
+
+The output will look like:
+```json
+{
+    "VersionId": "5bdcd897-0a60-44e7-aee0-14c44abec425", 
+    "Name": "ecsworkshop/test/todo-app/aurora-pg", 
+    "ARN": "arn:aws:secretsmanager:us-west-2:xxxxxxxxxx:secret:ecsworkshop/test/todo-app/aurora-pg-jzAIx2"
+}
+```
+This will result in a JSON object returned that shows the secret credential rotation started.   Checking the web app in the browser, the data coming from the database is empty. 
+
+Give this a few seconds, then query Secrets Manager again to get the value of the new password to ensure the password has been rotated:
+```bash
+aws secretsmanager get-secret-value --secret-id ecsworkshop/test/todo-app/aurora-pg --query SecretString --output text | jq
+```
+Output:
+```json
+{
+  "dbClusterIdentifier": "rdsstack-postgresrdsserverless",
+  "password": "MYSUPERNEWSUPERSECRETPASSWORD123",
+  "dbname": "tododb",
+  "engine": "postgres",
+  "port": 5432,
+  "host": "rdsstack-xxxxxxxx.us-west-2.rds.amazonaws.com",
+  "username": "postgres"
+}
+```
+
+Now that the secret password has been changed, the ECS task definition is still using the now-stale secret.   We need to force a new deployment of the app to update the credential for the application.  
+
+{{< tabs >}}
+{{< tab name="copilot-cli" include="./copilot.md" />}}
+{{< tab name="cdk" include="./cdk.md" />}}
+{{< /tabs >}}
+
+After a few minutes, the web app will again show the data appropriately.   Check the ECS Console for progress.
