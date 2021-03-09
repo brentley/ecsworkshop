@@ -269,18 +269,19 @@ Supply a stack id (VPCStack, RDSStack, ECSStack) to display its template.
 Finally - deploy all of the stacks using the CDK:
 
 ```bash
-cdk deploy --all
+cdk deploy --all --require-approval never --outputs-file result.json
 ```
 
-The process takes approximately 10 minutes.  A prompt will appear to authorize changes.  Pass the parameter `--require-approval never` to the above command for unattended installation.   A successful deployment will look like:
+The process takes approximately 10 minutes.  A successful deployment will look like:
 
 ![CDK Output 1](/images/cdk-output-1.png)
 ![CDK Output 2](/images/cdk-output-2.png)
 
-The last step for this tutorial is to get the LoadBalancer URL from the above output and run
+The last step for this tutorial is to get the LoadBalancer URL and run the migration which populates the database.
 
 ```bash
-curl ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonawss.com/migrate | jq
+url=$(jq -r '.ECSStack.LoadBalancerDNS' result.json)
+curl -s $url/migrate | jq
 ```
 
 The `migrate` method creates the database schema and a single row of data for the sample application.  To view the app, open a browser and go to the Loadbalancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com`:
