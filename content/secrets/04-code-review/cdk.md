@@ -213,11 +213,8 @@ export class ECSStack extends Stack {
         containerPort: containerPort,
         enableLogging: true,
         secrets: {
-          POSTGRES_USER: ECSSecret.fromSecretsManager(creds!, 'username'),
-          POSTGRES_PASS: ECSSecret.fromSecretsManager(creds!, 'password'),
-          POSTGRES_HOST: ECSSecret.fromSecretsManager(creds!, 'host'),
-          POSTGRES_PORT: ECSSecret.fromSecretsManager(creds!, 'port'),
-          POSTGRES_NAME: ECSSecret.fromSecretsManager(creds!, 'dbname')
+          POSTGRES_DATA: ECSSecret.fromSecretsManager(creds)
+        }
         }
       },
       desiredCount: 1,

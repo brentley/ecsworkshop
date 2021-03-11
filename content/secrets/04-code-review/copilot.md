@@ -46,7 +46,7 @@ Deployment of the app via copilot goes through the following stages:
 - Creating the infrastructure for stack ecsworkshop-test-todo-app              [create in progress]  
   - An Addons CloudFormation Stack for your additional AWS resources           [review in progress]  
   - Service discovery for your services to communicate within the VPC          [create complete]    
-  - Update your environment\'s shared resources                                 [update in progress]  
+  - Update your environments shared resources                                 [update in progress]  
     - A security group for your load balancer allowing HTTP and HTTPS traffic  [create in progress] 
   - An IAM Role for the Fargate agent to make AWS API calls on your behalf     [create complete]    
   - A CloudWatch log group to hold your service logs                           [create complete]   
@@ -58,11 +58,71 @@ Deployment of the app via copilot goes through the following stages:
 
 This step in the process takes a few minutes, so lets dive into what is going on behind the scenes.
 
-Copilot utilizes Cloudformation templates to provision infrastructure behind the scenes.   Any extra resources that an application requires are placed in the `copilot\service-name\addons` directory as YML files. 
+#### copilot/todo-app/manifest.yml
+```# The manifest for the "todo-app" service.
+# Read the full specification for the "Load Balanced Web Service" type at:
+#  https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/
 
-This template creates Aurora Serverless Database cluster for use with the application.   It enables credential rotation via a Lambda function to do the rotation.  It also adds some missing networking configuration that allows the credential rotation lambda to communicate with Secrets Manager.
+# Your service name will be used in naming your resources like log groups, ECS services, etc.
+name: todo-app
+# The "architecture" of the service you're running.
+type: Load Balanced Web Service
 
-Any additional resources can be added to a copilot application (S3 bucket, DynamoDB table) by adding Cloudformation templates to the `addons` directory.    This option is also part of the copilot CLI using the `copilot storage init` command. 
+image:
+  # Docker build arguments.
+  # For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#image-build
+  build: ./Dockerfile
+  # Port exposed through your container to route traffic to it.
+  port: 4000
+
+http:
+  # Requests to this path will be forwarded to your service.
+  # To match all requests you can use the "/" path.
+  path: "/"
+  # You can specify a custom health check path. The default is "/".
+  # For additional configuration: https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#http-healthcheck
+  # healthcheck: '/'
+  # You can enable sticky sessions.
+  # stickiness: true
+
+# Number of CPU units for the task.
+cpu: 256
+# Amount of memory in MiB used by the task.
+memory: 512
+# Number of tasks that should be running in your service.
+count: 1
+
+# Optional fields for more advanced use-cases.
+#
+variables: # Pass environment variables as key value pairs.
+  LOG_LEVEL: info
+#
+Secrets:
+  - Name: POSTGRES_DATA
+    ValueFrom:
+      Fn::GetAtt: [AddonsStack, Outputs.PostgresPass]
+# You can override any of the values defined above by environment.
+#environments:
+#  test:
+#    count: 2               # Number of tasks to run for the "test" environment.
+```
+
+Copilot utilizes Cloudformation templates to provision infrastructure behind the scenes.  The above template is generated when `copilot init` is run - but in the case of this tutorial as long as you use the same service name and values, the process will use the file in the repository.   
+
+The main values here specify
+* A load balanced web service
+* Dockerfile to use for build
+* CPU for Fargate task
+* Memory for Fargate task
+* Secret definition from consequent addons stack.
+
+When we reference the secret in this manner, we are telling copilot to grab the created secret in the addons template `copilot\todo-app\addons\db.yml` that is specified in the output section of that file.  
+
+Any additional resources that an application requires are placed in the `copilot\service-name\addons` directory as YML files.  In this tutorial we are creating an Aurora Serverless Postgres Database Cluster, but any additional AWS resource can be speficied here by adding a cloudformation template.  This option is also part of the copilot CLI using the `copilot storage init` command. 
+
+This template also creates the secret to use with the database and enables credential rotation via a Lambda function. It also adds some missing networking configuration that allows the credential rotation lambda to communicate with Secrets Manager.
+
+#### copilot/todo-app/addons/db.yml
 
 First, the template enables parameters to be passed in from copilot, namely `App`, `Env`, and `Name`.  
 ```yml
@@ -316,6 +376,7 @@ Finally, construct the Aurora Postgres Serverless DB Cluster.  The cluster requi
         MinCapacity: 2
         MaxCapacity: 8
         SecondsUntilAutoPause: 1000
+    DeletionPolicy: Delete
 
   SecretAuroraClusterAttachment:
     Type: AWS::SecretsManager::SecretTargetAttachment
@@ -326,33 +387,16 @@ Finally, construct the Aurora Postgres Serverless DB Cluster.  The cluster requi
   ```
 
 
-The outputs shown here are the environment variables the todo application needs to communicate with the database. 
+The output shown here is the environment variable the todo application needs to communicate with the database. 
 
 ```yml
 Outputs:
-  PostgresHost: # injected as POSTGRES_HOST environment variable by Copilot.
-    Description: 'The connection endpoint for the DB cluster.'
-    Value: !Join ['', ['{{resolve:secretsmanager:', !Ref AuroraSecret, ':SecretString:host}}' ]]
-
-  PostgresPass: # injected as POSTGRES_PASS environment variable by Copilot.
-    Description: 'The secret that username and password.'
-    Value: !Join ['', ['{{resolve:secretsmanager:', !Ref AuroraSecret, ':SecretString:password}}' ]]
-    
-  PostgresUser: # injected as POSTGRES_USER environment variable by Copilot.
-    Description: 'username'
-    Value: !Join ['', ['{{resolve:secretsmanager:', !Ref AuroraSecret, ':SecretString:username}}' ]]
-    
-  PostgresName: # injected as POSTGRES_NAME environment variable by Copilot.
-    Description: 'db name'
-    Value: !Join ['', ['{{resolve:secretsmanager:', !Ref AuroraSecret, ':SecretString:dbname}}' ]]
-    
-  PostgresPort: # injected as POSTGRES_PORT environment variable by Copilot.
-    Description: 'port'
-    Value: !Join ['', ['{{resolve:secretsmanager:', !Ref AuroraSecret, ':SecretString:port}}' ]]
-
+  PostgresData: # injected as POSTGRES_DATA environment variable by Copilot.
+    Description: "The JSON secret that holds the database username and password. Fields are 'host', 'dbname', 'username', 'password'"
+    Value: !Ref AuroraSecret
 ```
 
-The last step for this tutorial is to get the LoadBalancer URL from copilot and make a call to the application's 'migrate' endpoint to populate the database.  
+Once the copilot process is finished, the last step for this tutorial is to get the LoadBalancer URL from copilot and make a call to the application's 'migrate' endpoint to populate the database.  
 ```bash
 url=$(copilot svc show --json | jq -r .routes[].url)
 curl -s $url/migrate | jq

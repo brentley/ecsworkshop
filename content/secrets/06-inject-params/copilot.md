@@ -10,9 +10,9 @@ Create the secure parameter:
 ```bash
 aws ssm put-parameter --name GH_WEBHOOK_SECRET --value secretvalue1234 --type SecureString --tags Key=copilot-environment,Value=test Key=copilot-application,Value=ecsworkshop
 ```
-Note that the secure parameter is tagged with the copilot application name.
+Note that the secure parameter is tagged with the copilot application name.  Important:  The `application` tag must match the application name used in the copilot app creation process, here we used `ecsworkshop`
 
-Modify the `copilot\todo-app\manifest.yml` and uncomment the `secrets` section:
+Modify the `copilot\todo-app\manifest.yml` and add a value the `secrets` section:
 
 ```yml
 secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
