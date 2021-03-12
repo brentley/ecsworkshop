@@ -215,7 +215,6 @@ export class ECSStack extends Stack {
         secrets: {
           POSTGRES_DATA: ECSSecret.fromSecretsManager(creds)
         }
-        }
       },
       desiredCount: 1,
       publicLoadBalancer: true,
