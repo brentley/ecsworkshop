@@ -4,5 +4,6 @@
         "Walkthrough",
         "postgres"
     ],
-    "cloud9sync.syncStrategy": "bidirectional"
+    "cloud9sync.syncStrategy": "bidirectional",
+    "cSpell.enabled": true
 }

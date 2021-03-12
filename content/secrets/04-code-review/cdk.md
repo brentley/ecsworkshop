@@ -261,6 +261,8 @@ Next run `cdk synth` to create the cloudformation templates which output to a lo
 Successfully synthesized to /home/ec2-user/environment/secret-ecs-cdk-example/cdk.out
 Supply a stack id (VPCStack, RDSStack, ECSStack) to display its template.
 ```
+(Note this is not a required step as `cdk deploy` will generated the templates again - this is an intermediary step to ensure there are no errors in the stack before proceeding.  If you encounter errors here stop and address them before deployment.)
+
 
 Finally - deploy all of the stacks using the CDK:
 
@@ -280,9 +282,15 @@ url=$(jq -r '.ECSStack.LoadBalancerDNS' result.json)
 curl -s $url/migrate | jq
 ```
 
-The `migrate` method creates the database schema and a single row of data for the sample application.  To view the app, open a browser and go to the Loadbalancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com`:
+The custom method `migrate` creates the database schema and a single row of data for the sample application. It is part of the sample application in this tutorial. 
+
+To view the app, open a browser and go to the Loadbalancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com`:
 ![Secrets Todo](/images/secrets-todo.png)
 
 This is a fully functional todo app.  Try creating, editing, and deleting todos.  Using the information output from deploy along with the secrets stored in Secrets Manager, connect to the Postgres Database using a database client or the `psql` command line tool to browse the database.
 
-Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html).
+Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html). All you need is the secret ARN created during stack creation, you can fetch it at the terminal and copy/paste into the query editor dialog box:
+
+```bash
+aws secretsmanager list-secrets | jq -r '.SecretList[0].Name'
+```

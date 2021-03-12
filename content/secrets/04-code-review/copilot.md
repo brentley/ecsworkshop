@@ -7,6 +7,7 @@ hidden: true
 In this section, it is important to match the names as described in order for the tutorial to work (so that it matches the format in the repository):
 
 ```bash
+cd ~/environment/secretecs
 copilot init
 ```
 
@@ -22,9 +23,9 @@ After a brief moment, you will be prompted to created a local environment.
 
 During this stage of the process, copilot is doing the initial infrastructure setup and preparing to creates a new environment, including creating an ECR repository to store the container build images. 
 
-```bash
+```
 ✔ Proposing infrastructure changes for the ecsworkshop environment.
-- Creating the infrastructure for the ecsworkshop environment.            [create complete]  [82.1s]
+- Creating the infrastructure for the ecsworkshop environment.           [create complete]  [82.1s]
   - An IAM Role for AWS CloudFormation to manage resources               [create complete]  [19.5s]
   - An ECS cluster to group your services                                [create complete]  [12.7s]
   - An IAM Role to describe resources in your environment                [create complete]  [17.9s]
@@ -42,11 +43,11 @@ Next, copilot pulls the application image from the ECR repository and builds the
 
 Deployment of the app via copilot goes through the following stages: 
 
-```bash
+```
 - Creating the infrastructure for stack ecsworkshop-test-todo-app              [create in progress]  
   - An Addons CloudFormation Stack for your additional AWS resources           [review in progress]  
   - Service discovery for your services to communicate within the VPC          [create complete]    
-  - Update your environments shared resources                                 [update in progress]  
+  - Update your environments shared resources                                  [update in progress]  
     - A security group for your load balancer allowing HTTP and HTTPS traffic  [create in progress] 
   - An IAM Role for the Fargate agent to make AWS API calls on your behalf     [create complete]    
   - A CloudWatch log group to hold your service logs                           [create complete]   
@@ -109,14 +110,14 @@ Secrets:
 
 Copilot utilizes Cloudformation templates to provision infrastructure behind the scenes.  The above template is generated when `copilot init` is run - but in the case of this tutorial as long as you use the same service name and values, the process will use the file in the repository.   
 
-The main values here specify
+The main values here specify:
 * A load balanced web service
 * Dockerfile to use for build
 * CPU for Fargate task
 * Memory for Fargate task
 * Secret definition from consequent addons stack.
 
-When we reference the secret in this manner, we are telling copilot to grab the created secret in the addons template `copilot\todo-app\addons\db.yml` that is specified in the output section of that file.  
+When we reference the secret in this manner, we are telling copilot to grab the created secret that will be created in the addons template `copilot\todo-app\addons\db.yml` and pass that secret as a environment variable to the application called `POSTGRES_DATA`
 
 Any additional resources that an application requires are placed in the `copilot\service-name\addons` directory as YML files.  In this tutorial we are creating an Aurora Serverless Postgres Database Cluster, but any additional AWS resource can be speficied here by adding a cloudformation template.  This option is also part of the copilot CLI using the `copilot storage init` command. 
 
@@ -396,6 +397,8 @@ Outputs:
     Value: !Ref AuroraSecret
 ```
 
+This output will expose `PostgresData` output as a variable called `POSTGRES_DATA` in the container environment.   This environment variable is where the todo application will get its credentials to access the database. 
+
 Once the copilot process is finished, the last step for this tutorial is to get the LoadBalancer URL from copilot and make a call to the application's 'migrate' endpoint to populate the database.  
 ```bash
 url=$(copilot svc show --json | jq -r .routes[].url)
@@ -404,10 +407,13 @@ curl -s $url/migrate | jq
 
 This will produce JSON output showing a DROP, CREATE, and UPDATE to populate the database app with an initial todo item. 
 
-
 To view the app, open a browser and go to the Loadbalancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com`:
 ![Secrets Todo](/images/secrets-todo.png)
 
 This is a fully functional todo app.  Try creating, editing, and deleting todos.  Using the information output from deploy along with the secrets stored in Secrets Manager, connect to the Postgres Database using a database client or the `psql` command line tool to browse the database. 
 
-Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html).
+Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html). All you need is the secret ARN created by Copilot, you can fetch it at the terminal and copy/paste into the query editor dialog box:
+
+```bash
+aws secretsmanager list-secrets | jq -r '.SecretList[0].Name'
+```
