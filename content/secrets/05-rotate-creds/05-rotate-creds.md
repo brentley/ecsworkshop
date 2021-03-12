@@ -7,7 +7,10 @@ weight: 34
 In order to trigger a credential rotation - at the Cloud9 terminal enter:
 
 ```bash
-aws secretsmanager get-secret-value --secret-id ecsworkshop/test/todo-app/aurora-pg --query SecretString --output text | jq
+APP=$(copilot svc show --json | jq -r .application)
+SVC=$(copilot svc show --json | jq -r .service)
+CENV=$(copilot svc show --json | jq -r .configurations[].environment)
+aws secretsmanager get-secret-value --secret-id $APP/$CENV/$SVC/aurora-pg --query SecretString --output text | jq
 ```
 
 to get the current value of the secret stored in Secrets Manager.   
@@ -25,7 +28,7 @@ to get the current value of the secret stored in Secrets Manager.
 Then rotate the secret:
 
 ```bash
-aws secretsmanager rotate-secret --secret-id ecsworkshop/test/todo-app/aurora-pg | jq
+aws secretsmanager rotate-secret --secret-id $APP/$CENV/$SVC/aurora-pg | jq
 ```
 
 The output will look like:
@@ -40,7 +43,7 @@ This will result in a JSON object returned that shows the secret credential rota
 
 Give this a few seconds, then query Secrets Manager again to get the value of the new password to ensure the password has been rotated:
 ```bash
-aws secretsmanager get-secret-value --secret-id ecsworkshop/test/todo-app/aurora-pg --query SecretString --output text | jq
+aws secretsmanager get-secret-value --secret-id $APP/$CENV/$SVC/aurora-pg --query SecretString --output text | jq
 ```
 Output:
 ```json
