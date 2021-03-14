@@ -4,9 +4,37 @@ disableToc: true
 hidden: true
 ---
 
-The repository contains a sample application that deploys a Fargate Service running a NodeJS application that connects to a RDS Postgres Instance via credentials stored in Secrets Manager.
+### Deploy our application, service, and environment
 
-#### cdk.json
+After you have cloned the repository in the previous step, run `cdk synth` to create the cloudformation templates which output to a local directory `cdk.out`.   Successful output will contain (ignore any warnings generated):
+
+```bash
+Successfully synthesized to /home/ec2-user/environment/secret-ecs-cdk-example/cdk.out
+Supply a stack id (VPCStack, RDSStack, ECSStack) to display its template.
+```
+(Note this is not a required step as `cdk deploy` will generated the templates again - this is an intermediary step to ensure there are no errors in the stack before proceeding.  If you encounter errors here stop and address them before deployment.)
+
+
+The, to deploy this application and all of its stacks, run:
+
+```bash
+cdk deploy --all --require-approval never --outputs-file result.json
+```
+
+The process takes approximately 10 minutes.  
+{{%expand "Expand to view deployment screenshots" %}}
+![CDK Output 1](/images/cdk-output-1.png)
+![CDK Output 2](/images/cdk-output-2.png)
+{{% /expand%}}
+### Code Review
+
+Lets review whats happening behind the scenes. 
+
+The repository contains a sample application that deploys a Fargate Service running a NodeJS application that connects to a RDS Aurora Serverless Database Cluster via credentials stored in AWS Secrets Manager.
+
+First, lets look at some application context variables:
+
+{{%expand "Review cdk.json" %}}
 ```json
 {
   "app": "npx ts-node --prefer-ts-exts bin/secret-ecs-app.ts",
@@ -27,10 +55,11 @@ The repository contains a sample application that deploys a Fargate Service runn
 }
 ```
 First, context variables are setup for that the application will consume: `dbName`, `dbUser`, `dbPort`, `containerPort` and `containerImage`.  These values will be referenced by using the function `tryGetContext(<context-value>)` within the rest of the application.   
+{{% /expand%}}
 
 Next, lets look at the Cloudformation stacks constructs.   The files in `lib` each represent a Cloudformation Stack containing the component parts of the application infrastructure.  
 
-#### lib/vpc-stack.ts
+{{%expand "Review lib/vpc-stack.ts" %}}
 
 ```ts
 import { App, Stack, StackProps, Construct } from '@aws-cdk/core';
@@ -70,8 +99,9 @@ export class VPCStack extends Stack {
 ```
 
 The VPC stack creates a new VPC within the AWS account.   The CIDR address space for this VPC is `10.0.0.0./16`.   It will set up 2 public subnets and 2 private subnets with all the appropriate routing information automatically.   An interface is setup to pass in the value for `maxAzs` which is set to 2 in the main application. 
+{{% /expand%}}
 
-#### lib/rds-stack.ts
+{{%expand "Review lib/vpc-stack.ts" %}}
 
 ```ts
 import { App, StackProps, Stack, Duration, RemovalPolicy } from "@aws-cdk/core";
@@ -175,11 +205,13 @@ This code will create a new secrets rotation every 30 days, and will automatical
 
 Finally, the ECS service stack is defined in `lib/ecs-fargate-stack.ts`
 
-The secrets are read from Secrets Manager and passed to our container task defintion via the `secrets` property.   Each property is created with a specific environment variable which is readable from the application.   
+The secrets are read from Secrets Manager and passed to our container task definition via the `secrets` property.
+{{% /expand%}}   
 
+
+{{%expand "Review lib/ecs-fargate-stack.ts" %}}
 The ECS Fargate cluster application is created here using the `ecs-patterns` library of the CDK.   This automatically creates the cluster from a given `containerImage` and sets up the code for a load balancer that is connected to the cluster and is public.  
 
-### lib/ecs-fargate-stack.ts
 ```ts
 import { App, Stack, StackProps } from '@aws-cdk/core';
 import { Vpc } from "@aws-cdk/aws-ec2";
@@ -223,8 +255,11 @@ export class ECSStack extends Stack {
   }
 }
 ```
+{{% /expand%}}
 
-Finally, the stacks and the CDK infrastructure application itself are created in `bin/secret-ecs-app.ts`, the entry point for the cdk tool. 
+
+{{%expand "Review bin/secret-ecs-app.ts" %}}
+Finally, the stacks and the CDK infrastructure application itself are created in ``, the entry point for the cdk tool. 
 ```ts
 import { App } from '@aws-cdk/core';
 import { VPCStack } from '../lib/vpc-stack';
@@ -254,26 +289,7 @@ ecsStack.addDependency(rdsStack);
 A new CDK app is created `const App = new App()`, and the aforementioned stacks from `lib` are instantiated.  After creating the VPC, the VPC object is passed into the RDS and ECS stack and add dependencies to ensure the VPC is created before the RDS stack.   
 
 When creating the ECS stack, the same VPC object is passed along with a reference to the RDS stack generated `dbSecretArn` so that the ECS stack can look up the appropriate secret.  A dependency is created so that the ECS stack is created after the RDS Stack in this example. 
-
-Next run `cdk synth` to create the cloudformation templates which output to a local directory `cdk.out`.   Successful output will contain (ignore any warnings generated):
-
-```bash
-Successfully synthesized to /home/ec2-user/environment/secret-ecs-cdk-example/cdk.out
-Supply a stack id (VPCStack, RDSStack, ECSStack) to display its template.
-```
-(Note this is not a required step as `cdk deploy` will generated the templates again - this is an intermediary step to ensure there are no errors in the stack before proceeding.  If you encounter errors here stop and address them before deployment.)
-
-
-Finally - deploy all of the stacks using the CDK:
-
-```bash
-cdk deploy --all --require-approval never --outputs-file result.json
-```
-
-The process takes approximately 10 minutes.  A successful deployment will look like:
-
-![CDK Output 1](/images/cdk-output-1.png)
-![CDK Output 2](/images/cdk-output-2.png)
+{{% /expand%}}
 
 The last step for this tutorial is to get the LoadBalancer URL and run the migration which populates the database.
 
@@ -292,5 +308,5 @@ This is a fully functional todo app.  Try creating, editing, and deleting todos.
 Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html). All you need is the secret ARN created during stack creation, you can fetch it at the terminal and copy/paste into the query editor dialog box:
 
 ```bash
-aws secretsmanager list-secrets | jq -r '.SecretList[0].Name'
+aws secretsmanager list-secrets | jq -r '.SecretList[].Name'
 ```

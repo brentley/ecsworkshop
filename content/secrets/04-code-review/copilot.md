@@ -4,6 +4,8 @@ disableToc: true
 hidden: true
 ---
 
+### Deploy our application, service, and environment
+
 In this section, it is important to match the names as described in order for the tutorial to work (so that it matches the format in the repository):
 
 ```bash
@@ -59,10 +61,16 @@ Deployment of the app via copilot goes through the following stages:
 
 This step in the process takes a few minutes, so lets dive into what is going on behind the scenes.
 
-#### copilot/todo-app/manifest.yml
-```# The manifest for the "todo-app" service.
-# Read the full specification for the "Load Balanced Web Service" type at:
-#  https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/
+The manifest file created in the project defines everything needed for a load balanced web application.   
+Read the full specification for the "Load Balanced Web Service" type at
+
+[https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/](https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/)
+
+{{%expand "Click to review copilot/todo-app/manifest.yml" %}}
+
+```
+# The manifest for the "todo-app" service.
+
 
 # Your service name will be used in naming your resources like log groups, ECS services, etc.
 name: todo-app
@@ -98,34 +106,32 @@ count: 1
 variables: # Pass environment variables as key value pairs.
   LOG_LEVEL: info
 #
-Secrets:
-  - Name: POSTGRES_DATA
-    ValueFrom:
-      Fn::GetAtt: [AddonsStack, Outputs.PostgresPass]
 # You can override any of the values defined above by environment.
 #environments:
 #  test:
 #    count: 2               # Number of tasks to run for the "test" environment.
 ```
 
+
 Copilot utilizes Cloudformation templates to provision infrastructure behind the scenes.  The above template is generated when `copilot init` is run - but in the case of this tutorial as long as you use the same service name and values, the process will use the file in the repository.   
 
 The main values here specify:
+
 * A load balanced web service
 * Dockerfile to use for build
 * CPU for Fargate task
 * Memory for Fargate task
-* Secret definition from consequent addons stack.
+{{% /expand%}}
 
-When we reference the secret in this manner, we are telling copilot to grab the created secret that will be created in the addons template `copilot\todo-app\addons\db.yml` and pass that secret as a environment variable to the application called `POSTGRES_DATA`
+Next, we create an Aurora Serverless Postgres Database Cluster.
 
-Any additional resources that an application requires are placed in the `copilot\service-name\addons` directory as YML files.  In this tutorial we are creating an Aurora Serverless Postgres Database Cluster, but any additional AWS resource can be speficied here by adding a cloudformation template.  This option is also part of the copilot CLI using the `copilot storage init` command. 
+{{%expand "Click to review copilot/todo-app/addons/db.yml" %}}
 
-This template also creates the secret to use with the database and enables credential rotation via a Lambda function. It also adds some missing networking configuration that allows the credential rotation lambda to communicate with Secrets Manager.
+Any additional AWS resource can be specified here by adding a cloudformation template to the `copilot\service-name\addons` directory.  This option is also part of the copilot CLI using the `copilot storage init` command.
 
-#### copilot/todo-app/addons/db.yml
+This template also creates the secret to use with the database and enables credential rotation via a Lambda function. It also adds some missing networking configuration that allows the credential rotation lambda to communicate with Secrets Manager.  It outputs the secret as an environment variable for our application to read. 
 
-First, the template enables parameters to be passed in from copilot, namely `App`, `Env`, and `Name`.  
+The template enables parameters to be passed in from copilot, namely `App`, `Env`, and `Name`.  
 ```yml
 ---
 AWSTemplateFormatVersion: 2010-09-09
@@ -144,7 +150,7 @@ Parameters:
     Type: String
     Description: The name of the service, job, or workflow being deployed.
 ```
-Next, we add some missing networkinng components that allow the private subnets to communicate to Secrets Manager via a NAT Gateway.
+Next, we add some missing networking components that allow the private subnets to communicate to Secrets Manager via a NAT Gateway.
 
 ```yml
 Resources:
@@ -397,7 +403,9 @@ Outputs:
     Value: !Ref AuroraSecret
 ```
 
-This output will expose `PostgresData` output as a variable called `POSTGRES_DATA` in the container environment.   This environment variable is where the todo application will get its credentials to access the database. 
+This output will expose output as a variable called `POSTGRES_DATA` in the container environment.   This environment variable is where the todo application will get its credentials to access the database. 
+{{% /expand%}}
+
 
 Once the copilot process is finished, the last step for this tutorial is to get the LoadBalancer URL from copilot and make a call to the application's 'migrate' endpoint to populate the database.  
 ```bash
@@ -415,5 +423,5 @@ This is a fully functional todo app.  Try creating, editing, and deleting todos.
 Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html). All you need is the secret ARN created by Copilot, you can fetch it at the terminal and copy/paste into the query editor dialog box:
 
 ```bash
-aws secretsmanager list-secrets | jq -r '.SecretList[0].Name'
+aws secretsmanager list-secrets | jq -r '.SecretList[].Name'
 ```

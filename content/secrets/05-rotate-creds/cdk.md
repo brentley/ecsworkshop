@@ -53,32 +53,15 @@ Output:
 }
 ```
 
-Now that the secret password has been changed, the ECS task definition is still using the now-stale secret.   We need to force a new deployment of the app to update the credential for the application.  
+Now that the secret password has been changed, the ECS service running task is still using the now-stale secret.   In order for the service to pick up the new secret, stop the running task and let the ECS Scheduler bring up a new task which will contain the updated secret.   
 
-
-Use the AWS CLI to force a new deployment:
+Use the AWS CLI to stop the current task, and then give the service a few mins to launch a new task to get the desired count back to 1.   
 
 ```bash
-CLUSTER_ARN=$(aws ecs list-clusters | jq -r .clusterArns[0])
-SERVICE_ARN=$(aws ecs list-services --cluster $CLUSTER_ARN | jq -r .serviceArns[0])
-CLUSTER_NAME=$(aws ecs describe-clusters --cluster $CLUSTER_ARN | jq -r .clusters[0].clusterName)
-SERVICE_NAME=$(aws ecs describe-services --cluster $CLUSTER_ARN --service $SERVICE_ARN | jq -r .services[0].serviceName)
-TASK_DEFINITION=$(aws ecs describe-services --cluster $CLUSTER_ARN --services $SERVICE_NAME | jq -r .services[].taskDefinition)
-TASK_DEF=$(echo $TASK_DEFINITION | cut -d: -f1-6)  
+CLUSTER_ARN=$(aws ecs list-clusters | jq -r .clusterArns[])
+TASK_ARN=$(aws ecs list-tasks --cluster $CLUSTER_ARN | jq -r .taskArns[])
+aws ecs stop-task --cluster $CLUSTER_ARN --task $TASK_ARN
 
-NEW_TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION \
-      --query '{  containerDefinitions: taskDefinition.containerDefinitions,
-                  family: taskDefinition.family,
-                  taskRoleArn: taskDefinition.taskRoleArn,
-                  executionRoleArn: taskDefinition.executionRoleArn,
-                  networkMode: taskDefinition.networkMode,
-                  volumes: taskDefinition.volumes,
-                  placementConstraints: taskDefinition.placementConstraints,
-                  requiresCompatibilities: taskDefinition.requiresCompatibilities,
-                  cpu: taskDefinition.cpu,
-                  memory: taskDefinition.memory }' )
-TD_VERSION=$(aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION" \
-  --query 'taskDefinition.revision')
-  
-aws ecs update-service --force-new-deployment --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEF:$TD_VERSION
 ```
+
+Once the task is running, go back to the todo app and refresh, you should see a fully functional app once again. 
