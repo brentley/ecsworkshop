@@ -3,6 +3,9 @@ title: "Embedded tab content"
 disableToc: true
 hidden: true
 ---
+
+Start by getting the id of the secret then using it to fetch the actual secret value.   Here we grab the copilot application name, service name, and current environment.
+
 ```bash
 APP=$(copilot svc show --json | jq -r .application)
 SVC=$(copilot svc show --json | jq -r .service)
@@ -22,7 +25,7 @@ to get the current value of the secret stored in Secrets Manager.
   "username": "postgres"
 }
 ```
-Then rotate the secret:
+Then rotate the secret via the CLI:
 
 ```bash
 aws secretsmanager rotate-secret --secret-id $APP/$CENV/$SVC/aurora-pg | jq
@@ -36,9 +39,9 @@ The output will look like:
     "ARN": "arn:aws:secretsmanager:us-west-2:xxxxxxxxxx:secret:ecsworkshop/test/todo-app/aurora-pg-jzAIx2"
 }
 ```
-This will result in a JSON object returned that shows the secret credential rotation started.   Checking the web app in the browser, the data coming from the database is empty. 
+Checking the web app in the browser, the data coming from the database is empty (no todo items will show - just the app scaffolding). 
 
-Give this a few seconds, then query Secrets Manager again to get the value of the new password to ensure the password has been rotated:
+Next, query Secrets Manager again to get the value of the new password to ensure the password has been rotated:
 ```bash
 aws secretsmanager get-secret-value --secret-id $APP/$CENV/$SVC/aurora-pg --query SecretString --output text | jq
 ```
