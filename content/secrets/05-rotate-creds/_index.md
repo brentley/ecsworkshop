@@ -4,7 +4,7 @@ chapter: false
 weight: 34
 ---
 
-In order to trigger a credential rotation - at the Cloud9 terminal enter:
+In this section we will review the process to programmatically rotate the secret credentials.
 
 {{< tabs >}}
 {{< tab name="copilot-cli" include="./copilot.md" />}}
