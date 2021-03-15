@@ -4,12 +4,12 @@ disableToc: true
 hidden: true
 ---
 
-Now lets add a secure parameter that the application will read to display an image.  First, create the secure parameter:
+Now let's add a secure parameter that the application will read to display an image.  First, create the secure parameter:
 
 ```bash
 APP=$(copilot svc show --json | jq -r .application)
 CENV=$(copilot svc show --json | jq -r .configurations[].environment)
-aws ssm put-parameter --name DEMO_PARAMETER --value "parameter-diagram.png" --type SecureString --tags Key=copilot-environment,Value=$CENV Key=copilot-application,Value=$APP
+aws ssm put-parameter --name DEMO_PARAMETER --value "static/parameter-diagram.png" --type SecureString --tags Key=copilot-environment,Value=$CENV Key=copilot-application,Value=$APP
 ```
 Note that the secure parameter is tagged with the copilot application name. The parameter is tagged with the current copilot application name and environment value. 
 

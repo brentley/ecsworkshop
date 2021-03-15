@@ -4,20 +4,24 @@ disableToc: true
 hidden: true
 ---
 
-Within a CDK application, you can pull both plaintext and secure secret parameters via the `aws-cdk/aws-ssm` library.
+Within a CDK application, you can pull both plaintext and secure secret parameters via the `aws-cdk/aws-ssm` library.  This library is included inside the repository's `package.json` file.
 
-First, add the `aws-ssm` library to the CDK project.
+This part of the tutorial will demonstrate how to add a secure SSM parameter and use it in the application to display an image that is conditional on the value of the parameter passed via environment variables. 
+
+To create the secure SSM parameter for this tutorial (specifying the name of the image to display which is already present in the application):
 
 ```bash
-npm install @aws-cdk/aws-ssm
+aws ssm put-parameter --name DEMO_PARAMETER --value "static/parameter-diagram.png" --type SecureString
 ```
 
-Then, create a secure SSM parameter
-```bash
-aws ssm put-parameter --name DEMO_PARAMETER --value "parameter-diagram.png" --type SecureString
+You should see the result:
+```json
+{
+    "Tier": "Standard", 
+    "Version": 1
+}
 ```
-
-Next, replace the file `lib/ecs-fargate-stack.ts` with the below code:
+Next, replace the contents of the file `lib/ecs-fargate-stack.ts` with the below code.   Optionally, you can use the code in the project located in `lib/ecs-fargate-stack.ts` through rename or new import into the main cdk application. 
 
 ```typescript
 import { App, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
@@ -28,7 +32,7 @@ import { Secret } from '@aws-cdk/aws-secretsmanager';
 
 //SSM Parameter imports
 import { SecretValue } from '@aws-cdk/core';
-import { StringParameter, ParameterTier } from "@aws-cdk/aws-ssm";
+import { StringParameter, ParameterTier, ParameterType } from "@aws-cdk/aws-ssm";
 
 export interface ECSStackProps extends StackProps {
   vpc: Vpc
@@ -44,6 +48,12 @@ export class ECSStack extends Stack {
     const containerImage = this.node.tryGetContext("containerImage");
     const creds = Secret.fromSecretCompleteArn(this, 'postgresCreds', props.dbSecretArn);
 
+    //fetch existing parameter from parameter store securely
+    const DEMOPARAM = StringParameter.fromSecureStringParameterAttributes(this, 'demo_param', {
+      parameterName: 'DEMO_PARAMETER',
+      version: 1
+    });
+
     const cluster = new Cluster(this, 'Cluster', {
       vpc: props.vpc,
       clusterName: 'fargateClusterDemo'
@@ -57,24 +67,13 @@ export class ECSStack extends Stack {
         enableLogging: true,
         secrets: {
           POSTGRES_DATA: ECSSecret.fromSecretsManager(creds),
+          //Inject parameter value securely
+          DEMO_PARAMETER: ECSSecret.fromSsmParameter(DEMOPARAM),
         },
-        //Get value from SSM
-        environment: {
-          DEMO_PARAMETER: SecretValue.ssmSecure('DEMO_PARAMETER', '1').toString()
-        }
       },
       desiredCount: 1,
       publicLoadBalancer: true,
       serviceName: 'fargateServiceDemo'
-    });
-
-    //Set a new value into a SSM parameter
-    new StringParameter(this, 'MyValue', {
-      allowedPattern: '.*',
-      description: 'A new parameter description',
-      parameterName: 'NEW_PARAMETER',
-      stringValue: "secretValue1234",
-      tier: ParameterTier.STANDARD
     });
 
     new CfnOutput(this, 'LoadBalancerDNS', { value: fargateService.loadBalancer.loadBalancerDnsName });
@@ -82,6 +81,14 @@ export class ECSStack extends Stack {
 }
 ```
 
-Once the deployment is complete, go back to the browser and you should see the app again.  
+After you make the changes, save the file and redeploy the app:
+
+```bash
+cdk deploy --all --require-approval never
+```
+
+This revision to the stack injects the parameter `DEMO_PARAMETER` into the container via the `secrets` property.
+
+Once the deployment is complete, go back to the browser and you should see the app again with the new image displayed. 
 
 ![working-app](/images/secrets-parameter-store-working.png)

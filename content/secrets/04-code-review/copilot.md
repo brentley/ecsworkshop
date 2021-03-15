@@ -41,7 +41,7 @@ During this stage of the process, copilot is doing the initial infrastructure se
     Linking account XXXXXXX and region us-west-2 to application ecsworkshop. 
 ```
 
-Next, copilot pulls the application image from the ECR repository and builds the application, including VPC, Aurora Servereless DB, and deploys the application to a newly created ECS cluster.   
+Next, copilot pulls the application image from the ECR repository and builds the application, including VPC, Aurora Serverless DB, and deploys the application to a newly created ECS cluster.   
 
 Deployment of the app via copilot goes through the following stages: 
 
@@ -59,7 +59,7 @@ Deployment of the app via copilot goes through the following stages:
   - An IAM role to control permissions for the containers in your tasks        [create complete]   
 ```
 
-This step in the process takes a few minutes, so lets dive into what is going on behind the scenes.
+This step in the process takes a few minutes, so let's dive into what is going on behind the scenes.
 
 The manifest file created in the project defines everything needed for a load balanced web application.   
 Read the full specification for the "Load Balanced Web Service" type at
@@ -246,7 +246,7 @@ Resources:
       NatGatewayId:
         Ref: NatGatewayB
 ```
-Next, add the constructs needed for credential rotation, including the Secret itself, appropriate subnets, security groups, RotationTemplate and a RotationSchedule.  The RotationTemplate points to a Lambda ARN that is stored in [Serverless Application Repostitory](https://aws.amazon.com/serverless/serverlessrepo/)
+Next, add the constructs needed for credential rotation, including the Secret itself, appropriate subnets, security groups, RotationTemplate and a RotationSchedule.  The RotationTemplate points to a Lambda ARN that is stored in [Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/)
 
   ```yml      
   SecurityGroupfromRDSStackdbCredentialsRotationSecurityGroup:

@@ -6,7 +6,7 @@ hidden: true
 
 ### Deploy our application, service, and environment
 
-First, lets test the existing code for any errors.
+First, let's test the existing code for any errors.
 
 ```bash
 cd ~/environment/secret-ecs-cdk-example
@@ -38,7 +38,7 @@ Let's review whats happening behind the scenes.
 
 The repository contains a sample application that deploys a ***ECS Fargate Service***.  The service runs this NodeJS application that connects to a ***AWS RDS Aurora Serverless Database Cluster***.  The credentials for this application are stored in ***AWS Secrets Manager***.
 
-First, lets look at the application context variables:
+First, let's look at the application context variables:
 
 {{%expand "Review cdk.json" %}}
 
@@ -71,7 +71,7 @@ Custom CDK context variables are added to the JSON for the application to consum
 These values will be referenced by using the function `tryGetContext(<context-value>)` throughout the rest of the application.   
 {{% /expand%}}
 
-Next, lets look at the Cloudformation stacks constructs.   The files in `lib` each represent a Cloudformation Stack containing the component parts of the application infrastructure.  
+Next, let's look at the Cloudformation stacks constructs.   The files in `lib` each represent a Cloudformation Stack containing the component parts of the application infrastructure.  
 
 {{%expand "Review lib/vpc-stack.ts" %}}
 
@@ -321,12 +321,12 @@ curl -s $url/migrate | jq
 
 The custom method `migrate` creates the database schema and a single row of data for the sample application. It is part of the sample application in this tutorial. 
 
-To view the app, open a browser and go to the Loadbalancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com` (the URL is clickable in the Cloud9 interface):
+To view the app, open a browser and go to the Load Balancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com` (the URL is clickable in the Cloud9 interface):
 ![Secrets Todo](/images/secrets-todo.png)
 
 This is a fully functional todo app.  Try creating, editing, and deleting todo items.  Using the information output from deploy along with the secrets stored in Secrets Manager, connect to the Postgres Database using a database client or the `psql` command line tool to browse the database.
 
-As an added benefit of using RDS Aurora Postgres Serverless, you can also use the query editor in the AWS Management Console - find more information **[here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html)**. All you need is the secret ARN created during stack creation.  Fetch this value at the Cloud9 terminal and copy/paste into the query editor dialog box.   Use the database name "tododb" as the target database to connect. 
+As an added benefit of using RDS Aurora Postgres Serverless, you can also use the query editor in the AWS Management Console - find more information **[here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html)**. All you need is the secret ARN created during stack creation.  Fetch this value at the Cloud9 terminal and copy/paste into the query editor dialog box.   Use the database name `tododb` as the target database to connect. 
 
 ```bash
 aws secretsmanager list-secrets | jq -r '.SecretList[].Name'
