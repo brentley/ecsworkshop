@@ -4,6 +4,25 @@ disableToc: true
 hidden: true
 ---
 
+### Initial Setup
+
+First we need to do some setup for the rest of the tutorial.   We create a secure parameter in Systems Manager Parameter Store which will be reviewed later in the tutorial. 
+
+```bash
+APP=ecsworkshop
+CENV=test
+aws ssm put-parameter --name DEMO_PARAMETER --value "CHANGE-THIS-VALUE-LATER" --type SecureString --tags Key=copilot-environment,Value=$CENV Key=copilot-application,Value=$APP
+```
+
+Successful output of the above will show that a parameter has been added to the store. 
+
+```json
+{
+    "Tier": "Standard", 
+    "Version": 1
+}
+```
+
 ### Deploy our application, service, and environment
 
 In this section, it is important to match the names as described in order for the tutorial to work (so that it matches the format in the repository):
@@ -13,7 +32,7 @@ cd ~/environment/secretecs
 copilot init
 ```
 
-* Application Name: `ecsworkshop`
+* Application Name: `ecsworkshop`   _note that this must match the APP variable defined above_
 * Workload Type: `Load Balanced Web Service`
 * Service Name: `todo-app`
 * Dockerfile: `./Dockerfile`
@@ -22,6 +41,12 @@ After a brief moment, you will be prompted to created a local environment.
 * Deploy local test environment: `yes`
 
 {{< figure src="/images/secrets-copilot-init.gif" alt="Secrets Diagram" width="800px" >}}
+
+{{%expand "Shortcut - pass all parameters through CLI" %}}
+```bash
+copilot init --app $APP --name todo-app --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --port 4000 --deploy
+```
+{{% /expand%}}   
 
 During this stage of the process, copilot is doing the initial infrastructure setup and preparing to creates a new environment, including creating an ECR repository to store the container build images. 
 
@@ -61,10 +86,11 @@ Deployment of the app via copilot goes through the following stages:
 
 This step in the process takes a few minutes, so let's dive into what is going on behind the scenes.
 
-The manifest file created in the project defines everything needed for a load balanced web application.   
-Read the full specification for the "Load Balanced Web Service" type at
+Copilot creates a new environment by default called `test` which is used throughout the rest of the tutorial.  The manifest file created in the project defines everything needed for a load balanced web application.   Read the full specification for the "Load Balanced Web Service" type at
 
 [https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/](https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/)
+
+Now lets review the manifest file itself:
 
 {{%expand "Click to review copilot/todo-app/manifest.yml" %}}
 
@@ -110,8 +136,9 @@ variables: # Pass environment variables as key value pairs.
 #environments:
 #  test:
 #    count: 2               # Number of tasks to run for the "test" environment.
+secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
+  DEMO_PARAMETER: DEMO_PARAMETER  # The key is the name of the environment variable, the value is the name of the SSM parameter.
 ```
-
 
 Copilot utilizes Cloudformation templates to provision infrastructure behind the scenes.  The above template is generated when `copilot init` is run - but in the case of this tutorial as long as you use the same service name and values, the process will use the file in the repository.   
 
@@ -121,9 +148,10 @@ The main values here specify:
 * Dockerfile to use for build
 * CPU for Fargate task
 * Memory for Fargate task
+* A section to pass secret values through the SSM Parameter Store
 {{% /expand%}}
 
-Next, we create an Aurora Serverless Postgres Database Cluster.
+Next, we create an Aurora Serverless Postgres Database Cluster via the `addons` functionality of copilot.
 
 {{%expand "Click to review copilot/todo-app/addons/db.yml" %}}
 
@@ -407,7 +435,7 @@ This output will expose output as a variable called `POSTGRES_DATA` in the conta
 {{% /expand%}}
 
 
-Once the copilot process is finished, the last step for this tutorial is to get the LoadBalancer URL from copilot and make a call to the application's 'migrate' endpoint to populate the database.  
+Once the copilot process is finished, the last step for this tutorial is to get the LoadBalancer URL from copilot and make a call to the application's `migrate` endpoint to populate the database.  
 ```bash
 url=$(copilot svc show --json | jq -r .routes[].url)
 curl -s $url/migrate | jq

@@ -4,40 +4,38 @@ disableToc: true
 hidden: true
 ---
 
-Now let's add a secure parameter that the application will read to display an image.  First, create the secure parameter:
+Now we will change the secure parameter defined earlier in the tutorial.   This secure parameter is a path to an image that the application will display.  
 
 ```bash
 APP=$(copilot svc show --json | jq -r .application)
 CENV=$(copilot svc show --json | jq -r .configurations[].environment)
-aws ssm put-parameter --name DEMO_PARAMETER --value "static/parameter-diagram.png" --type SecureString --tags Key=copilot-environment,Value=$CENV Key=copilot-application,Value=$APP
-```
-Note that the secure parameter is tagged with the copilot application name. The parameter is tagged with the current copilot application name and environment value. 
-
-Modify the `copilot\todo-app\manifest.yml` adding `secrets` section.  Copy and paste the below into the Cloud9 terminal which will append the secrets section. 
-
-```yml
-cat << EOF >> copilot/todo-app/manifest.yml
-secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
-  DEMO_PARAMETER: DEMO_PARAMETER  # The key is the name of the environment variable, the value is the name of the SSM parameter.
-EOF
+aws ssm put-parameter --name DEMO_PARAMETER --value "static/parameter-diagram.png" --type SecureString --overwrite
 ```
 
-The value of the secure string inside SSM Parameter store will be available to your app via the `DEMO_PARAMETER` environment variable.  
+The parameter was created with the correct copilot application name and environment value so copilot knows how to retrieve it.  We overwrite its value by passing the `--overwrite` flag and consequently incrementing the version of the parameter.   Parameters are versioned so that you can track and rollback to previous values.  
 
-In order to update the task, first commit the change made to the manifest file:
+```json
+{
+    "Tier": "Standard", 
+    "Version": 2
+}
+```
+
+Inside of our `manifest.yml` file there exists a section called `secrets`.   Any secure parameter from SSM can be accessed via this area in the manifest.   The key is the name of the environment variable, the value is the name of the SSM parameter.
+
+The value of the secure string inside SSM Parameter store will be available to your app via the `DEMO_PARAMETER` environment variable.  This value is pre-populated in the manifest for the tutorial.  
+
+Now that the secure parameter secret value has been changed, the ECS service running task is still using the now-stale parameter.   In order for the service to pick up the new secret, stop the running task and let the ECS Scheduler bring up a new task which will contain the updated parameter.   
+
+Use the AWS CLI to stop the current task, and then give the service a few mins to launch a new task to get the desired count back to 1. 
 
 ```bash
-git commit -am "update manifest.yml"
+CLUSTER_ARN=$(aws ecs list-clusters | jq -r .clusterArns[])
+TASK_ARN=$(aws ecs list-tasks --cluster $CLUSTER_ARN | jq -r .taskArns[])
+aws ecs stop-task --cluster $CLUSTER_ARN --task $TASK_ARN | jq
 ```
 
-When copilot does a new deployment, it uses the latest commit to build the deployment, so our manifest change needs to be checked into the local git repository.
-
-Then, redeploy the copilot service:
-
-```bash
-copilot svc deploy --tag update-manifest
-
-```
+Head back to the ECS Console to check on progress - this usually takes 1-2 minutes.  Once the task is running, go back to the todo app and refresh, you should see a fully functional app once again with a diagram displayed. 
 
 Once the deployment is complete, go back to the browser and you should see the app again.  
 
