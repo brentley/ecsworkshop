@@ -11,7 +11,7 @@ If you use the AWS Management Console to register a task definition with Windows
 
 To read more about docker 'NAT' networking mode [visit](https://docs.microsoft.com/en-us/virtualization/windowscontainers/container-networking/network-drivers-topologies)
 
-A sample ECS Task Definition for windows would look like:
+A sample ECS Task Definition for Windows would look like:
 ```
 {
   "family": "windows-simple-iis",
@@ -36,11 +36,11 @@ A sample ECS Task Definition for windows would look like:
 }
 ```
 
-More details around ECS Task Definitions for windows based workloads [visit](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/windows_task_definitions.html)
+More details around ECS Task Definitions for Windows based workloads [visit](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/windows_task_definitions.html)
 
 # Lab exercise
 
-In this lab we will be executing below commands to inspect container running in windows using NAT network mode.
+In this lab we will be executing below commands to inspect container running Windows using NAT network mode.
 
 ```
 docker ps
@@ -57,7 +57,7 @@ CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
 26cec63ef6ed microsoft/iis "powershell -Command…" 7 hours ago Up 7 hours 0.0.0.0:8080→80/tcp ecs-windows-simple-iis-1-windowssampleapp-aac6f7affe90a4d3a601
 ```
 
-Inspecting network related setting for a container
+Inspecting network related settings for a container
 ```
 PS C:\Windows\system32> docker inspect 26cec63ef6ed
 ...
@@ -81,7 +81,7 @@ PS C:\Windows\system32> docker inspect 26cec63ef6ed
 ...
 ```
 
-Listing Docker Network:
+Listing Docker network:
 ```
 PS C:\Windows\system32> docker network ls
 NETWORK ID NAME DRIVER SCOPE
