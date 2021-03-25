@@ -11,7 +11,7 @@ First, let's test the existing code for any errors.
 ```bash
 cd ~/environment/secret-ecs-cdk-example
 cdk synth
-``` 
+```
 
 This creates the cloudformation templates which output to a local directory `cdk.out`.   Successful output will contain (ignore any warnings generated):
 
@@ -19,6 +19,7 @@ This creates the cloudformation templates which output to a local directory `cdk
 Successfully synthesized to /home/ec2-user/environment/secret-ecs-cdk-example/cdk.out
 Supply a stack id (VPCStack, RDSStack, ECSStack) to display its template.
 ```
+
 (Note this is not a required step as `cdk deploy` will generate the templates again - this is an intermediary step to ensure there are no errors in the stack before proceeding.  If you encounter errors here stop and address them before deployment.)
 
 Then, to deploy this application and all of its stacks, run:
@@ -27,14 +28,16 @@ Then, to deploy this application and all of its stacks, run:
 cdk deploy --all --require-approval never --outputs-file result.json
 ```
 
-The process takes approximately 10 minutes.  
+The process takes approximately 10 minutes.  The results of all the actions will be stored in `result.json` for later reference.
+
 {{%expand "Expand to view deployment screenshots" %}}
 ![CDK Output 1](/images/cdk-output-1.png)
 ![CDK Output 2](/images/cdk-output-2.png)
 {{% /expand%}}
+
 ### Code Review
 
-Let's review whats happening behind the scenes. 
+Let's review whats happening behind the scenes.
 
 The repository contains a sample application that deploys a ***ECS Fargate Service***.  The service runs this NodeJS application that connects to a ***AWS RDS Aurora Serverless Database Cluster***.  The credentials for this application are stored in ***AWS Secrets Manager***.
 
@@ -61,14 +64,16 @@ First, let's look at the application context variables:
   }
 }
 ```
-Custom CDK context variables are added to the JSON for the application to consume: 
+
+Custom CDK context variables are added to the JSON for the application to consume:
+
 * `dbName` - name of the target database for the tutorial
 * `dbUser` - database username
 * `dbPort` - database port
 * `containerPort` - port on which the container in the ECS cluster runs
 * `containerImage` - image name that will be deployed from ECR
 
-These values will be referenced by using the function `tryGetContext(<context-value>)` throughout the rest of the application.   
+These values will be referenced by using the function `tryGetContext(<context-value>)` throughout the rest of the application.
 {{% /expand%}}
 
 Next, let's look at the Cloudformation stacks constructs.   The files in `lib` each represent a Cloudformation Stack containing the component parts of the application infrastructure.  
@@ -112,7 +117,7 @@ export class VPCStack extends Stack {
 }
 ```
 
-The VPC stack creates a new VPC within the AWS account.   The CIDR address space for this VPC is `10.0.0.0./16`.   It will set up 2 public subnets with NAT Gateways and 2 private subnets with all the appropriate routing information automatically.   An interface is setup to pass in the value for `maxAzs` which is set to 2 in the main application. 
+The VPC stack creates a new VPC within the AWS account.   The CIDR address space for this VPC is `10.0.0.0./16`.   It will set up 2 public subnets with NAT Gateways and 2 private subnets with all the appropriate routing information automatically.   An interface is setup to pass in the value for `maxAzs` which is set to 2 in the main application.
 {{% /expand%}}
 
 {{%expand "Review lib/rds-stack.ts" %}}
@@ -176,9 +181,10 @@ export class RDSStack extends Stack {
 
 ```
 
-Here, another Cloudformation Stack is setup containing the template to build an RDS Aurora Serverless Postgres Cluster.   
+Here, another Cloudformation Stack is setup containing the template to build an RDS Aurora Serverless Postgres Cluster.
 
 The credentials to use with RDS are created with the following code:
+
 ```ts
         this.dbSecret = new Secret(this, 'dbCredentialsSecret', {
             secretName: `ecsworkshop/test/todo-app/aurora-pg`,
@@ -197,7 +203,7 @@ In this example, a new randomized secret password for the RDS database is create
 
 ![Secrets Manager Detail](/images/secrets-manager-detail.png)
 
-The stored credentials are passed to the DB along with the other context parameters. 
+The stored credentials are passed to the DB along with the other context parameters.
 
 A key feature in AWS Secrets Manager is the ability to rotate credentials automatically as a security best practice. In order to setup a new credentials rotation, a block is added in the constructor of `lib/rds-stack.ts`.
 
@@ -218,15 +224,13 @@ A key feature in AWS Secrets Manager is the ability to rotate credentials automa
 
 Every 30 days, the secret will be rotated and will automatically configure a Lambda function to trigger the rotation using the `single user` method.  More information on the lambdas and methods for credential rotation can be found [here](https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_available-rotation-templates.html)
 
-
-{{% /expand%}}   
-
+{{% /expand%}}
 
 {{%expand "Review lib/ecs-fargate-stack.ts" %}}
 
 Finally, the ECS service stack is defined in `lib/ecs-fargate-stack.ts`
 
-The ECS Fargate cluster application is created here using the `ecs-patterns` library of the CDK.   This automatically creates the service from a given `containerImage` and sets up the code for a load balancer that is connected to the cluster and is public-facing.   The key benefit here is not having to manually add all the boilerplate code to make the application accessible to the world.   CDK simplifies infrastructure creation by abstraction. 
+The ECS Fargate cluster application is created here using the `ecs-patterns` library of the CDK.   This automatically creates the service from a given `containerImage` and sets up the code for a load balancer that is connected to the cluster and is public-facing.   The key benefit here is not having to manually add all the boilerplate code to make the application accessible to the world.   CDK simplifies infrastructure creation by abstraction.
 
 The stored credentials created in the RDS Stack are read from Secrets Manager and passed to our container task definition via the `secrets` property.  The secrets unique ARN is passed into this stack as a parameter `dbSecretArn`.
 
@@ -273,11 +277,11 @@ export class ECSStack extends Stack {
   }
 }
 ```
+
 {{% /expand%}}
 
-
 {{%expand "Review bin/secret-ecs-app.ts" %}}
-Finally, the stacks and the CDK infrastructure application itself are created in `bin/secret-ecs-app.ts`, the entry point for the cdk defined in the `cdk.json` mentioned earlier. 
+Finally, the stacks and the CDK infrastructure application itself are created in `bin/secret-ecs-app.ts`, the entry point for the cdk defined in the `cdk.json` mentioned earlier.
 
 ```ts
 import { App } from '@aws-cdk/core';
@@ -305,7 +309,7 @@ const ecsStack = new ECSStack(app, "ECSStack", {
 ecsStack.addDependency(rdsStack);
 ```
 
-A new CDK app is created `const App = new App()`, and the aforementioned stacks from `lib` are instantiated.  After creating the VPC, the VPC object is passed into the RDS and ECS stacks.  Dependencies are added to ensure the VPC is created before the RDS stack.   
+A new CDK app is created `const App = new App()`, and the aforementioned stacks from `lib` are instantiated.  After creating the VPC, the VPC object is passed into the RDS and ECS stacks.  Dependencies are added to ensure the VPC is created before the RDS stack.
 
 When creating the ECS stack, the same VPC object is passed along with a reference to the RDS stack generated `dbSecretArn` so that the ECS stack can look up the appropriate secret.  A dependency is created so that the ECS stack is created after the RDS Stack.
 {{% /expand%}}
@@ -319,14 +323,14 @@ curl -s $url/migrate | jq
 
 (Note that the migration may take a few seconds to connect and run.)
 
-The custom method `migrate` creates the database schema and a single row of data for the sample application. It is part of the sample application in this tutorial. 
+The custom method `migrate` creates the database schema and a single row of data for the sample application. It is part of the sample application in this tutorial.
 
 To view the app, open a browser and go to the Load Balancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com` (the URL is clickable in the Cloud9 interface):
 ![Secrets Todo](/images/secrets-todo.png)
 
 This is a fully functional todo app.  Try creating, editing, and deleting todo items.  Using the information output from deploy along with the secrets stored in Secrets Manager, connect to the Postgres Database using a database client or the `psql` command line tool to browse the database.
 
-As an added benefit of using RDS Aurora Postgres Serverless, you can also use the query editor in the AWS Management Console - find more information **[here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html)**. All you need is the secret ARN created during stack creation.  Fetch this value at the Cloud9 terminal and copy/paste into the query editor dialog box.   Use the database name `tododb` as the target database to connect. 
+As an added benefit of using RDS Aurora Postgres Serverless, you can also use the query editor in the AWS Management Console - find more information **[here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html)**. All you need is the secret ARN created during stack creation.  Fetch this value at the Cloud9 terminal and copy/paste into the query editor dialog box.   Use the database name `tododb` as the target database to connect.
 
 ```bash
 aws secretsmanager list-secrets | jq -r '.SecretList[].Name'

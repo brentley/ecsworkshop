@@ -4,53 +4,42 @@ disableToc: true
 hidden: true
 ---
 
-### Initial Setup
-
-First we need to do some setup for the rest of the tutorial.   We create a secure parameter in Systems Manager Parameter Store which will be reviewed later in the tutorial. 
-
-```bash
-APP=ecsworkshop
-CENV=test
-aws ssm put-parameter --name DEMO_PARAMETER --value "CHANGE-THIS-VALUE-LATER" --type SecureString --tags Key=copilot-environment,Value=$CENV Key=copilot-application,Value=$APP
-```
-
-Successful output of the above will show that a parameter has been added to the store. 
-
-```json
-{
-    "Tier": "Standard", 
-    "Version": 1
-}
-```
-
 ### Deploy our application, service, and environment
 
-In this section, it is important to match the names as described in order for the tutorial to work (so that it matches the format in the repository):
+{{% notice note %}}
+
+In this section, it is important to match the names as described in order for the tutorial to work (so that it matches the format of the manifest in the tutorial repository):
+
+{{% /notice %}}
 
 ```bash
 cd ~/environment/secretecs
 copilot init
 ```
 
-* Application Name: `ecsworkshop`   _note that this must match the APP variable defined above_
+{{%expand "Optional Shortcut - pass all parameters through CLI" %}}
+
+```bash
+copilot init --app ecsworkshop --name todo-app --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --port 4000 --deploy
+```
+
+{{% /expand%}}
+
+
+* Application Name: `ecsworkshop`
 * Workload Type: `Load Balanced Web Service`
 * Service Name: `todo-app`
 * Dockerfile: `./Dockerfile`
 
 After a brief moment, you will be prompted to created a local environment.  
+
 * Deploy local test environment: `yes`
 
 {{< figure src="/images/secrets-copilot-init.gif" alt="Secrets Diagram" width="800px" >}}
 
-{{%expand "Shortcut - pass all parameters through CLI" %}}
-```bash
-copilot init --app $APP --name todo-app --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --port 4000 --deploy
-```
-{{% /expand%}}   
-
 During this stage of the process, copilot is doing the initial infrastructure setup and preparing to creates a new environment, including creating an ECR repository to store the container build images. 
 
-```
+```text
 ✔ Proposing infrastructure changes for the ecsworkshop environment.
 - Creating the infrastructure for the ecsworkshop environment.           [create complete]  [82.1s]
   - An IAM Role for AWS CloudFormation to manage resources               [create complete]  [19.5s]
@@ -66,11 +55,11 @@ During this stage of the process, copilot is doing the initial infrastructure se
     Linking account XXXXXXX and region us-west-2 to application ecsworkshop. 
 ```
 
-Next, copilot pulls the application image from the ECR repository and builds the application, including VPC, Aurora Serverless DB, and deploys the application to a newly created ECS cluster.   
+Next, copilot pulls the application image from the ECR repository and builds the application, including VPC, Aurora Serverless DB, and deploys the application to a newly created ECS cluster.
 
-Deployment of the app via copilot goes through the following stages: 
+Deployment of the app via copilot goes through the following stages:
 
-```
+```text
 - Creating the infrastructure for stack ecsworkshop-test-todo-app              [create in progress]  
   - An Addons CloudFormation Stack for your additional AWS resources           [review in progress]  
   - Service discovery for your services to communicate within the VPC          [create complete]    
@@ -94,7 +83,7 @@ Now lets review the manifest file itself:
 
 {{%expand "Click to review copilot/todo-app/manifest.yml" %}}
 
-```
+```yaml
 # The manifest for the "todo-app" service.
 
 
@@ -136,11 +125,9 @@ variables: # Pass environment variables as key value pairs.
 #environments:
 #  test:
 #    count: 2               # Number of tasks to run for the "test" environment.
-secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
-  DEMO_PARAMETER: DEMO_PARAMETER  # The key is the name of the environment variable, the value is the name of the SSM parameter.
 ```
 
-Copilot utilizes Cloudformation templates to provision infrastructure behind the scenes.  The above template is generated when `copilot init` is run - but in the case of this tutorial as long as you use the same service name and values, the process will use the file in the repository.   
+Copilot utilizes Cloudformation templates to provision infrastructure behind the scenes.  The above template is generated when `copilot init` is run - but in the case of this tutorial as long as you use the same service name and values, the process will use the file in the repository.
 
 The main values here specify:
 
@@ -157,15 +144,13 @@ Next, we create an Aurora Serverless Postgres Database Cluster via the `addons` 
 
 Any additional AWS resource can be specified here by adding a cloudformation template to the `copilot\service-name\addons` directory.  This option is also part of the copilot CLI using the `copilot storage init` command.
 
-This template also creates the secret to use with the database and enables credential rotation via a Lambda function. It also adds some missing networking configuration that allows the credential rotation lambda to communicate with Secrets Manager.  It outputs the secret as an environment variable for our application to read. 
+This template also creates the secret to use with the database and enables credential rotation via a Lambda function. It also adds some missing networking configuration that allows the credential rotation lambda to communicate with Secrets Manager.  It outputs the secret as an environment variable for our application to read.
 
 The template enables parameters to be passed in from copilot, namely `App`, `Env`, and `Name`.  
-```yml
+
+```yaml
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Transform: 
- - 'AWS::Serverless-2016-10-31'
- - 'AWS::SecretsManager-2020-07-23'
 
 Parameters:
   App:
@@ -178,9 +163,10 @@ Parameters:
     Type: String
     Description: The name of the service, job, or workflow being deployed.
 ```
+
 Next, we add some missing networking components that allow the private subnets to communicate to Secrets Manager via a NAT Gateway.
 
-```yml
+```yaml
 Resources:
   EipA:
     Type: AWS::EC2::EIP
@@ -274,9 +260,10 @@ Resources:
       NatGatewayId:
         Ref: NatGatewayB
 ```
-Next, add the constructs needed for credential rotation, including the Secret itself, appropriate subnets, security groups, RotationTemplate and a RotationSchedule.  The RotationTemplate points to a Lambda ARN that is stored in [Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/)
 
-  ```yml      
+Next, add the constructs needed for database cluster creation, including the secret for the database stored in AWS Secrets Manager, appropriate db subnets, security groups.  Finally, we attach the secret to the database cluster so that the database knows to pull credentials from secrets manager.  
+
+```yaml
   SecurityGroupfromRDSStackdbCredentialsRotationSecurityGroup:
       Type: AWS::EC2::SecurityGroupIngress
       Properties:
@@ -320,22 +307,6 @@ Next, add the constructs needed for credential rotation, including the Secret it
         ExcludePunctuation: true
         IncludeSpace: false
         PasswordLength: 16
-  
-  SecretRotationTemplate:
-    Type: AWS::Serverless::Application
-    Properties:
-      Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-1:297356227824:applications/SecretsManagerRDSPostgreSQLRotationSingleUser
-        SemanticVersion: 1.1.60
-      Parameters:
-        endpoint: !Sub https://secretsmanager.${AWS::Region}.amazonaws.com
-        functionName: !Sub ${AWS::StackName}-func
-        vpcSecurityGroupIds: !Ref RotationSecurityGroup
-        vpcSubnetIds:
-          Fn::Join:
-            - ","
-            - - !Select [0, !Split [",", { 'Fn::ImportValue': !Sub '${App}-${Env}-PrivateSubnets' }]]
-              - !Select [1, !Split [",", { 'Fn::ImportValue': !Sub '${App}-${Env}-PrivateSubnets' }]]
         
   SecretCredentialPolicy:
     Type: 'AWS::SecretsManager::ResourcePolicy'
@@ -355,20 +326,7 @@ Next, add the constructs needed for credential rotation, including the Secret it
                   - ':iam::'
                   - !Ref 'AWS::AccountId'
                   - ':root'
-      
-  SecretRotationSchedule:
-    Type: AWS::SecretsManager::RotationSchedule
-    DependsOn: SecretAuroraClusterAttachment
-    Properties:
-      SecretId: !Ref AuroraSecret
-      RotationLambdaARN: !GetAtt SecretRotationTemplate.Outputs.RotationLambdaARN
-      RotationRules:
-        AutomaticallyAfterDays: 30
-```
-
-Finally, construct the Aurora Postgres Serverless DB Cluster.  The cluster requires a Subnet Group, security groups for both the DB Cluster and the attchment of the secret to the database.
-
-  ```yml
+     
   DBSubnetGroup:
     Type: 'AWS::RDS::DBSubnetGroup'
     Properties:
@@ -422,7 +380,7 @@ Finally, construct the Aurora Postgres Serverless DB Cluster.  The cluster requi
   ```
 
 
-The output shown here is the environment variable the todo application needs to communicate with the database. 
+The output shown here is the environment variable the todo application needs to communicate with the database.
 
 ```yml
 Outputs:
@@ -431,14 +389,43 @@ Outputs:
     Value: !Ref AuroraSecret
 ```
 
-This output will expose output as a variable called `POSTGRES_DATA` in the container environment.   This environment variable is where the todo application will get its credentials to access the database. 
+This output will expose output as a variable called `POSTGRES_DATA` in the container environment.   This environment variable is where the todo application will get its credentials to access the database.
+
+The rest of the output are exposed values for the credential rotation stack to read in a subsequent section of the tutorial.
+
+```yml
+ AuroraDBCluster:
+    Description: "Cluster Reference for Credential Rotation"
+    Value: !Ref AuroraDBCluster
+    Export:
+      Name: AuroraDBCluster
+    
+  RotationSecurityGroup:
+    Description: "The Credential Rotation Security Group"
+    Value: !Ref RotationSecurityGroup
+    Export:
+      Name: RotationSecurityGroup
+    
+  SecretAuroraClusterAttachment:
+    Description: "The Credential Attachment to the Cluster"
+    Value: !Ref SecretAuroraClusterAttachment
+    Export:
+      Name: SecretAuroraClusterAttachment
+      
+  AuroraSecret:
+    Description: "The secret credential to pass to rotation stack"
+    Value: !Ref AuroraSecret
+    Export: 
+      Name: AuroraSecret
+```
+
 {{% /expand%}}
 
-
 Once the copilot process is finished, the last step for this tutorial is to get the LoadBalancer URL from copilot and make a call to the application's `migrate` endpoint to populate the database.  
+
 ```bash
-url=$(copilot svc show --json | jq -r .routes[].url)
-curl -s $url/migrate | jq
+URL=$(copilot svc show --json | jq -r .routes[].url)
+curl -s $URL/migrate | jq
 ```
 
 This will produce JSON output showing a DROP, CREATE, and UPDATE to populate the database app with an initial todo item. 
@@ -446,7 +433,7 @@ This will produce JSON output showing a DROP, CREATE, and UPDATE to populate the
 To view the app, open a browser and go to the Loadbalancer URL `ECSST-Farga-xxxxxxxxxx.yyyyy.elb.amazonaws.com`:
 ![Secrets Todo](/images/secrets-todo.png)
 
-This is a fully functional todo app.  Try creating, editing, and deleting todos.  Using the information output from deploy along with the secrets stored in Secrets Manager, connect to the Postgres Database using a database client or the `psql` command line tool to browse the database. 
+This is a fully functional todo app.  Try creating, editing, and deleting todos.  Using the information output from deploy along with the secrets stored in Secrets Manager, connect to the Postgres Database using a database client or the `psql` command line tool to browse the database.
 
 Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html). All you need is the secret ARN created by Copilot, you can fetch it at the terminal and copy/paste into the query editor dialog box:
 

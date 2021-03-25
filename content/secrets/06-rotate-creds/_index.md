@@ -1,7 +1,7 @@
 ---
-title: "Rotate the credentials"
+title: "Rotate Secret Manager Credentials"
 chapter: false
-weight: 34
+weight: 35
 ---
 
 In this section we will review the process to programmatically rotate the secret credentials.

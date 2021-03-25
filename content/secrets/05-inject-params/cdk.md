@@ -15,13 +15,15 @@ aws ssm put-parameter --name DEMO_PARAMETER --value "static/parameter-diagram.pn
 ```
 
 You should see the result:
+
 ```json
 {
     "Tier": "Standard", 
     "Version": 1
 }
 ```
-Next, replace the contents of the file `lib/ecs-fargate-stack.ts` with the below code.   Optionally, you can use the code in the project located in `lib/ecs-fargate-stack.ts` through rename or new import into the main cdk application. 
+
+Next, replace the contents of the file `lib/ecs-fargate-stack.ts` with the below code.   Optionally, you can use the code in the project located in `lib/ecs-fargate-stack-ssm.ts` through rename or new import into the main cdk application.
 
 ```typescript
 import { App, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
