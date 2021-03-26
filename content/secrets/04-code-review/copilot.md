@@ -20,9 +20,8 @@ copilot init
 {{%expand "Optional Shortcut - pass all parameters through CLI" %}}
 
 ```bash
-RAND=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 4 ; echo '')  #create a short random string to provide a unique value to the application name.
-APPRAND="ecsworkshop${RAND}"
-copilot init --app $APPRAND --name todo-app --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --port 4000 --deploy
+APPNEW=ecsworkshop$(tr -dc a-z0-9 </dev/urandom | head -c 4 ; echo '')  #create a short random string to provide a unique value to the application name.
+copilot init --app $APPNEW --name todo-app --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --port 4000 --deploy
 ```
 
 {{% /expand%}}
