@@ -23,9 +23,11 @@ You should see the result:
 }
 ```
 
-Next, replace the contents of the file `lib/ecs-fargate-stack.ts` with the below code.   Optionally, you can use the code in the project located in `lib/ecs-fargate-stack-ssm.ts` through rename or new import into the main cdk application.
+Next, replace the contents of the file `lib/ecs-fargate-stack.ts` with the below code.   This code can also be found in  `lib/ecs-fargate-stack-ssm.ts` for reference.
 
-```typescript
+```bash
+cd ~/environment/secret-ecs-cdk-example
+cat << EOF > lib/ecs-fargate-stack.ts
 import { App, Stack, StackProps, CfnOutput } from '@aws-cdk/core';
 import { Vpc } from "@aws-cdk/aws-ec2";
 import { Cluster, ContainerImage, Secret as ECSSecret } from "@aws-cdk/aws-ecs";
@@ -81,6 +83,7 @@ export class ECSStack extends Stack {
     new CfnOutput(this, 'LoadBalancerDNS', { value: fargateService.loadBalancer.loadBalancerDnsName });
   }
 }
+EOF
 ```
 
 After you make the changes, save the file and redeploy the app:
@@ -91,6 +94,6 @@ cdk deploy --all --require-approval never
 
 This revision to the stack injects the parameter `DEMO_PARAMETER` into the container via the `secrets` property.
 
-Once the deployment is complete, go back to the browser and you should see the app again with the new image displayed. 
+Once the deployment is complete, go back to the browser and you should see the app again with the new image displayed.
 
 ![working-app](/images/secrets-parameter-store-working.png)

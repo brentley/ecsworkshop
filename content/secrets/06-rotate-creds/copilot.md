@@ -37,7 +37,7 @@ Resources:
         Parameters:
           endpoint: !Sub https://secretsmanager.${AWS::Region}.amazonaws.com
           functionName: !Sub ${AWS::StackName}-func
-          vpcSecurityGroupIds: !ImportValue RotationSecurityGroup
+          vpcSecurityGroupIds: !Ref RotationSecurityGroup
           vpcSubnetIds:
             Fn::Join:
               - ","
@@ -59,7 +59,7 @@ Resources:
   SecretRotationSchedule:
       Type: AWS::SecretsManager::RotationSchedule
       Properties:
-        SecretId: !ImportValue AuroraSecret
+        SecretId: !Ref AuroraSecret
         RotationLambdaARN: !GetAtt SecretRotationTemplate.Outputs.RotationLambdaARN
         RotationRules:
           AutomaticallyAfterDays: 30

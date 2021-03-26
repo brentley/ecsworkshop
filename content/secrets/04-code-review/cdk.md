@@ -333,5 +333,5 @@ This is a fully functional todo app.  Try creating, editing, and deleting todo i
 As an added benefit of using RDS Aurora Postgres Serverless, you can also use the query editor in the AWS Management Console - find more information **[here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html)**. All you need is the secret ARN created during stack creation.  Fetch this value at the Cloud9 terminal and copy/paste into the query editor dialog box.   Use the database name `tododb` as the target database to connect.
 
 ```bash
-aws secretsmanager list-secrets | jq -r '.SecretList[].Name'
+aws secretsmanager list-secrets | jq -r '.SecretList[].ARN'
 ```

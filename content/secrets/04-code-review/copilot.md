@@ -20,15 +20,16 @@ copilot init
 {{%expand "Optional Shortcut - pass all parameters through CLI" %}}
 
 ```bash
-copilot init --app ecsworkshop --name todo-app --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --port 4000 --deploy
+RAND=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 4 ; echo '')  #create a short random string to provide a unique value to the application name.
+APPRAND="ecsworkshop${RAND}"
+copilot init --app $APPRAND --name todo-app --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --port 4000 --deploy
 ```
 
 {{% /expand%}}
 
-
-* Application Name: `ecsworkshop`
+* Application Name: `ecsworkshop`  #note this should be unique in your AWS account
 * Workload Type: `Load Balanced Web Service`
-* Service Name: `todo-app`
+* Service Name: `todo-app` - this must be left 'as-is' for demo purposes
 * Dockerfile: `./Dockerfile`
 
 After a brief moment, you will be prompted to created a local environment.  
@@ -390,34 +391,6 @@ Outputs:
 ```
 
 This output will expose output as a variable called `POSTGRES_DATA` in the container environment.   This environment variable is where the todo application will get its credentials to access the database.
-
-The rest of the output are exposed values for the credential rotation stack to read in a subsequent section of the tutorial.
-
-```yml
- AuroraDBCluster:
-    Description: "Cluster Reference for Credential Rotation"
-    Value: !Ref AuroraDBCluster
-    Export:
-      Name: AuroraDBCluster
-    
-  RotationSecurityGroup:
-    Description: "The Credential Rotation Security Group"
-    Value: !Ref RotationSecurityGroup
-    Export:
-      Name: RotationSecurityGroup
-    
-  SecretAuroraClusterAttachment:
-    Description: "The Credential Attachment to the Cluster"
-    Value: !Ref SecretAuroraClusterAttachment
-    Export:
-      Name: SecretAuroraClusterAttachment
-      
-  AuroraSecret:
-    Description: "The secret credential to pass to rotation stack"
-    Value: !Ref AuroraSecret
-    Export: 
-      Name: AuroraSecret
-```
 
 {{% /expand%}}
 
