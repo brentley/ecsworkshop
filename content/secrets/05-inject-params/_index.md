@@ -23,7 +23,7 @@ As a best practice, you should generally opt to use Secrets Manager over Paramet
 | Password Generation | No | Yes |
 | Secret Rotation | No | Yes |
 | Cross Account Access | No | Yes |
-| Pricing | [Guide][ssm-pricing-link] | [Guide](https://aws.amazon.com/secrets-manager/pricing/) |
+| Pricing | [Guide](https://aws.amazon.com/systems-manager/pricing/#Parameter_Store) | [Guide](https://aws.amazon.com/secrets-manager/pricing/) |
  {{% /expand%}}
 
 {{< tabs >}}
