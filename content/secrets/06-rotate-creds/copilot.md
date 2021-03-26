@@ -28,42 +28,41 @@ Parameters:
     Description: The name of the service, job, or workflow being deployed.
 
 Resources:
-
-    SecretRotationTemplate:
-        Type: AWS::Serverless::Application
-        Properties:
-          Location:
-            ApplicationId: arn:aws:serverlessrepo:us-east-1:297356227824:applications/SecretsManagerRDSPostgreSQLRotationSingleUser
-            SemanticVersion: 1.1.60
-          Parameters:
-            endpoint: !Sub https://secretsmanager.${AWS::Region}.amazonaws.com
-            functionName: !Sub ${AWS::StackName}-func
-            vpcSecurityGroupIds: !ImportValue RotationSecurityGroup
-            vpcSubnetIds:
-              Fn::Join:
-                - ","
-                - - !Select [
-                      0,
-                      !Split [
-                        ",",
-                        { "Fn::ImportValue": !Sub "${App}-${Env}-PrivateSubnets" },
-                      ],
-                    ]
-                  - !Select [
-                      1,
-                      !Split [
-                        ",",
-                        { "Fn::ImportValue": !Sub "${App}-${Env}-PrivateSubnets" },
-                      ],
-                    ]
-                    
-    SecretRotationSchedule:
-        Type: AWS::SecretsManager::RotationSchedule
-        Properties:
-          SecretId: !ImportValue AuroraSecret
-          RotationLambdaARN: !GetAtt SecretRotationTemplate.Outputs.RotationLambdaARN
-          RotationRules:
-            AutomaticallyAfterDays: 30
+  SecretRotationTemplate:
+      Type: AWS::Serverless::Application
+      Properties:
+        Location:
+          ApplicationId: arn:aws:serverlessrepo:us-east-1:297356227824:applications/SecretsManagerRDSPostgreSQLRotationSingleUser
+          SemanticVersion: 1.1.60
+        Parameters:
+          endpoint: !Sub https://secretsmanager.${AWS::Region}.amazonaws.com
+          functionName: !Sub ${AWS::StackName}-func
+          vpcSecurityGroupIds: !ImportValue RotationSecurityGroup
+          vpcSubnetIds:
+            Fn::Join:
+              - ","
+              - - !Select [
+                    0,
+                    !Split [
+                      ",",
+                      { "Fn::ImportValue": !Sub "${App}-${Env}-PrivateSubnets" },
+                    ],
+                  ]
+                - !Select [
+                    1,
+                    !Split [
+                      ",",
+                      { "Fn::ImportValue": !Sub "${App}-${Env}-PrivateSubnets" },
+                    ],
+                  ]
+                  
+  SecretRotationSchedule:
+      Type: AWS::SecretsManager::RotationSchedule
+      Properties:
+        SecretId: !ImportValue AuroraSecret
+        RotationLambdaARN: !GetAtt SecretRotationTemplate.Outputs.RotationLambdaARN
+        RotationRules:
+          AutomaticallyAfterDays: 30
 EOF
 ```
 

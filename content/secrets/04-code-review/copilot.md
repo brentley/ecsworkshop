@@ -438,5 +438,5 @@ This is a fully functional todo app.  Try creating, editing, and deleting todos.
 Since this application uses Aurora Serverless, you can also use the query editor in the AWS Management Console - find more information [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html). All you need is the secret ARN created by Copilot, you can fetch it at the terminal and copy/paste into the query editor dialog box:
 
 ```bash
-aws secretsmanager list-secrets | jq -r '.SecretList[].Name'
+aws secretsmanager list-secrets | jq -r '.SecretList[].ARN'
 ```
