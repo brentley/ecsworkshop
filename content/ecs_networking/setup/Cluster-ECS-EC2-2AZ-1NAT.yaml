@@ -6,6 +6,7 @@ Parameters:
   EnvironmentName:
     Type: String
     Description: "A friendly environment name that will be used for namespacing all cluster resources. Example: staging, qa, or production"
+    Default: ECS-Networking-Demo
   InstanceType:
     Description: EC2 instance type
     Type: String

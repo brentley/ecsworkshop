@@ -95,9 +95,28 @@ One can leverage the new "ECS exec" feature to access containers and check the n
 Note: The executables you want to run in the interactive shell session must be available in the container image!
 
 ```
-aws ecs run-task --cluster staging --task-definition <tasdefName> --enable-execute-command --launch-type EC2
-aws ecs execute-command --cluster <clustername> --task <taskId> --container <containerName> --command "/bin/sh" --interactive
+source ~/.bashrc
+cd ~/environment/ecsworkshop/content/ecs_networking/setup
+TASK_FILE=ecs-networking-demo-bridge-mode-stat.json
+envsubst < ${TASK_FILE}.template > ${TASK_FILE}
+TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_FILE} --enable-execute-command --launch-type EC2 --query 'tasks[0].taskArn' --output text)
+aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}
+# sleep to let the container start
+sleep 60
+aws ecs execute-command --cluster ${ClusterName} --task ${TASK_ARN} --container nginx --command "/bin/sh" --interactive
 ```
+
+Inside the container run the following commands:
+
+```
+ip a sh
+ip link sh
+ip r sh
+curl localhost:80
+# to leave the interactive session type exit
+```
+
+Note: One can repeat this with dynamic bridge port mode using TASK_FILE=ecs-networking-demo-bridge-mode-dyn.json
 
 Sample outputs for bridge network mode of a task running a nginx:alpine container using ECS exec:
 
@@ -140,15 +159,23 @@ default via 172.17.0.1 dev eth0
 </head>
 <body>
 <h1>Welcome to nginx!</h1>
-...
 ```
 
-Another approach is to run the following commands as a priviledged Linux user on the ECS EC2 instance running your task to observe some details:
+Another approach is to access the ECS EC2 instance running your task as a priviledged Linux user to observe some details:
+
+```
+CONT_INST_ID=$(aws ecs list-container-instances --cluster ${ClusterName} --query 'containerInstanceArns[]' --output text)
+EC2_INST_ID=$(aws ecs describe-container-instances --cluster ${ClusterName} --container-instances ${CONT_INST_ID} --query 'containerInstances[0].ec2InstanceId' --output text)
+aws ssm start-session --target ${EC2_INST_ID}
+```
+
+and to run the following commands inside the instance:
 
 ```
 docker ps
 docker network inspect bridge
 ip a sh docker0
+# to leave the interactive session type exit
 ```
 
 Sample outputs for dynamic host port mapping of a task running a nginx container:

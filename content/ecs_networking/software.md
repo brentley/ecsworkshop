@@ -124,4 +124,9 @@ aws iam put-role-policy \
 cd ~/environment/ecsworkshop/content/ecs_networking/setup
 export STACK_NAME=ecs-networking-demo
 aws cloudformation deploy --stack-name $STACK_NAME --template-file Cluster-ECS-EC2-2AZ-1NAT.yaml --capabilities CAPABILITY_IAM
+
+# Create additional env variables from CFN stack output
+aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[0].Outputs[].[OutputKey,OutputValue]' --output text | sed 's/\s/=/g' > ${STACK_NAME}.txt
+export $(<./${STACK_NAME}.txt)
+# persist in ~/.bashrc instead ???
 ```
