@@ -73,7 +73,8 @@ source ~/.bashrc
 cd ~/environment/ecsworkshop/content/ecs_networking/setup
 TASK_FILE=ecs-networking-demo-awsvpc-mode.json
 envsubst < ${TASK_FILE}.template > ${TASK_FILE}
-TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_FILE} \
+TASF_DEF=$(aws ecs register-task-definition --cli-input-json file://${TASK_FILE} --query 'taskDefinition.taskDefinitionArn' --output text)
+TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} \
   --network-configuration awsvpcConfiguration={subnets=[${PrivateSubnetOne},${PrivateSubnetTwo}],securityGroups=[${ContainerSecurityGroup}],assignPublicIp=DISABLED}  \
    --enable-execute-command --launch-type EC2 --platform-version '1.4.0' --query 'tasks[0].taskArn' --output text)
 aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}

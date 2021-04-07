@@ -1,4 +1,5 @@
-{"family": "ecs-networking-demo-bridge-stat",
+{
+    "family": "ecs-networking-demo-bridge-stat",
     "executionRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${EXEC_ROLE_NAME}",
     "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${TASK_ROLE_NAME}",
     "containerDefinitions": [
