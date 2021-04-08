@@ -122,7 +122,7 @@ Note: One can repeat this with dynamic bridge port mode using TASK_FILE=ecs-netw
 Sample outputs for bridge network mode of a task running a nginx:alpine container using ECS exec:
 
 ```
-:~$ aws ecs execute-command  --cluster staging    \
+$ aws ecs execute-command  --cluster staging    \
  --task 04812b97f24e460cb9fc70f4282bbb85  --container nginx   --command "/bin/sh"     --interactive
 
 The Session Manager plugin was installed successfully. Use the AWS CLI to start a session.
@@ -173,10 +173,11 @@ aws ssm start-session --target ${EC2_INST_ID}
 and to run the following commands inside the instance:
 
 ```
+sudo -i
 docker ps
 docker network inspect bridge
 ip a sh docker0
-# to leave the interactive session type exit
+# to leave the interactive session type exit twice
 ```
 
 Sample outputs for dynamic host port mapping of a task running a nginx container:
@@ -222,4 +223,9 @@ f879829d1308    nginx     "/docker-entrypoint.…"   9 minutes ago      Up 9 min
     link/ether ...
     inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
 
+```
+Cleanup the task:
+
+```
+aws ecs stop-task --cluster ${ClusterName} --task ${TASK_ARN}
 ```

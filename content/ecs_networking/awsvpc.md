@@ -71,12 +71,12 @@ Note: The executables you want to run in the interactive shell session must be a
 ```
 source ~/.bashrc
 cd ~/environment/ecsworkshop/content/ecs_networking/setup
-TASK_FILE=ecs-networking-demo-awsvpc-mode.json
+export TASK_FILE=ecs-networking-demo-awsvpc-mode.json
 envsubst < ${TASK_FILE}.template > ${TASK_FILE}
-TASF_DEF=$(aws ecs register-task-definition --cli-input-json file://${TASK_FILE} --query 'taskDefinition.taskDefinitionArn' --output text)
-TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} \
-  --network-configuration awsvpcConfiguration={subnets=[${PrivateSubnetOne},${PrivateSubnetTwo}],securityGroups=[${ContainerSecurityGroup}],assignPublicIp=DISABLED}  \
-   --enable-execute-command --launch-type EC2 --platform-version '1.4.0' --query 'tasks[0].taskArn' --output text)
+export TASF_DEF=$(aws ecs register-task-definition --cli-input-json file://${TASK_FILE} --query 'taskDefinition.taskDefinitionArn' --output text)
+export TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} \
+  --network-configuration "awsvpcConfiguration={subnets=[${PrivateSubnetOne},${PrivateSubnetTwo}],securityGroups=[${ContainerSecurityGroup}],assignPublicIp=DISABLED}""  \
+   --enable-execute-command --launch-type EC2 --query 'tasks[0].taskArn' --output text)
 aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}
 # sleep to let the container start
 sleep 60
@@ -86,7 +86,7 @@ aws ecs execute-command --cluster ${ClusterName} --task ${TASK_ARN} --container 
 Sample outputs for awsvpc network mode of a task running a nginx:alpine container which contains the required net-tools package required for running "ip" commands using ECS exec:
 
 ```
-:$ aws ecs execute-command --cluster staging --task 374eb66626904a238001bc6301e3cbea --container nginx --command "/bin/sh" --interactive
+$ aws ecs execute-command --cluster staging --task 374eb66626904a238001bc6301e3cbea --container nginx --command "/bin/sh" --interactive
 
 The Session Manager plugin was installed successfully. Use the AWS CLI to start a session.
 
@@ -137,14 +137,26 @@ default via 10.0.1.1 dev eth1
 
 ```
 
-Another approach is to run the following commands as a priviledged Linux user on the ECS EC2 instance running your task to observe some details:
+Another approach is to access the ECS EC2 instance running your task as a priviledged Linux user to observe some details:
 
 ```
+CONT_INST_ID=$(aws ecs list-container-instances --cluster ${ClusterName} --query 'containerInstanceArns[]' --output text)
+EC2_INST_ID=$(aws ecs describe-container-instances --cluster ${ClusterName} --container-instances ${CONT_INST_ID} --query 'containerInstances[0].ec2InstanceId' --output text)
+aws ssm start-session --target ${EC2_INST_ID}
+```
+
+and to run the following commands inside the instance:
+
+```
+sudo -i
 docker ps
-PID=$(docker inspect -f '{{.State.Pid}}' <containerId/containerName>
+CONT_ID=$(docker ps --format "{{.ID}} {{.Image}}" | grep nginx:alpine | awk '{print $1}') 
+PID=$(docker inspect -f '{{.State.Pid}}' $CONT_ID)
 ip a sh eth0
 nsenter -t $PID -n ip a show
-curl <containerIp>:80
+CONT_IP=$(nsenter -t $PID -n ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+curl ${CONT_IP}:80
+# to leave the interactive session type exit twice
 ```
 
 Sample outputs for awsvpc network mode of a task running a nginx container. Note that eth0 of the EC2 instance and eth0 of the container belong to the same VPC/network CIDR:
@@ -186,4 +198,10 @@ CONTAINER ID        IMAGE                            COMMAND                  CR
 <h1>Welcome to nginx!</h1>
 ...
 </html>
+```
+
+Cleanup the task:
+
+```
+aws ecs stop-task --cluster ${ClusterName} --task ${TASK_ARN}
 ```

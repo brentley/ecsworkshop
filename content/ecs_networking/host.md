@@ -150,11 +150,12 @@ aws ssm start-session --target ${EC2_INST_ID}
 and to run the following commands inside the instance:
 
 ```
+sudo -i
 docker ps
 docker inspect <containerId>
 netstat -tulpn
 curl localhost:80
-# to leave the interactive session type exit
+# to leave the interactive session type exit twice
 ```
 
 Sample outputs for host network mode of a task running a nginx container:
@@ -203,4 +204,9 @@ tcp6       0      0 :::80                   :::*                    LISTEN      
 ...
 </html>
 
+```
+Cleanup the task:
+
+```
+aws ecs stop-task --cluster ${ClusterName} --task ${TASK_ARN}
 ```
