@@ -1,0 +1,34 @@
+{
+    "family": "ecs-networking-demo-none",
+    "executionRoleArn": "arn:aws:iam::618668373247:role/ecs-networking-exec-role",
+    "taskRoleArn": "arn:aws:iam::618668373247:role/ecs-networking-task-role",
+    "containerDefinitions": [
+        {"name": "sleep",
+            "image": "busybox",
+            "entryPoint": [
+              "sh",
+              "-c"
+            ],
+            "command": [
+              "sleep 3600"
+            ],
+            "linuxParameters": {
+                "initProcessEnabled": true
+            },            
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                    "options": {
+                       "awslogs-group": "/aws/ecs/ecs-networking-demo",
+                       "awslogs-region": "eu-central-1",
+                       "awslogs-stream-prefix": "container-stdout"
+                    }
+            }
+        }
+    ],
+    "networkMode": "none",
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "256",
+    "memory": "512"
+}
