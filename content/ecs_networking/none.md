@@ -21,63 +21,46 @@ In the task definition set the "networkMode" to "none".  Port mappings are not v
 
 ```
 
-# Lab exercise
+## Lab exercise
 
-In this lab we will be executing below commands to inspect container running with none as network mode.
+One cannot leverage the new "ECS exec" feature to access the container in "none" networking mode!
+
+Note: The executables you want to run in the interactive shell session must be available in the container image!
 
 ```
+source ~/.bashrc
+cd ~/environment/ecsworkshop/content/ecs_networking/setup
+TASK_FILE=ecs-networking-demo-none-mode.json
+envsubst < ${TASK_FILE}.template > ${TASK_FILE}
+TASF_DEF=$(aws ecs register-task-definition --cli-input-json file://${TASK_FILE} --query 'taskDefinition.taskDefinitionArn' --output text)
+TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} --enable-execute-command --launch-type EC2 --query 'tasks[0].taskArn' --output text)
+aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}
+# sleep to let the container start
+sleep 60
+```
+
+Access the ECS EC2 instance running your task as a priviledged Linux user to observe some details:
+
+```
+CONT_INST_ID=$(aws ecs list-container-instances --cluster ${ClusterName} --query 'containerInstanceArns[]' --output text)
+EC2_INST_ID=$(aws ecs describe-container-instances --cluster ${ClusterName} --container-instances ${CONT_INST_ID} --query 'containerInstances[0].ec2InstanceId' --output text)
+aws ssm start-session --target ${EC2_INST_ID}
+```
+
+and to run the following commands inside the instance:
+
+```
+sudo -i
 docker ps
-docker inspect <container ID>
-docker exec -it <container ID>
+CONT_ID=$(docker ps --format "{{.ID}} {{.Image}}" | grep busybox | awk '{print $1}') 
+PID=$(docker inspect -f '{{.State.Pid}}' $CONT_ID)
+nsenter -t $PID -n ip a show
+docker inspect -f '{{json .NetworkSettings}}' $CONT_ID
+# to leave the interactive session type exit twice
 ```
 
-listing out containers:
+Sample output.
 ```
-# docker ps
-CONTAINER ID        IMAGE                            COMMAND             CREATED             STATUS                 PORTS               NAMES
-c0bb64ff6dcb        alpine                           "/bin/sh"           5 seconds ago       Up 4 seconds                               ecs-alpine-2-eab2b5f680eca9b55c00
+TBD
 ```
 
-We can inspect that network is specified as none and rest of the setting are empty/null
-```
-...
-            "Networks": {
-                "none": {
-                    "IPAMConfig": null,
-                    "Links": null,
-                    "Aliases": null,
-                    "NetworkID": "786ad1a16b029377a6d60aaedcc7b52af8efbc3d403455b5a1666f6e54ec82cd",
-                    "EndpointID": "feff4f7698b339acb3a68c645b7b77386dcd318e1c088a7db133ae90bb2d67b4",
-                    "Gateway": "",
-                    "IPAddress": "",
-                    "IPPrefixLen": 0,
-                    "IPv6Gateway": "",
-                    "GlobalIPv6Address": "",
-                    "GlobalIPv6PrefixLen": 0,
-                    "MacAddress": "",
-                    "DriverOpts": null
-                }
-            }
-...
-```
-
-Lets inspect into network interfaces and as expected there are no interfaces and routes
-```
-# docker exec -it c0bb64ff6dcb ash
-/ # 
-/ # 
-/ # ip a sh
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-
-/ # ip link sh
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-/ # 
-
-/ # ip r sh
-/ # 
-
-```
