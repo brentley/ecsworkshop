@@ -6,7 +6,7 @@ weight: 5
 
 ## Install and setup prerequisites
 
-Make sure your Cloud9 environment has the proper IAM permissions as described earlier [here](https://bd4aab6b2cb34b67b37ff409806b25b9.vfs.cloud9.eu-central-1.amazonaws.com/start_the_workshop/workspace/)
+Make sure your Cloud9 environment has the proper IAM permissions (proper EC2 instance profile attached and Cloud9 "AWS managed temporary credentials" turned off) as described earlier [here](https://bd4aab6b2cb34b67b37ff409806b25b9.vfs.cloud9.eu-central-1.amazonaws.com/start_the_workshop/workspace/)
 
 ```
 # Install prerequisite packages

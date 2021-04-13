@@ -82,7 +82,15 @@ aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}
 sleep 30
 aws ecs execute-command --cluster ${ClusterName} --task ${TASK_ARN} --container nginx --command "/bin/sh" --interactive
 ```
+Inside the container run the following commands. Note that the container has acquired an IP of the VPC CIDR 10.0.0.0/16 for "eth0":
 
+```
+ip a sh
+ip link sh
+ip r sh
+curl localhost:80
+# to leave the interactive session type exit
+```
 Sample outputs for awsvpc network mode of a task running a nginx:alpine container which contains the required net-tools package required for running "ip" commands using ECS exec:
 
 ```
@@ -134,7 +142,6 @@ default via 10.0.1.1 dev eth1
 <body>
 <h1>Welcome to nginx!</h1>
 …
-
 ```
 
 Another approach is to access the ECS EC2 instance running your task as a priviledged Linux user to observe some details:
@@ -159,7 +166,9 @@ curl ${CONT_IP}:80
 # to leave the interactive session type exit twice
 ```
 
-Sample outputs for awsvpc network mode of a task running a nginx container. Note that eth0 of the EC2 instance and eth0 of the container belong to the same VPC/network CIDR:
+Sample outputs for awsvpc network mode of a task running a nginx container.
+
+Note: eth0 of the EC2 instance and eth0 of the container are different and belong to the same VPC/network CIDR:
 
 ```
 [root@ip-xxx ~]# docker ps

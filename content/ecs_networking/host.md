@@ -73,7 +73,7 @@ curl localhost:80
 
 Sample outputs for host network mode of a task running a nginx:alpine container using ECS exec.
 
-Note that all EC2 host interfaces and routes are visible within the container because it shares the network namespace of the underlying ECS Ec2 host!
+Note that all EC2 host interfaces and routes are visible within the container because it shares the network namespace of the underlying ECS host!
 
 ```
 $ aws ecs execute-command--cluster staging --task a1e924295a744c878f237133f58803ed --container nginx --command "/bin/sh" --interactive
@@ -152,10 +152,13 @@ and to run the following commands inside the instance:
 ```
 sudo -i
 docker ps
-CONT_ID=$(docker ps --format "{{.ID}} {{.Image}}" | grep nginx:alpine | awk '{print $1}') 
-docker inspect $CONT_ID
+CONT_ID=$(docker ps --format "{{.ID}} {{.Image}}" | grep nginx:alpine | awk '{print $1}')
+PID=$(docker inspect -f '{{.State.Pid}}' $CONT_ID)
+ip a sh eth0
+nsenter -t $PID -n ip a sh eth0
 netstat -tulpn | egrep "Program name|nginx"
 curl localhost:80
+# try the following command which gives lots of details regarding the nginx container: docker inspect $CONT_ID
 # to leave the interactive session type exit twice
 ```
 
@@ -188,16 +191,12 @@ CONTAINER ID        IMAGE       COMMAND                  CREATED             STA
   }
 }
 
-[root@ip-xxx ~]# netstat -tulpn
-Active Internet connections (only servers)
+[root@ip-xxx ~]# netstat -tulpn | egrep "Program name|nginx"
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-...
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      26732/nginx: master
-...
 tcp6       0      0 :::80                   :::*                    LISTEN      26732/nginx: master
-...
 
-[root@ip-10-0-100-21 ~]# curl localhost:80
+[root@ip-xxx ~]# curl localhost:80
 <!DOCTYPE html>
 <html>
 ...
