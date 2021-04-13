@@ -152,7 +152,8 @@ and to run the following commands inside the instance:
 ```
 sudo -i
 docker ps
-docker inspect <containerId>
+CONT_ID=$(docker ps --format "{{.ID}} {{.Image}}" | grep nginx:alpine | awk '{print $1}') 
+docker inspect $CONT_ID
 netstat -tulpn
 curl localhost:80
 # to leave the interactive session type exit twice

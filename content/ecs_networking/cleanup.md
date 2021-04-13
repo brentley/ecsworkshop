@@ -4,9 +4,12 @@ chapter = false
 weight = 70
 +++
 
-#### Delete the ECS tasks, platform and other resources
+#### Delete remaining ECS tasks, platform and other resources
 
 ```bash
+# TBD
+#aws ecs list-tasks ${ClusterName}
+#aws ecs stop-task --cluster ${ClusterName} --task XXX
 aws cloudformation delete-stack --stack-name $STACK_NAME
 ```
 

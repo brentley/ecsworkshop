@@ -125,7 +125,8 @@ cd ~/environment/ecsworkshop/content/ecs_networking/setup
 export STACK_NAME=ecs-networking-demo
 aws cloudformation create-stack --stack-name $STACK_NAME --template-body file://Cluster-ECS-EC2-2AZ-1NAT.yaml --capabilities CAPABILITY_IAM
 # wait a couple of minutes until the following command shows CREATE_COMPLETE
-aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].StackStatus' --output text
+status=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].StackStatus' --output text)
+while [ $status != "CREATE_COMPLETE" ]; do echo "CFN status: $status"; sleep 10; status=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].StackStatus' --output text); done
 
 # Create additional env variables from CFN stack output
 aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[0].Outputs[].[OutputKey,OutputValue]' --output text | awk '{ print "export " $1 "=" $2 }' >> ~/.bashrc
