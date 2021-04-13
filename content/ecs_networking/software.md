@@ -39,7 +39,9 @@ git clone https://github.com/brentley/ecsworkshop.git
 ## Create the lab environment
 ```
 # create CloudWatch log group
-aws logs create-log-group --log-group-name "/aws/ecs/ecs-networking-demo"
+echo "export CW_LOG_GROUP=/aws/ecs/ecs-networking-demo" >> ~/.bashrc
+source ~/.bashrc
+aws logs create-log-group --log-group-name $CW_LOG_GROUP
 
 
 # check for ECS service linked role
@@ -62,6 +64,7 @@ cat <<EoF > policy_doc.json
 }
 EoF
 echo "export EXEC_ROLE_NAME=ecs-networking-exec-role" >> ~/.bashrc
+echo "export EXEC_ROLE_POLICY_ARN=arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy" >> ~/.bashrc
 source ~/.bashrc
 EXEC_ROLE_ARN=$(aws iam create-role \
         --role-name $EXEC_ROLE_NAME \
@@ -71,7 +74,7 @@ EXEC_ROLE_ARN=$(aws iam create-role \
 )
 aws iam attach-role-policy \
     --role-name $EXEC_ROLE_NAME \
-    --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+    --policy-arn $EXEC_ROLE_POLICY_ARN
 
 # create ECS task role
 cat <<EoF > task-role-policy.json
@@ -108,6 +111,7 @@ cat <<EoF > task-role-policy.json
 }
 EoF
 echo "export TASK_ROLE_NAME=ecs-networking-task-role" >> ~/.bashrc
+echo "export TASK_ROLE_POLICY=ecs-networking-task-role-policy" >> ~/.bashrc
 source ~/.bashrc
 TASK_ROLE_ARN=$(aws iam create-role \
         --role-name $TASK_ROLE_NAME \
@@ -117,7 +121,7 @@ TASK_ROLE_ARN=$(aws iam create-role \
 )
 aws iam put-role-policy \
 --role-name $TASK_ROLE_NAME \
---policy-name ecs-networking-task-role-policy \
+--policy-name $TASK_ROLE_POLICY \
 --policy-document file://task-role-policy.json
 
 # Create ECS cluster

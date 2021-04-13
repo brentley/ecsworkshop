@@ -57,7 +57,7 @@ export TASK_DEF=$(aws ecs register-task-definition --cli-input-json file://${TAS
 export TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} --enable-execute-command --launch-type EC2 --query 'tasks[0].taskArn' --output text)
 aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}
 # sleep to let the container start
-sleep 60
+sleep 30
 aws ecs execute-command --cluster ${ClusterName} --task ${TASK_ARN} --container nginx --command "/bin/sh" --interactive
 ```
 
@@ -154,7 +154,7 @@ sudo -i
 docker ps
 CONT_ID=$(docker ps --format "{{.ID}} {{.Image}}" | grep nginx:alpine | awk '{print $1}') 
 docker inspect $CONT_ID
-netstat -tulpn
+netstat -tulpn | egrep "Program name|nginx"
 curl localhost:80
 # to leave the interactive session type exit twice
 ```
@@ -205,6 +205,25 @@ tcp6       0      0 :::80                   :::*                    LISTEN      
 ...
 </html>
 
+```
+Try to run the task a second time:
+
+```
+aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} --enable-execute-command --launch-type EC2
+```
+and you will observe an error like the following with "reason": "RESOURCE:PORTS". This is because the host port is already in use!
+
+```
+Admin:~/environment/ecsworkshop/content/ecs_networking/setup (main) $ aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} --enable-execute-command --launch-type EC2 
+{
+    "failures": [
+        {
+            "reason": "RESOURCE:PORTS", 
+            "arn": "arn:aws:ecs:eu-central-1:xxx:container-instance/f8579ac602054f81ac9f6b19c3ed33af"
+        }
+    ], 
+    "tasks": []
+}
 ```
 Cleanup the task:
 

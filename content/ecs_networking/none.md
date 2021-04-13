@@ -36,7 +36,7 @@ export TASK_DEF=$(aws ecs register-task-definition --cli-input-json file://${TAS
 export TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} --enable-execute-command --launch-type EC2 --query 'tasks[0].taskArn' --output text)
 aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}
 # sleep to let the container start
-sleep 60
+sleep 30
 ```
 
 Access the ECS EC2 instance running your task as a priviledged Linux user to observe some details:

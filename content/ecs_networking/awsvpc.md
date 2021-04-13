@@ -75,11 +75,11 @@ export TASK_FILE=ecs-networking-demo-awsvpc-mode.json
 envsubst < ${TASK_FILE}.template > ${TASK_FILE}
 export TASK_DEF=$(aws ecs register-task-definition --cli-input-json file://${TASK_FILE} --query 'taskDefinition.taskDefinitionArn' --output text)
 export TASK_ARN=$(aws ecs run-task --cluster ${ClusterName} --task-definition ${TASK_DEF} \
-  --network-configuration "awsvpcConfiguration={subnets=[${PrivateSubnetOne},${PrivateSubnetTwo}],securityGroups=[${ContainerSecurityGroup}],assignPublicIp=DISABLED}""  \
+  --network-configuration "awsvpcConfiguration={subnets=[${PrivateSubnetOne},${PrivateSubnetTwo}],securityGroups=[${ContainerSecurityGroup}],assignPublicIp=DISABLED}"  \
    --enable-execute-command --launch-type EC2 --query 'tasks[0].taskArn' --output text)
 aws ecs describe-tasks --cluster ${ClusterName} --task ${TASK_ARN}
 # sleep to let the container start
-sleep 60
+sleep 30
 aws ecs execute-command --cluster ${ClusterName} --task ${TASK_ARN} --container nginx --command "/bin/sh" --interactive
 ```
 
