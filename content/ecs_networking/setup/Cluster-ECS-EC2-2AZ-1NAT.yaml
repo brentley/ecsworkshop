@@ -205,9 +205,7 @@ Resources:
   # themselves as members of the cluster, and run the docker containers.
   ECSAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
-    DependsOn:
-    - EC2InstanceProfile
-    - 
+    DependsOn: EC2InstanceProfile
     Properties:
       VPCZoneIdentifier:
         - !Ref PrivateSubnetOne
