@@ -10,34 +10,15 @@ In the Cloud9 workspace, run the following commands:
 
 ```
 # Install prerequisite packages
-sudo yum -y install jq nodejs python36
+sudo yum -y install jq gettext
+```
+jq is a tool that can be used to extract and transform data held in JSON files.
 
-# Setting CDK Version
-export AWS_CDK_VERSION="1.41.0"
+The gettext package includes the envsubst utility, which can be used to substitute the values of environment variables into an input stream.
 
-# Install aws-cdk
-npm install -g --force aws-cdk@$AWS_CDK_VERSION
+We will use these tools, along with the Linux utiltity sed, to insert or replace attribute values in various files throughout the workshop. This avoids the need for manual text editing wherever possible.
 
-# For container insights and service autoscaling load generation
-curl -C - -O http://download.joedog.org/siege/siege-4.0.5.tar.gz
-tar -xvf siege-4.0.5.tar.gz
-pushd siege-*
-./configure
-make all
-sudo make install 
-popd
-
-# Install cdk packages
-pip3 install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
-aws-cdk.aws_ecs_patterns==$AWS_CDK_VERSION \
-aws-cdk.aws_ec2==$AWS_CDK_VERSION \
-aws-cdk.aws_ecs==$AWS_CDK_VERSION \
-aws-cdk.aws_servicediscovery==$AWS_CDK_VERSION \
-aws-cdk.aws_iam==$AWS_CDK_VERSION \
-aws-cdk.aws_efs==$AWS_CDK_VERSION \
-awscli \
-awslogs
-
+```
 # Setting environment variables required to communicate with AWS API's via the cli tools
 echo "export AWS_DEFAULT_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)" >> ~/.bashrc
 echo "export AWS_REGION=\$AWS_DEFAULT_REGION" >> ~/.bashrc
