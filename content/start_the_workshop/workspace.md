@@ -23,6 +23,7 @@ Cloud9 requires third-party-cookies. You can whitelist the [specific domains]( h
 {{{< tab name="Frankfurt" include="eu-central-1.md" />}}
 {{{< tab name="Ohio" include="us-east-2.md" />}}
 {{{< tab name="Singapore" include="ap-southeast-1.md" />}}
+{{{< tab name="Sydney" include="ap-southeast-2.md" />}}
 {{{< tab name="Tokyo" include="ap-northeast-1.md" />}}
 {{< /tabs >}}
 
