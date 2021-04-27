@@ -189,7 +189,7 @@ Let's tail the logs for the frontend service.
 copilot svc logs -a ecsworkshop -n ecsdemo-frontend --follow
 ```
 
-Note that if you are in the same directory of the service you want to review logs for, simply type the below command. Of course, if yuo wanted to review logs for a service in a particular environment, you would pass the -e flag with the environment name.
+Note that if you are in the same directory of the service you want to review logs for, simply type the below command. Of course, if you wanted to review logs for a service in a particular environment, you would pass the -e flag with the environment name.
 
 ```bash
 copilot svc logs
