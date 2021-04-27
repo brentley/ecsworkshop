@@ -26,7 +26,7 @@ We will be prompted with a series of questions related to the application, envir
 
 - Would you like to use one of your existing applications? "Y"
 - Which existing application do you want to add a new service to? Select "ecsworkshop", hit enter
-- Which service type best represents yur service's architecture? Select "Backend Service", hit enter
+- Which service type best represents your service's architecture? Select "Backend Service", hit enter
 - What do you want to name this Backend Service: ecsdemo-nodejs
 - Dockerfile: ./Dockerfile
 
