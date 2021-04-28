@@ -3,7 +3,6 @@ version: 0.2
 phases:
   install:
     commands:
-      - pip install Pygments
       - export CI=true
       - export CODEBUILD=true
       - export CODEBUILD_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
