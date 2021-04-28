@@ -4,8 +4,6 @@ phases:
   install:
     commands:
       - pip install Pygments
-      - curl -sSL https://get.docker.com/ | sh
-      - service docker start
       - export CI=true
       - export CODEBUILD=true
       - export CODEBUILD_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
