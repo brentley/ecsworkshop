@@ -20,15 +20,6 @@ export AWS_CDK_VERSION="1.41.0"
 # Install aws-cdk
 npm install -g --force aws-cdk@$AWS_CDK_VERSION
 
-# For container insights and service autoscaling load generation
-curl -C - -O http://download.joedog.org/siege/siege-4.0.5.tar.gz
-tar -xvf siege-4.0.5.tar.gz
-pushd siege-*
-./configure
-make all
-sudo make install 
-popd
-
 # Install cdk packages
 pip3 install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
 aws-cdk.aws_ecs_patterns==$AWS_CDK_VERSION \
