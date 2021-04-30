@@ -58,7 +58,9 @@ aws ecs create-capacity-provider \
      --region $AWS_REGION
 ```
 
-- *Note*: If you get an error that the capacity provider already exists because you've created it in the workshop before, just move on to the next step.
+{{% notice info %}}
+If you get an error that the capacity provider already exists because you've created it in the workshop before, just move on to the next step.
+{{% /notice %}}
 
 - In order to create a capacity provider with cluster auto scaling enabled, we need to have an auto scaling group created prior. We did this earlier in this section when we added the EC2 capacity to the ECS cluster. We run a couple of cli calls to get the Auto Scaling group details which is required for the next command where we create the capacity provider.
 
@@ -82,7 +84,6 @@ aws ecs put-cluster-capacity-providers \
 
 You will get a json response indicating that the cluster update has been applied, now it's time to deploy a service and test this functionality out!
 
-
 ### Deploy an EC2 backed ECS service
 
 First, as we've done previously, we will run a `diff` on what presently exists, and what will be deployed via the cdk.
@@ -98,7 +99,6 @@ cdk deploy --require-approval never
 ```
 
 Once the service is deployed, take note of the load balancer URL output. Copy that and paste it into the browser.
-
 
 ### Examine the current deployment
 
@@ -165,7 +165,6 @@ All tasks should be in a `RUNNING` state.
 
 More EC2 instances are registered to the ECS Cluster.
 ![ec2](/images/cp_ec2_full.png)
-
 
 ### Scale the service back down to one
 
