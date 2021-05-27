@@ -37,6 +37,7 @@ First, we need to build the environment for our frontend service to run. For mor
 
 ```bash
 cd ~/environment/container-demo/cdk
+pip install -r requirements.txt
 cdk context --clear && cdk deploy --require-approval never
 ```
 
