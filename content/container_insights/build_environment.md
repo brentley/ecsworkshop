@@ -37,6 +37,7 @@ First, we need to build the environment for our frontend service to run. For mor
 
 ```bash
 cd ~/environment/container-demo/cdk
+pip install -r requirements.txt
 cdk context --clear && cdk deploy --require-approval never
 ```
 
@@ -46,10 +47,13 @@ Next, we will deploy a three-tier polyglot web app to our ECS cluster. For more 
 
 ```bash
 cd ~/environment/ecsdemo-frontend/cdk
+pip install -r requirements.txt
 cdk context --clear && cdk deploy --require-approval never
 cd ~/environment/ecsdemo-nodejs/cdk
+pip install -r requirements.txt
 cdk context --clear && cdk deploy --require-approval never
 cd ~/environment/ecsdemo-crystal/cdk
+pip install -r requirements.txt
 cdk context --clear && cdk deploy --require-approval never
 ```
 
