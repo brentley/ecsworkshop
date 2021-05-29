@@ -19,13 +19,13 @@ The following is an example of a task definition containing a single container t
             "image": "nginx",
             "memory": "100",
             "cpu": "99"
-        },
+        }
     ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "networkMode": "awsvpc",
     "memory": "512",
-    "cpu": "256",
+    "cpu": "256"
 }
 ```
