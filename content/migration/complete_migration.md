@@ -62,3 +62,27 @@ An environment includes the resources and "infrastructure" in which your service
 This includes the VPC, ECS Cluster, IAM roles, Security Groups, and so on.
 For more information on what copilot does when creating environments, see the [documentation](https://aws.github.io/copilot-cli/docs/concepts/environments/)
 
+### Define our service
+
+Now we have our application and test environment ready to go.
+We are ready to deploy our user-api service.
+First, we will initialize our service as copilot will generate the manifest for us to define how the service is deployed and managed.
+
+```bash
+copilot svc init
+```
+
+Once again we are prompted with a series of questions that will guide us through the experience.
+
+- Choose the Backend Service as this particular service is internal and not internet facing requiring a load balancer.
+- Name the service userapi
+- We are prompted to choose a Dockerfile, upstream image, or custom field. We will choose Dockerfile as we created this earlier.
+
+Once done we are presented with the manifest file, let's take a look.
+
+```bash
+cat copilot/userapi/manifest.yml
+```
+
+Note that copilot was able to figure out that we want our app to run on port 8080, based on the EXPOSE parameter in our Dockerfile.
+The manifest looks good, but we need to add some more information to ensure that the new container is ready to go.
