@@ -70,7 +70,7 @@ The Copilot CLI can create a new VPC on our behalf with recommend practices buil
 Run the following command to get started with deploying our test environment:
 
 ```bash
-# We need the VPC ID, so we'll grab it using the AWS CLI
+# We need the VPC ID, so we'll locate it using the AWS CLI
 vpc_id=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=BuildEc2EnvironmentStack/DemoVPC --query Vpcs[].VpcId --output text)
 # Next we'll initialize our environment passing in the VPC ID for our existing VPC
 copilot env init --import-vpc-id $vpc_id --name test --app migration-demo
@@ -229,7 +229,7 @@ The next thing we need for our application is the security group.
 We want to use a pre-existing security group to enable our existing applications in the previous environment to communicate with our new service.
 
 ```bash
-# We need the Security Group ID, so we'll grab it using the AWS CLI
+# We need the Security Group ID, so we'll locate it using the AWS CLI
 sec_grp_id=$(aws ec2 describe-security-groups --filters Name=tag:Name,Values=BuildEc2EnvironmentStack/ApplicationASG --query SecurityGroups[].GroupId --output text)
 ```
 
@@ -305,7 +305,7 @@ Let's start an ssm session back to our EC2 instance and test that we're able to 
 In this scenario we are testing that the security group that we added to the task will allow communication from other hosts that have that security group attached.
 
 ```bash
-# Grab the instance ID for us to access
+# Locate the instance ID to access
 instance_id=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running Name=tag:Name,Values=BuildEc2EnvironmentStack/ApplicationASG --query Reservations[].Instances[0].InstanceId --output text)
 # Start a shell via SSM session manager
 aws ssm start-session --target $instance_id

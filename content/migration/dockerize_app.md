@@ -198,7 +198,7 @@ curl -s 'localhost:8080/user/?first=Sheldon&last=Cooper' | jq
 ```
 
 That's it! We packaged our application into a container image using Docker and ran it locally.
-This is hugely impactful to our workflow as this image will be no different than the one running in a production environment, with the exception of environment variables determining what database we interact with.
+This is very impactful to our workflow as this image will be no different than the one running in a production environment, adjusting only the environment variables to determine what database we interact with.
 
 ### Next steps
 
