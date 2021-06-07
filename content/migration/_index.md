@@ -2,7 +2,8 @@
 title: "Migrating workloads to ECS"
 chapter: true
 weight: 58
-pre: '<i class="fa fa-film" aria-hidden="true"></i> '
+aliases:
+    - /migration/
 ---
 
 # Migrating workloads to ECS
