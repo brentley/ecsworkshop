@@ -305,7 +305,7 @@ Let's start an ssm session back to our EC2 instance and test that we're able to 
 In this scenario we are testing that the security group that we added to the task will allow communication from other hosts that have that security group attached.
 
 ```bash
-# Locate the instance ID for us to access
+# Locate the instance ID to access
 instance_id=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running Name=tag:Name,Values=BuildEc2EnvironmentStack/ApplicationASG --query Reservations[].Instances[0].InstanceId --output text)
 # Start a shell via SSM session manager
 aws ssm start-session --target $instance_id
