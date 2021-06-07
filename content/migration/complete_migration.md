@@ -300,7 +300,7 @@ exit
 exit
 ```
 
-Perfect, our service is working as we expect and it's able to talk to the database succesfully!
+Our service is working as we expect and it's able to talk to the database succesfully!
 Let's start an ssm session back to our EC2 instance and test that we're able to communicate from that instance to our service via service discovery.
 In this scenario we are testing that the security group that we added to the task will allow communication from other hosts that have that security group attached.
 

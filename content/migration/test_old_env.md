@@ -27,10 +27,15 @@ The response should be `{"Status":"Healthy"}`
 Next, load the database with the users:
 
 ```bash
-curl XPOST localhost:8080/load_db
+curl -X POST localhost:8080/load_db
 ```
 
 The response should be `{"Status":"Success"}`
+
+{{% notice note %}}
+If the response is not a 200, check the CloudFormation template in the AWS Console and ensure that the DynamoDB table deployed as expected.
+Next, check the IAM policy attached to the EC2 instance and ensure that it has the proper access defined via IAM Role.
+{{% /notice%}}
 
 Now that the data is loaded we can run a couple of queries to confirm the data exists:
 
@@ -44,5 +49,5 @@ curl -s 'localhost:8080/user/?first=Sheldon&last=Cooper' | jq
 curl -s localhost:8080/all_users | jq
 ```
 
-Perfect. At this point we have a fully functioning application running on EC2. 
+At this point we have a fully functioning application running on EC2. 
 Now let's move to the next section where we talk about how to migrate.
