@@ -7,9 +7,8 @@ weight: 70
 #### Cleanup
 
 ```bash
-aws ecs update-service --cluster $cluster_name --service cloudcmd-rw --desired-count 0
-task_arn=$(aws ecs list-tasks --cluster $cluster_name --service-name cloudcmd-rw | jq -r .taskArns[])
-aws ecs stop-task --task $task_arn --cluster $cluster_name
-aws ecs delete-service --cluster $cluster_name --service cloudcmd-rw
+cd ~/environment/ec2_to_ecs_migration_workshop/app
+copilot app delete --name userapi --yes
+cd ~/environment/ec2_to_ecs_migration_workshop/build_ec2_environment
 cdk destroy -f
 ```

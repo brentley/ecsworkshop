@@ -207,7 +207,7 @@ Resources:
                         - dynamodb:DeleteItem
                         - dynamodb:DescribeTable
                       Resource:
-                        - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/UsersTable-${Env}'
+                        - !Sub 'arn:aws:dynamodb:\${AWS::Region}:\${AWS::AccountId}:table/UsersTable-\${Env}'
 
 Outputs:
     # 1. You also need to output the IAM ManagedPolicy so that Copilot can inject it to your ECS task role.
@@ -294,5 +294,33 @@ Once in the shell, run the following commands to confirm our application is able
 bash
 curl localhost:8080/health
 echo
-
+curl -s localhost:8080/all_users
+echo
+exit
+exit
 ```
+
+Perfect, our service is working as we expect and it's able to talk to the database succesfully!
+Let's start an ssm session back to our EC2 instance and test that we're able to communicate from that instance to our service via service discovery.
+In this scenario we are testing that the security group that we added to the task will allow communication from other hosts that have that security group attached.
+
+```bash
+# Grab the instance ID for us to access
+instance_id=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running Name=tag:Name,Values=BuildEc2EnvironmentStack/ApplicationASG --query Reservations[].Instances[0].InstanceId --output text)
+# Start a shell via SSM session manager
+aws ssm start-session --target $instance_id
+```
+
+Now let's see if we can talk to our container via service discovery (which was created by Copilot):
+
+```bash
+# Curl the health endpoint
+curl http://userapi.migration-demo.local:8080/health
+# Curl the all_users endpoint
+curl http://userapi.migration-demo.local:8080/all_users
+```
+
+Success! We are now succesfully running our code as a container running on Amazon ECS.
+At this point any applications talking to this service could flip the hostname for the previous version of the service to the service discovery endpoint.
+
+Now that we're done, let's clean up the resources.
