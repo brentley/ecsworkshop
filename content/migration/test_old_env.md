@@ -5,10 +5,10 @@ weight: 45
 ---
 
 Let's confirm that our application is working as we would expect in the original environment.
-To accomplish this, we will grab the EC2 Instance ID and then enter into a shell on that host using SSM Session Manager.
+To accomplish this, we will locate the EC2 Instance ID and then enter into a shell on that host using SSM Session Manager.
 
 ```bash
-# Grab the instance ID for us to access
+# Locate the instance ID for us to access
 instance_id=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running Name=tag:Name,Values=BuildEc2EnvironmentStack/ApplicationASG --query Reservations[].Instances[0].InstanceId --output text)
 # Start a shell via SSM session manager
 aws ssm start-session --target $instance_id
