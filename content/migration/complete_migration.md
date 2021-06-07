@@ -86,3 +86,4 @@ cat copilot/userapi/manifest.yml
 
 Note that copilot was able to figure out that we want our app to run on port 8080, based on the EXPOSE parameter in our Dockerfile.
 The manifest looks good, but we need to add some more information to ensure that the new container is ready to go.
+
