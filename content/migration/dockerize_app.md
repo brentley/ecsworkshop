@@ -1,5 +1,5 @@
 ---
-title: "Begin migration"
+title: "Dockerize the application"
 chapter: false
 weight: 50
 ---
@@ -18,14 +18,14 @@ Let's look at two approaches to getting up and running with containers.
 
 ### Cloud Native Buildpacks
 
-Why Buildpacks? 
-
 A Buildpack offer a simplified way to build and manage docker images.
 This is accomplished by simply providing your source code with the Buildpacks doing the rest.
 For those who aren't familiar with Dockerfiles and want to avoid the boilerplate, Buildpacks can help with the heavy lifting.
 Check out the [documentation](https://buildpacks.io/docs/app-journey/) for more information.
 
 Let's test it out and see what the experience looks like.
+
+#### Build the image
 
 First we need to install the [pack](https://buildpacks.io/docs/tools/pack/) cli. This is the tool we will use to build our image.
 Follow the instructions for getting it installed [here](https://buildpacks.io/docs/tools/pack/#install)
@@ -51,6 +51,8 @@ This file is all we need to tell pack how to run our application.
 
 Once the build is complete, we will have a docker image that we can run locally. 
 The name of the image artifact is `user-api` which is what we passed into the `pack build` command.
+
+#### Run the image as a container locally
 
 Using Docker, we will run the image we just built as a container on our Cloud9 instance.
 
