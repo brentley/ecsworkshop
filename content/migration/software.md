@@ -20,7 +20,7 @@ sudo yum -y install jq nodejs python36
 npm install -g --force aws-cdk@1.106.1
 
 # Setup virtual environment
-cd ecsdemo-migration-to-ecs && virtual env .env && source .env/bin/activate
+cd ecsdemo-migration-to-ecs && virtualenv .env && source .env/bin/activate
 pip3 install -r requirements.txt
 
 # Setting environment variables required to communicate with AWS API's via the cli tools
