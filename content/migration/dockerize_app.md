@@ -105,7 +105,7 @@ Essentially we use a Dockerfile as a way to define a simple set of instructions 
 To build our Docker image, we will start with creating our `Dockerfile`.
 
 ```bash
-cat << EOF >> Dockerfile
+cat << EOF > Dockerfile
 FROM public.ecr.aws/bitnami/python:3.7
 
 EXPOSE 8080
