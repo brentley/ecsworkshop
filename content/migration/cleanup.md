@@ -7,8 +7,8 @@ weight: 70
 #### Cleanup
 
 ```bash
-cd ~/environment/ec2_to_ecs_migration_workshop/app
+cd ~/environment/ecsdemo-migration-to-ecs/app
 copilot app delete --name userapi --yes
-cd ~/environment/ec2_to_ecs_migration_workshop/build_ec2_environment
+cd ~/environment/ecsdemo-migration-to-ecs/build_ec2_environment
 cdk destroy -f
 ```
