@@ -8,7 +8,13 @@ The first step in the workshop is to deploy our application running on Amazon EC
 Run the commands below and while the build is happening, proceed to the code review section to gain an understanding of what we're building and deploying.
 
 ```bash
-cd ~/environment/ec2_to_ecs_migration_workshop/build_ec2_environment
+# Setup virtual environment
+cd ~/environment/ecsdemo-migration-to-ecs/build_ec2_environment 
+virtualenv .env 
+source .env/bin/activate
+# Install packages
+pip3 install -r requirements.txt
+# Deploy the environment
 cdk deploy --require-approval never
 ```
  
