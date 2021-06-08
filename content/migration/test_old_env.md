@@ -41,12 +41,12 @@ Now that the data is loaded we can run a couple of queries to confirm the data e
 
 ```bash
 # Query specific user
-curl -s 'localhost:8080/user/?first=Sheldon&last=Cooper' | jq
+curl -s 'localhost:8080/user/?first=Sheldon&last=Cooper'
 ```
 
 ```bash
 # Query all users
-curl -s localhost:8080/all_users | jq
+curl -s localhost:8080/all_users
 ```
 
 At this point we have a fully functioning application running on EC2. 
