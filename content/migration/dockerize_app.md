@@ -41,7 +41,7 @@ pack config default-builder gcr.io/buildpacks/builder:v1
 Next, we'll build the image.
 
 ```bash
-cd app
+cd ~/environment/ecsdemo-migration-to-ecs/app
 pack build user-api
 ```
 
