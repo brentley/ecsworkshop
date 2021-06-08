@@ -11,7 +11,7 @@ In the Cloud9 workspace, run the following commands:
 ```
 # Pull down the git repo
 cd ~/environment
-git clone https://github.com/adamjkeller/ec2_to_ecs_migration_workshop.git
+git clone https://github.com/adamjkeller/ecsdemo-migration-to-ecs.git
 
 # Install prerequisite packages
 sudo yum -y install jq nodejs python36
