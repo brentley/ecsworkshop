@@ -85,7 +85,7 @@ We can also check the logs via the docker service to see how the application log
 docker logs userapi
 ```
 
-Stop the docker image
+Stop the docker container
 
 ```bash
 docker stop userapi
