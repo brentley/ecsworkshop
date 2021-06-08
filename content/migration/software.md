@@ -16,6 +16,10 @@ git clone https://github.com/adamjkeller/ecsdemo-migration-to-ecs.git
 # Install prerequisite packages
 sudo yum -y install jq nodejs python36
 
+# Install SSM session manager plugin
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "session-manager-plugin.rpm"
+sudo yum install -y session-manager-plugin.rpm
+
 # Install aws-cdk
 npm install -g --force aws-cdk@1.106.1
 
