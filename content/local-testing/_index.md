@@ -1,7 +1,7 @@
 ---
 title: "Local Testing"
 chapter: true
-weight: 60
+weight: 80
 ---
 
 # Local Testing using the ecs-cli
