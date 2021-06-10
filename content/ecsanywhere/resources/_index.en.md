@@ -1,7 +1,6 @@
 ---
 title: "Resources"
 chapter: true
-pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 weight: 70
 ---
 

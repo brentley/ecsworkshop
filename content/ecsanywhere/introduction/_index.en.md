@@ -1,7 +1,6 @@
 ---
 title: "Introduction"
 chapter: true
-pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 weight: 3
 ---
 
