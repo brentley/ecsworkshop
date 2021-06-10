@@ -1,7 +1,6 @@
 ---
 title: "Workload management"
 chapter: true
-pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 weight: 30
 ---
 

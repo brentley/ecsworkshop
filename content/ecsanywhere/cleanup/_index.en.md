@@ -1,7 +1,6 @@
 ---
 title: "Cleanup"
 chapter: true
-pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 weight: 50
 ---
 

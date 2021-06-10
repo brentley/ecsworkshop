@@ -2,7 +2,6 @@
 title: "ECS Anywhere"
 chapter: true
 weight: 70
-pre: '<i class="fa fa-film" aria-hidden="true"></i> '
 ---
 
 # Welcome to the ECS-Anywhere Workshop!
