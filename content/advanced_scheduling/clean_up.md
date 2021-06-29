@@ -11,5 +11,4 @@ $ aws autoscaling update-auto-scaling-group --auto-scaling-group-name GpuECSAuto
 $ aws autoscaling update-auto-scaling-group --auto-scaling-group-name ArmECSAutoScalingGroup --no-new-instances-protected-from-scale-in
 $ aws cloudformation delete-stack --stack-name ecs-demo
 $ aws cloudformation delete-stack --stack-name ecsworkshop-vpc
-
 ```

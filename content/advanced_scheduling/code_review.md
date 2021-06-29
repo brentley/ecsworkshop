@@ -245,6 +245,9 @@ Like the ARM task, we use the `memberOf` placement constraint but the query is a
 Here we are placing these tasks based off of instance-type, as our tasks can not run without GPU's available.
 We could also create a custom attribute and query off of that just in case we wanted to use multiple instance types.
 
+Also you may notice that the container is requesting a GPU under the `ResourceRequirements` key. 
+This will ensure that a GPU is assigned to the task when launched.
+
 ```yaml
 # ECS Task Definition for GPU Instance type. PlacementConstraints properties are setting the desired cpu-architecture to gpu.
   Gputaskdefinition:
