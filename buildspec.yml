@@ -67,9 +67,9 @@ phases:
       - head config.toml
       - npm run build
       - if [ "$CODEBUILD_GIT_CLEAN_BRANCH" = "main" ] ; then
-          docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
+          docker run -v $PWD/public/:/public public.ecr.aws/b5z4c4d2/html-proofer:latest /public --empty-alt-ignore --allow-hash-href --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
         else 
-          echo docker run -v $PWD/public/:/public 18fgsa/html-proofer /public --empty-alt-ignore --allow-hash-href --url-swap "/$CODEBUILD_GIT_CLEAN_BRANCH:" --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
+          echo docker run -v $PWD/public/:/public public.ecr.aws/b5z4c4d2/html-proofer:latest /public --empty-alt-ignore --allow-hash-href --url-swap "/$CODEBUILD_GIT_CLEAN_BRANCH:" --url-ignore http://ecsdemo-nodejs/,http://ecsdemo-crystal/crystal --disable-external;
         fi
 
   post_build:
