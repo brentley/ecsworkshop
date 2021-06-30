@@ -298,7 +298,7 @@ siege -c 200 -i http://ecsdemo-crystal.service:3000/crystal&
 
 - While siege is running in the background, either navigate to the console or monitor the autoscaling from the command line in a new cloud9 terminal.
 
-{{%expand "Command Line" %}}
+##### Command Line
 
 - Compare the tasks running vs tasks desired. As the load increases on the crystal service, we should see these counts eventually increase up to 10. This is autoscaling happening in real time. Please note that this step will take a few minutes. Feel free to run this in one terminal, and move on to the next steps in another terminal.
 
@@ -317,10 +317,7 @@ watch -d -n 3 echo `aws ecs describe-services --cluster container-demo --service
 
 - NOTE: To ensure application availability, the service scales out proportionally to the metric as fast as it can, but scales in more gradually. For more information, see the [documentation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-autoscaling-targettracking.html)
 
-{{% /expand %}}
-
-{{%expand "Console" %}}
+##### Console
 ![task-as-console-loadtest-output](/images/cdk-ecs-crystal-as-console-output.gif)
-{{% /expand %}}
 
 {{% /expand %}}
