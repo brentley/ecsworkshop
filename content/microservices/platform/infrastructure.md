@@ -23,10 +23,4 @@ This repository will build the baseline platform for the microservices to deploy
 We will be continue using the AWS CDK to deploy our applications into this cluster.
 {{% /expand %}}
 
-{{%expand "ecs-cli path" %}}
-This repository will use 2 CloudFormation Stacks that will build our cluster environment and ALB.
-
-We will then use ecs-cli to deploy our applications into this cluster.
-{{% /expand %}}
-
 ![mu-environment](/images/mu-topology-vpc.png)
