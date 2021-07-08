@@ -20,7 +20,7 @@ In the Cloud9 workspace, run the following commands:
 
 ```bash
 cd ~/environment
-git clone https://github.com/petrokashlikov/ecsdemo-amp
+git clone https://github.com/aws-samples/ecsdemo-amp.git
 ```
 
 #### Set environment variables to get AMP Remote Write Endpoint created in previous step and add it to ADOT config file
