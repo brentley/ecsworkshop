@@ -21,19 +21,22 @@ Simply select the AMP workspace from the list and click `Add data sources`.
 
 In this section we will be importing sample Grafana dashboard that allows us to visualize metrics from a ECS environment.
 
-Download provided sample dashboard to your computer
+Download provided sample dashboard to your computer locally (not using Cloud9). If you don't have curl installed, please go directly to Github repository and download file manually.
 
 ```bash
-curl https://raw.githubusercontent.com/petrokashlikov/ecsdemo-amp/main/grafana/AMP_ECS_Task_Monitoring.json -o AMP_ECS_Task_Monitoring.json
+curl https://raw.githubusercontent.com/aws-samples/ecsdemo-amp/main/grafana/AMP_ECS_Task_Monitoring.json -o AMP_ECS_Task_Monitoring.json
 ```
+
 
 Go to the `plus` sign on the left navigation bar and select `Import`.
 ![Import link](/images/amg10.png)
 
-In the Import screen, click Upload JSON file and select dashboard file that you just downloaded and make sure you select your AMP data source in the drop down at the bottom and click on `Import`
-
+In the Import screen, click Upload JSON file and select dashboard file that you just downloaded and **make sure you select your AMP data source in the drop down at the bottom** and click on `Import`
+![Select source](/images/amg12.png)
 
 Once completed, you will be able to see the Grafana dashboard showing metrics from the ECS cluster through AMP data source as shown below.
+
+This sample dashboard visualize Amazon ECS metrics on task level and also display count of running Amazon ECS tasks, their total memory and vCPU usage.  
 
 ![Sample Dashboard](/images/amg11.png)
 

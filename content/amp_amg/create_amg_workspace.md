@@ -18,6 +18,16 @@ If you have not yet set up AWS Organizations, you will be prompted to create an 
 
 Now go ahead and create a new AWS SSO user that we will use to provide access to the AMG workspace later.
 
+- Choose `Users` on the left side of AWS SSO console and click `Add user`
+![Create SSO user](/images/sso1.png)
+
+- Provide the following required information on next screen
+![SSO user details](/images/sso2.png)
+
+- Choose `Next:Groups`
+
+- Click `Add user` in lower right
+
 #### Create AMG workspace
 
 Go to the [AMG console](https://console.aws.amazon.com/grafana/home/createWorkspace) and provide a workspace name as shown below

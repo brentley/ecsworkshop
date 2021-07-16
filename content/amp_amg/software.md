@@ -3,35 +3,24 @@ title: "Install and Configure Tools"
 chapter: false
 weight: 5
 ---
+If you haven’t setup Cloud9 workspace, please go to the [Create a Workspace](https://ecsworkshop.com/start_the_workshop/workspace/) section and setup it.
 
 In the Cloud9 workspace, run the following commands:
 
 ## Install and setup prerequisites
 
 ```
-# Install prerequisite packages
-sudo yum -y install jq nodejs python37
+#  Clone application repository
+cd ~/environment
+git clone https://github.com/aws-samples/ecsdemo-amp.git
 
-# Setting CDK Version
-export AWS_CDK_VERSION="1.41.0"
+# Create Python virtual environment and install required CDK dependencies
+cd ~/environment/ecsdemo-amp/cdk
+virtualenv .env
+source .env/bin/activate
+pip install -r requirements.txt
 
-# Install aws-cdk
-npm install -g --force aws-cdk@$AWS_CDK_VERSION
+# Bootstrap CDK toolkit stack
+cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_DEFAULT_REGION
 
-# Install cdk packages
-pip3 install --user --upgrade aws-cdk.core==$AWS_CDK_VERSION \
-aws-cdk.aws_ecs_patterns==$AWS_CDK_VERSION \
-aws-cdk.aws_ec2==$AWS_CDK_VERSION \
-aws-cdk.aws_ecs==$AWS_CDK_VERSION \
-aws-cdk.aws_servicediscovery==$AWS_CDK_VERSION \
-aws-cdk.aws_iam==$AWS_CDK_VERSION \
-aws-cdk.aws_efs==$AWS_CDK_VERSION \
-awscli \
-awslogs
-
-# Setting environment variables required to communicate with AWS API's via the cli tools
-echo "export AWS_DEFAULT_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)" >> ~/.bashrc
-echo "export AWS_REGION=\$AWS_DEFAULT_REGION" >> ~/.bashrc
-echo "export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)" >> ~/.bashrc
-source ~/.bashrc
 ```
