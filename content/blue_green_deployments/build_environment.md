@@ -268,7 +268,7 @@ cdk deploy --require-approval never
 #### Exporting the Load Balancer URL
 
 ```bash
-export cloudformation_outputs=$(aws cloudformation describe-stacks --stack-name BlueGreenUsingEcsStack | jq .Stacks[].Outputs)
+export cloudformation_outputs=$(aws cloudformation describe-stacks --stack-name BlueGreenUsingEcsStack | jq '.Stacks[].Outputs')
 export load_balancer_url=$(echo $cloudformation_outputs | jq -r '.[]| select(.ExportName | contains("ecsBlueGreenLBDns"))| .OutputValue')
 ```
 
