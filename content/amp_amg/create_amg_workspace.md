@@ -19,10 +19,10 @@ If you have not yet set up AWS Organizations, you will be prompted to create an 
 Now go ahead and create a new AWS SSO user that we will use to provide access to the AMG workspace later.
 
 - Choose `Users` on the left side of AWS SSO console and click `Add user`
-![Create SSO user](/images/sso1.png)
+  ![Create SSO user](/images/sso1.png)
 
 - Provide the following required information on next screen
-![SSO user details](/images/sso2.png)
+  ![SSO user details](/images/sso2.png)
 
 - Choose `Next:Groups`
 
@@ -30,7 +30,7 @@ Now go ahead and create a new AWS SSO user that we will use to provide access to
 
 #### Create AMG workspace
 
-Go to the [AMG console](https://console.aws.amazon.com/grafana/home/createWorkspace) and provide a workspace name as shown below
+Go to the [AMG console](https://console.aws.amazon.com/grafana/home) and provide a workspace name as shown below
 ![Create AMG workspace](/images/amg1.png)
 
 Choose `Service managed` in the `Configure Settings` page and click `Next`. Choosing this option will allow the wizard to automatically provision the permissions for you based on the AWS services we will choose later on.
@@ -52,6 +52,5 @@ Once the AMG workspace turns to `ACTIVE`, click on `Assign user` and select the 
 ![Assign user](/images/amg4.png)
 
 By default, all newly assigned users are added as `Viewers` that only provides read-only permissions on Grafana. To make the user as Administrator, select the user under `Users` and select `Make admin`. Now you should see that the user is an Administrator.
-
 
 ![Assign user](/images/amg5.png)

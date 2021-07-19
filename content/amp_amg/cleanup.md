@@ -14,11 +14,10 @@ cdk destroy -f
 #### Delete the AMP workspace
 
 ```bash
-aws amp delete-workspace $AMP_WORKSPACE_ID
+aws amp delete-workspace --workspace-id $AMP_WORKSPACE_ID
 ```
 
 #### Delete the AMG workspace
-
 
 To delete an AMG workspace:
 
