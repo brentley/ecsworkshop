@@ -30,6 +30,8 @@ Vagrant.configure("2") do |config|
 end
 ```
 
+> Note: You can choose another `host: <port>` if 8080 is not available on your host
+
 ### Create VM
 
 1. Create a Vagrant VM, by running the following command from root directory (where `Vagrant` file is placed):
@@ -116,17 +118,14 @@ end
 
     ```bash
     # Download the ecs-anywhere install Script 
-    curl -o "ecs-anywhere-install.sh" "https://amazon-ecs-agent-packages-preview.s3.us-east-1.amazonaws.com/ecs-anywhere-install.sh" && sudo chmod +x ecs-anywhere-install.sh
-
-    # (Optional) Check integrity of the shell script
-    curl -o "ecs-anywhere-install.sh.sha256" "https://amazon-ecs-agent-packages-preview.s3.us-east-1.amazonaws.com/ecs-anywhere-install.sh.sha256" && sha256sum -c ecs-anywhere-install.sh.sha256
+    curl --proto "https" -o "/tmp/ecs-anywhere-install.sh" "https://amazon-ecs-agent.s3.amazonaws.com/ecs-anywhere-install-latest.sh"
     ```
 
 3. Run the following command to install `ECS agent` and `SSM agent` which will allow ECS control plane to manage and run workloads on this virtual machine
 
     ```bash
     # Run the install script
-    sudo ./ecs-anywhere-install.sh \
+    sudo bash /tmp/ecs-anywhere-install.sh \
         --cluster test-ecs-anywhere \
         --activation-id $ACTIVATION_ID \
         --activation-code $ACTIVATION_CODE \
