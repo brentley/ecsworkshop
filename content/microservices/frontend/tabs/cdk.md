@@ -271,12 +271,13 @@ cdk deploy --require-approval never
 
 ```bash
 alb_url=$(aws cloudformation describe-stacks --stack-name ecsworkshop-frontend --query "Stacks" --output json | jq -r '.[].Outputs[] | select(.OutputKey |contains("LoadBalancer")) | .OutputValue')
+sudo yum install -y siege
 siege -c 20 -i $alb_url&
 ```
 
 - While siege is running in the background, either navigate to the console or monitor the autoscaling from the command line.
 
-{{%expand "Command Line" %}}
+##### Command Line
 
 - Compare the tasks running vs tasks desired. As the load increases on the frontend service, we should see these counts eventually increase up to 10. This is autoscaling happening in real time. Please note that this step will take a few minutes. Feel free to run this in one terminal, and move on to the next steps in another terminal.
 
@@ -293,10 +294,7 @@ while true; do sleep 3; aws ecs describe-services --cluster container-demo --ser
 
 - NOTE: To ensure application availability, the service scales out proportionally to the metric as fast as it can, but scales in more gradually. For more information, see the [documentation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-autoscaling-targettracking.html)
 
-{{% /expand %}}
-
-{{%expand "Console" %}}
+##### Console
 - Coming soon!
-{{% /expand %}}
 
 {{% /expand %}}
